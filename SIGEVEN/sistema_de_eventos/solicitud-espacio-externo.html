@@ -324,7 +324,10 @@
     }
 
     // Set minimum date to today
-    document.getElementById('date').min = new Date().toISOString().split('T')[0];
+    const dateElement = document.getElementById('date');
+    if (dateElement) {
+      dateElement.min = new Date().toISOString().split('T')[0];
+    }
   </script>
 
   <style>
