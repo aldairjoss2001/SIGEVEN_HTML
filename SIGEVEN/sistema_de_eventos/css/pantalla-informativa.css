@@ -539,6 +539,10 @@ body.informative-page {
     border-color: #8b5cf6;
 }
 
+.benefit-card.external {
+    border-color: #f59e0b;
+}
+
 .benefit-header {
     display: flex;
     align-items: center;
@@ -565,6 +569,11 @@ body.informative-page {
 .benefit-card.admins .benefit-header .material-icons {
     background: #ede9fe;
     color: #5b21b6;
+}
+
+.benefit-card.external .benefit-header .material-icons {
+    background: #fef3c7;
+    color: #92400e;
 }
 
 .benefit-header h4 {

@@ -70,6 +70,10 @@
                         <span class="material-icons">admin_panel_settings</span>
                         <span>Admin</span>
                     </button>
+                    <button type="button" class="role-tab" data-role="externo">
+                        <span class="material-icons">public</span>
+                        <span>Externo</span>
+                    </button>
                 </div>
 
                 <!-- Login Form -->
@@ -181,9 +185,9 @@
             },
             docente: {
                 label: 'Código de Docente',
-                placeholder: 'Ej: A20250-1',
-                help: 'Formato: AXXXXX-X (donde X son números)',
-                pattern: 'A[0-9]{5}-[0-9]',
+                placeholder: 'Ej: D20250-1',
+                help: 'Formato: DXXXXX-X (donde X son números)',
+                pattern: 'D[0-9]{5}-[0-9]',
                 redirect: 'perfil-docente.html'
             },
             admin: {
@@ -192,6 +196,13 @@
                 help: 'Ingresa tu usuario de administrador',
                 pattern: null,
                 redirect: 'panel-admin.html'
+            },
+            externo: {
+                label: 'Correo Electrónico',
+                placeholder: 'correo@ejemplo.com',
+                help: 'Ingresa tu correo electrónico para verificación',
+                pattern: null,
+                redirect: 'perfil-externo.html'
             }
         };
 

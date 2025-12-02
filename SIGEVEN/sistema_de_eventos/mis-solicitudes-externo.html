@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mis Solicitudes - Usuario Externo | SIGEVEN</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="pantalla-informativa.html" class="sidebar-brand">
+          <img src="sigeven_logo.png" alt="C-Heaven Logo" class="sidebar-logo">
+          <div class="sidebar-brand-text">
+            <h2>SIGEVEN</h2>
+            <span>Usuario Externo</span>
+          </div>
+        </a>
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú">
+          <span class="material-icons">chevron_left</span>
+        </button>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <ul class="sidebar-menu">
+          <li class="sidebar-menu-item">
+            <a href="perfil-externo.html" class="sidebar-menu-link" data-tooltip="Mi Perfil">
+              <span class="material-icons">person</span>
+              <span>Mi Perfil</span>
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="solicitud-espacio-externo.html" class="sidebar-menu-link" data-tooltip="Solicitar Espacio">
+              <span class="material-icons">add_business</span>
+              <span>Solicitar Espacio</span>
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="mis-solicitudes-externo.html" class="sidebar-menu-link active" data-tooltip="Mis Solicitudes">
+              <span class="material-icons">pending_actions</span>
+              <span>Mis Solicitudes</span>
+            </a>
+          </li>
+        </ul>
+        
+        <div class="sidebar-section">
+          <span class="sidebar-section-title">Ayuda</span>
+          <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+              <a href="#" class="sidebar-menu-link" data-tooltip="Soporte">
+                <span class="material-icons">support_agent</span>
+                <span>Soporte</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">
+          <span class="material-icons">public</span>
+        </div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Juan Pérez</div>
+          <div class="sidebar-user-role">Externo</div>
+        </div>
+      </div>
+      
+      <a href="login-general.html" class="sidebar-logout" data-tooltip="Cerrar Sesión">
+        <span class="material-icons">logout</span>
+        <span>Cerrar Sesión</span>
+      </a>
+    </aside>
+    
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <div class="app-content">
+      <header class="mobile-header">
+        <div class="mobile-header-inner">
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+            <span class="material-icons">menu</span>
+          </button>
+          <div class="mobile-brand">
+            <img src="sigeven_logo.png" alt="Logo">
+            <h2>SIGEVEN</h2>
+          </div>
+          <div></div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="page-header animate-slideDown">
+          <div class="page-header-content">
+            <h1><span class="material-icons">pending_actions</span> Mis Solicitudes</h1>
+            <p>Estado de tus solicitudes de espacios</p>
+          </div>
+          <a href="solicitud-espacio-externo.html" class="btn-primary">
+            <span class="material-icons">add</span>
+            Nueva Solicitud
+          </a>
+        </div>
+
+        <!-- Status Summary -->
+        <div class="status-summary animate-fadeIn">
+          <div class="status-card pending">
+            <span class="material-icons">hourglass_empty</span>
+            <div>
+              <span class="status-value">1</span>
+              <span class="status-label">Pendientes</span>
+            </div>
+          </div>
+          <div class="status-card approved">
+            <span class="material-icons">check_circle</span>
+            <div>
+              <span class="status-value">2</span>
+              <span class="status-label">Aprobadas</span>
+            </div>
+          </div>
+          <div class="status-card rejected">
+            <span class="material-icons">cancel</span>
+            <div>
+              <span class="status-value">0</span>
+              <span class="status-label">Rechazadas</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Requests List -->
+        <div class="requests-list">
+          <!-- Pending Request -->
+          <div class="request-card animate-fadeIn pending" style="animation-delay: 0.1s">
+            <div class="request-status">
+              <span class="status-badge pending">
+                <span class="material-icons">hourglass_empty</span>
+                Pendiente
+              </span>
+            </div>
+            <div class="request-content">
+              <div class="request-header">
+                <h3>Conferencia de Tecnología 2025</h3>
+                <span class="request-date">
+                  <span class="material-icons">calendar_today</span>
+                  Solicitado: 28 Nov 2024
+                </span>
+              </div>
+              <div class="request-details">
+                <div class="detail-item">
+                  <span class="material-icons">meeting_room</span>
+                  <span>Auditorio Principal</span>
+                </div>
+                <div class="detail-item">
+                  <span class="material-icons">event</span>
+                  <span>15 Enero 2025</span>
+                </div>
+                <div class="detail-item">
+                  <span class="material-icons">schedule</span>
+                  <span>09:00 - 13:00</span>
+                </div>
+                <div class="detail-item">
+                  <span class="material-icons">groups</span>
+                  <span>150 asistentes</span>
+                </div>
+              </div>
+              <div class="request-progress">
+                <span class="material-icons">info</span>
+                <p>Tu solicitud está siendo revisada. Recibirás una respuesta en 3-5 días hábiles.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Approved Request 1 -->
+          <div class="request-card animate-fadeIn approved" style="animation-delay: 0.2s">
+            <div class="request-status">
+              <span class="status-badge approved">
+                <span class="material-icons">check_circle</span>
+                Aprobada
+              </span>
+            </div>
+            <div class="request-content">
+              <div class="request-header">
+                <h3>Seminario de Innovación</h3>
+                <span class="request-date">
+                  <span class="material-icons">calendar_today</span>
+                  Solicitado: 15 Nov 2024
+                </span>
+              </div>
+              <div class="request-details">
+                <div class="detail-item">
+                  <span class="material-icons">meeting_room</span>
+                  <span>Sala de Conferencias</span>
+                </div>
+                <div class="detail-item">
+                  <span class="material-icons">event</span>
+                  <span>10 Diciembre 2024</span>
+                </div>
+                <div class="detail-item">
+                  <span class="material-icons">schedule</span>
+                  <span>14:00 - 18:00</span>
+                </div>
+                <div class="detail-item">
+                  <span class="material-icons">groups</span>
+                  <span>60 asistentes</span>
+                </div>
+              </div>
+              <div class="request-actions">
+                <button class="btn-outline" onclick="verDetalles(2)">
+                  <span class="material-icons">visibility</span>
+                  Ver Detalles
+                </button>
+                <button class="btn-download" onclick="descargarAutorizacion(2)">
+                  <span class="material-icons">download</span>
+                  Descargar Autorización
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Approved Request 2 -->
+          <div class="request-card animate-fadeIn approved" style="animation-delay: 0.3s">
+            <div class="request-status">
+              <span class="status-badge approved">
+                <span class="material-icons">check_circle</span>
+                Aprobada
+              </span>
+            </div>
+            <div class="request-content">
+              <div class="request-header">
+                <h3>Taller de Liderazgo</h3>
+                <span class="request-date">
+                  <span class="material-icons">calendar_today</span>
+                  Solicitado: 01 Oct 2024
+                </span>
+              </div>
+              <div class="request-details">
+                <div class="detail-item">
+                  <span class="material-icons">meeting_room</span>
+                  <span>Sala de Reuniones</span>
+                </div>
+                <div class="detail-item">
+                  <span class="material-icons">event</span>
+                  <span>20 Octubre 2024</span>
+                </div>
+                <div class="detail-item">
+                  <span class="material-icons">schedule</span>
+                  <span>10:00 - 12:00</span>
+                </div>
+                <div class="detail-item">
+                  <span class="material-icons">groups</span>
+                  <span>15 asistentes</span>
+                </div>
+              </div>
+              <div class="request-completed">
+                <span class="material-icons">verified</span>
+                <span>Evento completado exitosamente</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="page-footer">
+        <p>© 2025 Sistema de Gestión de Eventos - EMI. Todos los derechos reservados.</p>
+      </footer>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // Sidebar functionality
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const appLayout = document.querySelector('.app-layout');
+
+    if (sidebarToggle) {
+      sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        appLayout.classList.toggle('sidebar-collapsed');
+      });
+    }
+
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.add('mobile-open');
+        sidebarOverlay.classList.add('active');
+      });
+    }
+
+    if (sidebarOverlay) {
+      sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('mobile-open');
+        sidebarOverlay.classList.remove('active');
+      });
+    }
+
+    function verDetalles(id) {
+      showToast('Abriendo detalles de la solicitud...', 'info');
+    }
+
+    function descargarAutorizacion(id) {
+      showToast('Descargando carta de autorización...', 'success');
+    }
+
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast show ${type}`;
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+  </script>
+
+  <style>
+    :root {
+      --azul-institucional: #163E8C;
+      --amarillo-institucional: #FED600;
+      --texto-oscuro: #1e293b;
+      --gris-oscuro: #64748b;
+    }
+
+    .main-content {
+      padding: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .page-header h1 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--azul-institucional);
+      font-size: 1.75rem;
+    }
+
+    .page-header p {
+      color: var(--gris-oscuro);
+      margin-top: 0.25rem;
+    }
+
+    .btn-primary {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--azul-institucional);
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: #1e4d8c;
+      transform: translateY(-2px);
+    }
+
+    .status-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .status-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem;
+      border-radius: 12px;
+      background: white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .status-card .material-icons {
+      font-size: 2rem;
+    }
+
+    .status-card.pending {
+      border-left: 4px solid #f59e0b;
+    }
+
+    .status-card.pending .material-icons {
+      color: #f59e0b;
+    }
+
+    .status-card.approved {
+      border-left: 4px solid #22c55e;
+    }
+
+    .status-card.approved .material-icons {
+      color: #22c55e;
+    }
+
+    .status-card.rejected {
+      border-left: 4px solid #ef4444;
+    }
+
+    .status-card.rejected .material-icons {
+      color: #ef4444;
+    }
+
+    .status-value {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--texto-oscuro);
+    }
+
+    .status-label {
+      font-size: 0.85rem;
+      color: var(--gris-oscuro);
+    }
+
+    .requests-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .request-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .request-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+
+    .request-card.pending {
+      border-left: 5px solid #f59e0b;
+    }
+
+    .request-card.approved {
+      border-left: 5px solid #22c55e;
+    }
+
+    .request-card.rejected {
+      border-left: 5px solid #ef4444;
+    }
+
+    .request-status {
+      padding: 0.75rem 1.5rem;
+      background: #f8fafc;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .status-badge.pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-badge.approved {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status-badge.rejected {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .request-content {
+      padding: 1.5rem;
+    }
+
+    .request-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .request-header h3 {
+      font-size: 1.25rem;
+      color: var(--texto-oscuro);
+    }
+
+    .request-date {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.85rem;
+      color: var(--gris-oscuro);
+    }
+
+    .request-date .material-icons {
+      font-size: 1rem;
+    }
+
+    .request-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--gris-oscuro);
+      font-size: 0.95rem;
+    }
+
+    .detail-item .material-icons {
+      font-size: 1.2rem;
+      color: var(--azul-institucional);
+    }
+
+    .request-progress {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: #fef3c7;
+      border-radius: 8px;
+      color: #92400e;
+    }
+
+    .request-progress .material-icons {
+      color: #f59e0b;
+    }
+
+    .request-progress p {
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .request-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-outline,
+    .btn-download {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .btn-outline {
+      background: white;
+      color: var(--azul-institucional);
+      border: 2px solid var(--azul-institucional);
+    }
+
+    .btn-outline:hover {
+      background: var(--azul-institucional);
+      color: white;
+    }
+
+    .btn-download {
+      background: var(--azul-institucional);
+      color: white;
+    }
+
+    .btn-download:hover {
+      background: #1e4d8c;
+    }
+
+    .request-completed {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem;
+      background: #dcfce7;
+      border-radius: 8px;
+      color: #166534;
+      font-weight: 600;
+    }
+
+    .request-completed .material-icons {
+      color: #22c55e;
+    }
+
+    .page-footer {
+      padding: 1.5rem 2rem;
+      text-align: center;
+      color: var(--amarillo-institucional);
+      background: var(--azul-institucional);
+      margin-top: auto;
+    }
+
+    @media (max-width: 768px) {
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .request-details {
+        grid-template-columns: 1fr;
+      }
+
+      .request-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</body>
+</html>

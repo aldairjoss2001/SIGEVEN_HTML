@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil Usuario Externo | SIGEVEN</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="pantalla-informativa.html" class="sidebar-brand">
+          <img src="sigeven_logo.png" alt="C-Heaven Logo" class="sidebar-logo">
+          <div class="sidebar-brand-text">
+            <h2>SIGEVEN</h2>
+            <span>Usuario Externo</span>
+          </div>
+        </a>
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú">
+          <span class="material-icons">chevron_left</span>
+        </button>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <ul class="sidebar-menu">
+          <li class="sidebar-menu-item">
+            <a href="perfil-externo.html" class="sidebar-menu-link active" data-tooltip="Mi Perfil">
+              <span class="material-icons">person</span>
+              <span>Mi Perfil</span>
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="solicitud-espacio-externo.html" class="sidebar-menu-link" data-tooltip="Solicitar Espacio">
+              <span class="material-icons">add_business</span>
+              <span>Solicitar Espacio</span>
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="mis-solicitudes-externo.html" class="sidebar-menu-link" data-tooltip="Mis Solicitudes">
+              <span class="material-icons">pending_actions</span>
+              <span>Mis Solicitudes</span>
+            </a>
+          </li>
+        </ul>
+        
+        <div class="sidebar-section">
+          <span class="sidebar-section-title">Ayuda</span>
+          <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+              <a href="#" class="sidebar-menu-link" data-tooltip="Soporte">
+                <span class="material-icons">support_agent</span>
+                <span>Soporte</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">
+          <span class="material-icons">public</span>
+        </div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Juan Pérez</div>
+          <div class="sidebar-user-role">Externo</div>
+        </div>
+      </div>
+      
+      <a href="login-general.html" class="sidebar-logout" data-tooltip="Cerrar Sesión">
+        <span class="material-icons">logout</span>
+        <span>Cerrar Sesión</span>
+      </a>
+    </aside>
+    
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <div class="app-content">
+      <header class="mobile-header">
+        <div class="mobile-header-inner">
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+            <span class="material-icons">menu</span>
+          </button>
+          <div class="mobile-brand">
+            <img src="sigeven_logo.png" alt="Logo">
+            <h2>SIGEVEN</h2>
+          </div>
+          <div></div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <!-- Verification Banner -->
+        <div class="verification-banner animate-slideDown">
+          <div class="banner-icon">
+            <span class="material-icons">verified_user</span>
+          </div>
+          <div class="banner-content">
+            <h3>Estado de Verificación</h3>
+            <p>Tu cuenta ha sido verificada exitosamente. Puedes solicitar espacios para eventos.</p>
+          </div>
+          <span class="badge badge-verified">
+            <span class="material-icons">check_circle</span>
+            Verificado
+          </span>
+        </div>
+
+        <div class="page-header animate-fadeIn">
+          <div class="page-header-content">
+            <h1><span class="material-icons">account_circle</span> Mi Perfil</h1>
+            <p>Bienvenido al Sistema de Gestión de Eventos de la EMI</p>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <!-- Profile Card -->
+          <section class="card profile-card animate-fadeIn" style="animation-delay: 0.1s">
+            <div class="profile-header-section">
+              <div class="profile-avatar">
+                <span class="material-icons">person</span>
+              </div>
+              <div class="profile-info">
+                <h2>Juan Pérez</h2>
+                <p><span class="material-icons">email</span> juan.perez@email.com</p>
+                <p><span class="material-icons">phone</span> +591 70000000</p>
+                <p><span class="material-icons">business</span> Organización Externa</p>
+              </div>
+              <button class="btn-edit" onclick="editarPerfil()">
+                <span class="material-icons">edit</span>
+                Editar
+              </button>
+            </div>
+          </section>
+
+          <!-- Quick Actions -->
+          <section class="card animate-fadeIn" style="animation-delay: 0.2s">
+            <div class="card-header">
+              <h2><span class="material-icons">flash_on</span> Acciones Rápidas</h2>
+            </div>
+            <div class="card-content">
+              <div class="quick-actions-grid">
+                <a href="solicitud-espacio-externo.html" class="action-card">
+                  <div class="action-icon">
+                    <span class="material-icons">add_business</span>
+                  </div>
+                  <h3>Nueva Solicitud</h3>
+                  <p>Solicita un espacio para tu evento</p>
+                </a>
+                
+                <a href="mis-solicitudes-externo.html" class="action-card">
+                  <div class="action-icon pending">
+                    <span class="material-icons">pending_actions</span>
+                  </div>
+                  <h3>Mis Solicitudes</h3>
+                  <p>Ver estado de solicitudes</p>
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <!-- Info Card -->
+          <section class="card info-card animate-fadeIn" style="animation-delay: 0.3s">
+            <div class="card-header">
+              <h2><span class="material-icons">info</span> Información Importante</h2>
+            </div>
+            <div class="card-content">
+              <div class="info-list">
+                <div class="info-item">
+                  <span class="material-icons">schedule</span>
+                  <div>
+                    <h4>Tiempo de Respuesta</h4>
+                    <p>Las solicitudes son procesadas en un plazo de 3-5 días hábiles.</p>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <span class="material-icons">description</span>
+                  <div>
+                    <h4>Documentación</h4>
+                    <p>Asegúrate de adjuntar toda la documentación requerida.</p>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <span class="material-icons">support_agent</span>
+                  <div>
+                    <h4>Soporte</h4>
+                    <p>Para consultas, contacta a soporte@emi.edu.bo</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <footer class="page-footer">
+        <p>© 2025 Sistema de Gestión de Eventos - EMI. Todos los derechos reservados.</p>
+      </footer>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // Sidebar functionality
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const appLayout = document.querySelector('.app-layout');
+
+    if (sidebarToggle) {
+      sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        appLayout.classList.toggle('sidebar-collapsed');
+      });
+    }
+
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.add('mobile-open');
+        sidebarOverlay.classList.add('active');
+      });
+    }
+
+    if (sidebarOverlay) {
+      sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('mobile-open');
+        sidebarOverlay.classList.remove('active');
+      });
+    }
+
+    function editarPerfil() {
+      showToast('Abriendo formulario de edición...', 'info');
+    }
+
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast show ${type}`;
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+  </script>
+
+  <style>
+    :root {
+      --azul-institucional: #163E8C;
+      --amarillo-institucional: #FED600;
+      --texto-oscuro: #1e293b;
+      --gris-oscuro: #64748b;
+    }
+
+    .main-content {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .verification-banner {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      border-left: 5px solid #22c55e;
+    }
+
+    .banner-icon {
+      width: 60px;
+      height: 60px;
+      background: #22c55e;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .banner-icon .material-icons {
+      font-size: 2rem;
+      color: white;
+    }
+
+    .banner-content h3 {
+      color: #166534;
+      margin-bottom: 0.25rem;
+    }
+
+    .banner-content p {
+      color: #15803d;
+      font-size: 0.9rem;
+    }
+
+    .badge-verified {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: #22c55e;
+      color: white;
+      border-radius: 20px;
+      font-weight: 600;
+      margin-left: auto;
+    }
+
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--azul-institucional);
+      font-size: 1.75rem;
+    }
+
+    .page-header p {
+      color: var(--gris-oscuro);
+      margin-top: 0.25rem;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid #e2e8f0;
+      background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    }
+
+    .card-header h2 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+      color: var(--azul-institucional);
+    }
+
+    .card-content {
+      padding: 1.5rem;
+    }
+
+    .profile-card {
+      grid-column: 1 / -1;
+    }
+
+    .profile-header-section {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, var(--azul-institucional), #2563eb);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .profile-avatar .material-icons {
+      font-size: 3rem;
+      color: var(--amarillo-institucional);
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-info h2 {
+      font-size: 1.5rem;
+      color: var(--texto-oscuro);
+      margin-bottom: 0.75rem;
+    }
+
+    .profile-info p {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--gris-oscuro);
+      margin: 0.25rem 0;
+      font-size: 0.95rem;
+    }
+
+    .profile-info p .material-icons {
+      font-size: 1.2rem;
+      color: var(--azul-institucional);
+    }
+
+    .btn-edit {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--azul-institucional);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-edit:hover {
+      background: #1e4d8c;
+      transform: translateY(-2px);
+    }
+
+    .quick-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .action-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.5rem;
+      background: #f8fafc;
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--texto-oscuro);
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .action-card:hover {
+      background: #f1f5f9;
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .action-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--azul-institucional);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .action-icon .material-icons {
+      font-size: 1.75rem;
+      color: white;
+    }
+
+    .action-icon.pending {
+      background: #f59e0b;
+    }
+
+    .action-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .action-card p {
+      font-size: 0.85rem;
+      color: var(--gris-oscuro);
+    }
+
+    .info-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .info-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+
+    .info-item .material-icons {
+      color: var(--azul-institucional);
+      font-size: 1.5rem;
+    }
+
+    .info-item h4 {
+      font-size: 0.95rem;
+      color: var(--texto-oscuro);
+      margin-bottom: 0.25rem;
+    }
+
+    .info-item p {
+      font-size: 0.85rem;
+      color: var(--gris-oscuro);
+    }
+
+    .page-footer {
+      padding: 1.5rem 2rem;
+      text-align: center;
+      color: var(--amarillo-institucional);
+      background: var(--azul-institucional);
+      margin-top: auto;
+    }
+
+    @media (max-width: 768px) {
+      .verification-banner {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .badge-verified {
+        margin-left: 0;
+      }
+
+      .profile-header-section {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</body>
+</html>

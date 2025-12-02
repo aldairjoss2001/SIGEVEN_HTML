@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Certificados - Estudiante | SIGEVEN</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/perfil-estudiante.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="pantalla-informativa.html" class="sidebar-brand">
+          <img src="sigeven_logo.png" alt="C-Heaven Logo" class="sidebar-logo">
+          <div class="sidebar-brand-text">
+            <h2>SIGEVEN</h2>
+            <span>Estudiante</span>
+          </div>
+        </a>
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú">
+          <span class="material-icons">chevron_left</span>
+        </button>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <ul class="sidebar-menu">
+          <li class="sidebar-menu-item">
+            <a href="perfil-estudiante.html" class="sidebar-menu-link" data-tooltip="Mi Perfil">
+              <span class="material-icons">person</span>
+              <span>Mi Perfil</span>
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="calendario-estudiantes.html" class="sidebar-menu-link" data-tooltip="Calendario">
+              <span class="material-icons">calendar_month</span>
+              <span>Calendario</span>
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="eventos-estudiante.html" class="sidebar-menu-link" data-tooltip="Mis Eventos">
+              <span class="material-icons">event</span>
+              <span>Mis Eventos</span>
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="certificados-estudiante.html" class="sidebar-menu-link active" data-tooltip="Certificados">
+              <span class="material-icons">workspace_premium</span>
+              <span>Certificados</span>
+            </a>
+          </li>
+        </ul>
+        
+        <div class="sidebar-section">
+          <span class="sidebar-section-title">Configuración</span>
+          <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+              <a href="configuracion-estudiante.html" class="sidebar-menu-link" data-tooltip="Configuración">
+                <span class="material-icons">settings</span>
+                <span>Configuración</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">
+          <span class="material-icons">school</span>
+        </div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">María Fernandez</div>
+          <div class="sidebar-user-role">Estudiante</div>
+        </div>
+      </div>
+      
+      <a href="login-general.html" class="sidebar-logout" data-tooltip="Cerrar Sesión">
+        <span class="material-icons">logout</span>
+        <span>Cerrar Sesión</span>
+      </a>
+    </aside>
+    
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <div class="app-content">
+      <header class="mobile-header">
+        <div class="mobile-header-inner">
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+            <span class="material-icons">menu</span>
+          </button>
+          <div class="mobile-brand">
+            <img src="sigeven_logo.png" alt="Logo">
+            <h2>SIGEVEN</h2>
+          </div>
+          <div></div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="page-header animate-slideDown">
+          <div class="page-header-content">
+            <h1><span class="material-icons">workspace_premium</span> Mis Certificados</h1>
+            <p>Certificados de asistencia a eventos de la EMI</p>
+          </div>
+          <div class="stats-summary">
+            <div class="stat-box">
+              <span class="material-icons">verified</span>
+              <div>
+                <span class="stat-value">12</span>
+                <span class="stat-label">Certificados</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="certificates-grid">
+          <!-- Certificado 1 -->
+          <div class="certificate-card animate-fadeIn" style="animation-delay: 0.1s">
+            <div class="certificate-ribbon">
+              <span class="material-icons">emoji_events</span>
+            </div>
+            <div class="certificate-content">
+              <div class="certificate-icon">
+                <span class="material-icons">workspace_premium</span>
+              </div>
+              <h3>Congreso DEEPTECH 2024</h3>
+              <p class="certificate-date">
+                <span class="material-icons">calendar_today</span>
+                08 - 09 Septiembre 2024
+              </p>
+              <p class="certificate-hours">
+                <span class="material-icons">schedule</span>
+                16 horas académicas
+              </p>
+              <div class="certificate-actions">
+                <button class="btn-download" onclick="descargarCertificado(1)">
+                  <span class="material-icons">download</span>
+                  Descargar PDF
+                </button>
+                <button class="btn-view" onclick="verCertificado(1)">
+                  <span class="material-icons">visibility</span>
+                  Ver
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Certificado 2 -->
+          <div class="certificate-card animate-fadeIn" style="animation-delay: 0.2s">
+            <div class="certificate-ribbon green">
+              <span class="material-icons">eco</span>
+            </div>
+            <div class="certificate-content">
+              <div class="certificate-icon">
+                <span class="material-icons">workspace_premium</span>
+              </div>
+              <h3>Campaña de Arborización</h3>
+              <p class="certificate-date">
+                <span class="material-icons">calendar_today</span>
+                15 Octubre 2024
+              </p>
+              <p class="certificate-hours">
+                <span class="material-icons">schedule</span>
+                4 horas de voluntariado
+              </p>
+              <div class="certificate-actions">
+                <button class="btn-download" onclick="descargarCertificado(2)">
+                  <span class="material-icons">download</span>
+                  Descargar PDF
+                </button>
+                <button class="btn-view" onclick="verCertificado(2)">
+                  <span class="material-icons">visibility</span>
+                  Ver
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Certificado 3 -->
+          <div class="certificate-card animate-fadeIn" style="animation-delay: 0.3s">
+            <div class="certificate-ribbon blue">
+              <span class="material-icons">computer</span>
+            </div>
+            <div class="certificate-content">
+              <div class="certificate-icon">
+                <span class="material-icons">workspace_premium</span>
+              </div>
+              <h3>VI VERSIÓN CTF EMI 2024</h3>
+              <p class="certificate-date">
+                <span class="material-icons">calendar_today</span>
+                10 - 11 Octubre 2024
+              </p>
+              <p class="certificate-hours">
+                <span class="material-icons">schedule</span>
+                8 horas académicas
+              </p>
+              <div class="certificate-actions">
+                <button class="btn-download" onclick="descargarCertificado(3)">
+                  <span class="material-icons">download</span>
+                  Descargar PDF
+                </button>
+                <button class="btn-view" onclick="verCertificado(3)">
+                  <span class="material-icons">visibility</span>
+                  Ver
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Certificado 4 -->
+          <div class="certificate-card animate-fadeIn" style="animation-delay: 0.4s">
+            <div class="certificate-ribbon purple">
+              <span class="material-icons">psychology</span>
+            </div>
+            <div class="certificate-content">
+              <div class="certificate-icon">
+                <span class="material-icons">workspace_premium</span>
+              </div>
+              <h3>Seminario de IA</h3>
+              <p class="certificate-date">
+                <span class="material-icons">calendar_today</span>
+                20 Agosto 2024
+              </p>
+              <p class="certificate-hours">
+                <span class="material-icons">schedule</span>
+                4 horas académicas
+              </p>
+              <div class="certificate-actions">
+                <button class="btn-download" onclick="descargarCertificado(4)">
+                  <span class="material-icons">download</span>
+                  Descargar PDF
+                </button>
+                <button class="btn-view" onclick="verCertificado(4)">
+                  <span class="material-icons">visibility</span>
+                  Ver
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="page-footer">
+        <p>© 2025 Sistema de Gestión de Eventos - EMI. Todos los derechos reservados.</p>
+      </footer>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // Sidebar functionality
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const appLayout = document.querySelector('.app-layout');
+
+    if (sidebarToggle) {
+      sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        appLayout.classList.toggle('sidebar-collapsed');
+      });
+    }
+
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.add('mobile-open');
+        sidebarOverlay.classList.add('active');
+      });
+    }
+
+    if (sidebarOverlay) {
+      sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('mobile-open');
+        sidebarOverlay.classList.remove('active');
+      });
+    }
+
+    function descargarCertificado(id) {
+      showToast('Descargando certificado...', 'success');
+    }
+
+    function verCertificado(id) {
+      showToast('Abriendo vista previa del certificado...', 'info');
+    }
+
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast show ${type}`;
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+  </script>
+
+  <style>
+    .main-content {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .page-header h1 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--azul-institucional);
+      font-size: 1.75rem;
+    }
+
+    .page-header p {
+      color: var(--gris-oscuro);
+      margin-top: 0.25rem;
+    }
+
+    .stats-summary {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .stat-box {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, var(--azul-institucional), #2563eb);
+      color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(22, 62, 140, 0.3);
+    }
+
+    .stat-box .material-icons {
+      font-size: 2rem;
+      color: var(--amarillo-institucional);
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+
+    .certificates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .certificate-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      overflow: hidden;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .certificate-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+
+    .certificate-ribbon {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--amarillo-institucional), #f59e0b);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .certificate-ribbon .material-icons {
+      color: var(--azul-institucional);
+      font-size: 1.5rem;
+    }
+
+    .certificate-ribbon.green {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+    }
+
+    .certificate-ribbon.green .material-icons {
+      color: white;
+    }
+
+    .certificate-ribbon.blue {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    }
+
+    .certificate-ribbon.blue .material-icons {
+      color: white;
+    }
+
+    .certificate-ribbon.purple {
+      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    }
+
+    .certificate-ribbon.purple .material-icons {
+      color: white;
+    }
+
+    .certificate-content {
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .certificate-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem;
+      background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid var(--amarillo-institucional);
+    }
+
+    .certificate-icon .material-icons {
+      font-size: 2.5rem;
+      color: var(--azul-institucional);
+    }
+
+    .certificate-content h3 {
+      font-size: 1.1rem;
+      color: var(--texto-oscuro);
+      margin-bottom: 1rem;
+    }
+
+    .certificate-date,
+    .certificate-hours {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--gris-oscuro);
+      margin: 0.5rem 0;
+    }
+
+    .certificate-date .material-icons,
+    .certificate-hours .material-icons {
+      font-size: 1.1rem;
+      color: var(--azul-institucional);
+    }
+
+    .certificate-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      justify-content: center;
+    }
+
+    .btn-download,
+    .btn-view {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .btn-download {
+      background: var(--azul-institucional);
+      color: white;
+    }
+
+    .btn-download:hover {
+      background: #1e4d8c;
+      transform: translateY(-2px);
+    }
+
+    .btn-view {
+      background: #f1f5f9;
+      color: var(--texto-oscuro);
+      border: 2px solid #e2e8f0;
+    }
+
+    .btn-view:hover {
+      background: #e2e8f0;
+      border-color: var(--azul-institucional);
+    }
+
+    .page-footer {
+      padding: 1.5rem 2rem;
+      text-align: center;
+      color: var(--amarillo-institucional);
+      background: var(--azul-institucional);
+      margin-top: auto;
+    }
+
+    @media (max-width: 768px) {
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .certificates-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .certificate-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</body>
+</html>

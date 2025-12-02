@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mis Eventos - Docente | SIGEVEN</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/perfil-docente.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="pantalla-informativa.html" class="sidebar-brand">
+          <img src="sigeven_logo.png" alt="C-Heaven Logo" class="sidebar-logo">
+          <div class="sidebar-brand-text">
+            <h2>SIGEVEN</h2>
+            <span>Docente</span>
+          </div>
+        </a>
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú">
+          <span class="material-icons">chevron_left</span>
+        </button>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <ul class="sidebar-menu">
+          <li class="sidebar-menu-item">
+            <a href="perfil-docente.html" class="sidebar-menu-link" data-tooltip="Mi Perfil">
+              <span class="material-icons">person</span>
+              <span>Mi Perfil</span>
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="calendario-docentes.html" class="sidebar-menu-link" data-tooltip="Calendario">
+              <span class="material-icons">calendar_month</span>
+              <span>Calendario</span>
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="eventos-docente.html" class="sidebar-menu-link active" data-tooltip="Mis Eventos">
+              <span class="material-icons">event</span>
+              <span>Mis Eventos</span>
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="certificados-docente.html" class="sidebar-menu-link" data-tooltip="Certificados">
+              <span class="material-icons">workspace_premium</span>
+              <span>Certificados</span>
+            </a>
+          </li>
+        </ul>
+        
+        <div class="sidebar-section">
+          <span class="sidebar-section-title">Configuración</span>
+          <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+              <a href="configuracion-docente.html" class="sidebar-menu-link" data-tooltip="Configuración">
+                <span class="material-icons">settings</span>
+                <span>Configuración</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">
+          <span class="material-icons">school</span>
+        </div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Dr. Carlos Mendoza</div>
+          <div class="sidebar-user-role">Docente</div>
+        </div>
+      </div>
+      
+      <a href="login-general.html" class="sidebar-logout" data-tooltip="Cerrar Sesión">
+        <span class="material-icons">logout</span>
+        <span>Cerrar Sesión</span>
+      </a>
+    </aside>
+    
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <div class="app-content">
+      <header class="mobile-header">
+        <div class="mobile-header-inner">
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+            <span class="material-icons">menu</span>
+          </button>
+          <div class="mobile-brand">
+            <img src="sigeven_logo.png" alt="Logo">
+            <h2>SIGEVEN</h2>
+          </div>
+          <div></div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="page-header animate-slideDown">
+          <div class="page-header-content">
+            <h1><span class="material-icons">event</span> Mis Eventos</h1>
+            <p>Gestiona tu asistencia y reservas de espacios</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn-primary" onclick="window.location.href='nuevo-evento-docente.html'">
+              <span class="material-icons">add_circle</span>
+              Reservar Espacio
+            </button>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <!-- Mis Reservas -->
+          <section class="card animate-fadeIn" style="animation-delay: 0.1s">
+            <div class="card-header">
+              <h2><span class="material-icons">meeting_room</span> Mis Reservas de Espacios</h2>
+              <span class="badge badge-primary">3</span>
+            </div>
+            <div class="card-content">
+              <div class="event-list">
+                <div class="event-item">
+                  <div class="event-date">
+                    <span class="day">18</span>
+                    <span class="month">DIC</span>
+                  </div>
+                  <div class="event-info">
+                    <h3>Taller de Redes</h3>
+                    <p><span class="material-icons">schedule</span> 14:00 - 18:00</p>
+                    <p><span class="material-icons">location_on</span> Laboratorio de Redes</p>
+                  </div>
+                  <div class="event-status approved">
+                    <span class="material-icons">check_circle</span>
+                    Aprobado
+                  </div>
+                </div>
+                
+                <div class="event-item">
+                  <div class="event-date">
+                    <span class="day">22</span>
+                    <span class="month">DIC</span>
+                  </div>
+                  <div class="event-info">
+                    <h3>Seminario de Ciberseguridad</h3>
+                    <p><span class="material-icons">schedule</span> 09:00 - 12:00</p>
+                    <p><span class="material-icons">location_on</span> Auditorio Principal</p>
+                  </div>
+                  <div class="event-status pending">
+                    <span class="material-icons">hourglass_empty</span>
+                    Pendiente
+                  </div>
+                </div>
+                
+                <div class="event-item">
+                  <div class="event-date">
+                    <span class="day">28</span>
+                    <span class="month">DIC</span>
+                  </div>
+                  <div class="event-info">
+                    <h3>Conferencia IoT</h3>
+                    <p><span class="material-icons">schedule</span> 10:00 - 13:00</p>
+                    <p><span class="material-icons">location_on</span> Sala de Conferencias</p>
+                  </div>
+                  <div class="event-status approved">
+                    <span class="material-icons">check_circle</span>
+                    Aprobado
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Eventos Asistidos -->
+          <section class="card animate-fadeIn" style="animation-delay: 0.2s">
+            <div class="card-header">
+              <h2><span class="material-icons">history</span> Eventos Asistidos</h2>
+              <span class="badge badge-success">8</span>
+            </div>
+            <div class="card-content">
+              <div class="event-list">
+                <div class="event-item past">
+                  <div class="event-date">
+                    <span class="day">05</span>
+                    <span class="month">NOV</span>
+                  </div>
+                  <div class="event-info">
+                    <h3>Congreso de Ingeniería 2024</h3>
+                    <p><span class="material-icons">schedule</span> Completado</p>
+                    <p><span class="material-icons">location_on</span> Campus EMI</p>
+                  </div>
+                  <div class="event-status completed">
+                    <span class="material-icons">verified</span>
+                    Certificado
+                  </div>
+                </div>
+                
+                <div class="event-item past">
+                  <div class="event-date">
+                    <span class="day">20</span>
+                    <span class="month">OCT</span>
+                  </div>
+                  <div class="event-info">
+                    <h3>Capacitación Docente</h3>
+                    <p><span class="material-icons">schedule</span> Completado</p>
+                    <p><span class="material-icons">location_on</span> Sala de Capacitación</p>
+                  </div>
+                  <div class="event-status completed">
+                    <span class="material-icons">verified</span>
+                    Certificado
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Reportes de Asistencia -->
+          <section class="card animate-fadeIn" style="animation-delay: 0.3s">
+            <div class="card-header">
+              <h2><span class="material-icons">assessment</span> Reportes de Asistencia</h2>
+            </div>
+            <div class="card-content">
+              <p class="info-text">
+                <span class="material-icons">info</span>
+                Genera reportes de asistencia de tus eventos organizados.
+              </p>
+              <div class="report-actions">
+                <button class="btn-report" onclick="generarReporte()">
+                  <span class="material-icons">summarize</span>
+                  Generar Reporte
+                </button>
+                <button class="btn-export" onclick="exportarExcel()">
+                  <span class="material-icons">table_chart</span>
+                  Exportar Excel
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <footer class="page-footer">
+        <p>© 2025 Sistema de Gestión de Eventos - EMI. Todos los derechos reservados.</p>
+      </footer>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // Sidebar functionality
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const appLayout = document.querySelector('.app-layout');
+
+    if (sidebarToggle) {
+      sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        appLayout.classList.toggle('sidebar-collapsed');
+      });
+    }
+
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.add('mobile-open');
+        sidebarOverlay.classList.add('active');
+      });
+    }
+
+    if (sidebarOverlay) {
+      sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('mobile-open');
+        sidebarOverlay.classList.remove('active');
+      });
+    }
+
+    function generarReporte() {
+      showToast('Generando reporte de asistencia...', 'info');
+    }
+
+    function exportarExcel() {
+      showToast('Exportando a Excel...', 'success');
+    }
+
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast show ${type}`;
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+  </script>
+
+  <style>
+    .main-content {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .page-header h1 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--azul-institucional);
+      font-size: 1.75rem;
+    }
+
+    .page-header p {
+      color: var(--gris-oscuro);
+      margin-top: 0.25rem;
+    }
+
+    .btn-primary {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--azul-institucional);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: #1e4d8c;
+      transform: translateY(-2px);
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid #e2e8f0;
+      background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    }
+
+    .card-header h2 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+      color: var(--azul-institucional);
+    }
+
+    .badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .badge-primary { background: var(--azul-institucional); color: white; }
+    .badge-success { background: #22c55e; color: white; }
+
+    .card-content {
+      padding: 1.5rem;
+    }
+
+    .event-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .event-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      background: #f8fafc;
+      transition: all 0.3s ease;
+    }
+
+    .event-item:hover {
+      background: #f1f5f9;
+      transform: translateX(5px);
+    }
+
+    .event-item.past {
+      opacity: 0.85;
+    }
+
+    .event-date {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      background: var(--azul-institucional);
+      color: white;
+      border-radius: 8px;
+      min-width: 60px;
+    }
+
+    .event-date .day {
+      font-size: 1.5rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .event-date .month {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .event-info {
+      flex: 1;
+    }
+
+    .event-info h3 {
+      font-size: 1rem;
+      color: var(--texto-oscuro);
+      margin-bottom: 0.25rem;
+    }
+
+    .event-info p {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.85rem;
+      color: var(--gris-oscuro);
+      margin: 0.125rem 0;
+    }
+
+    .event-info p .material-icons {
+      font-size: 1rem;
+    }
+
+    .event-status {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .event-status.approved {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .event-status.pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .event-status.completed {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .info-text {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem;
+      background: #f0f9ff;
+      border-radius: 8px;
+      color: var(--azul-institucional);
+      margin-bottom: 1rem;
+    }
+
+    .report-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-report,
+    .btn-export {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .btn-report {
+      background: var(--azul-institucional);
+      color: white;
+    }
+
+    .btn-report:hover {
+      background: #1e4d8c;
+    }
+
+    .btn-export {
+      background: #22c55e;
+      color: white;
+    }
+
+    .btn-export:hover {
+      background: #16a34a;
+    }
+
+    .page-footer {
+      padding: 1.5rem 2rem;
+      text-align: center;
+      color: var(--amarillo-institucional);
+      background: var(--azul-institucional);
+      margin-top: auto;
+    }
+
+    @media (max-width: 768px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .event-item {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</body>
+</html>

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solicitar Espacio - Usuario Externo | SIGEVEN</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="pantalla-informativa.html" class="sidebar-brand">
+          <img src="sigeven_logo.png" alt="C-Heaven Logo" class="sidebar-logo">
+          <div class="sidebar-brand-text">
+            <h2>SIGEVEN</h2>
+            <span>Usuario Externo</span>
+          </div>
+        </a>
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú">
+          <span class="material-icons">chevron_left</span>
+        </button>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <ul class="sidebar-menu">
+          <li class="sidebar-menu-item">
+            <a href="perfil-externo.html" class="sidebar-menu-link" data-tooltip="Mi Perfil">
+              <span class="material-icons">person</span>
+              <span>Mi Perfil</span>
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="solicitud-espacio-externo.html" class="sidebar-menu-link active" data-tooltip="Solicitar Espacio">
+              <span class="material-icons">add_business</span>
+              <span>Solicitar Espacio</span>
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="mis-solicitudes-externo.html" class="sidebar-menu-link" data-tooltip="Mis Solicitudes">
+              <span class="material-icons">pending_actions</span>
+              <span>Mis Solicitudes</span>
+            </a>
+          </li>
+        </ul>
+        
+        <div class="sidebar-section">
+          <span class="sidebar-section-title">Ayuda</span>
+          <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+              <a href="#" class="sidebar-menu-link" data-tooltip="Soporte">
+                <span class="material-icons">support_agent</span>
+                <span>Soporte</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">
+          <span class="material-icons">public</span>
+        </div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Juan Pérez</div>
+          <div class="sidebar-user-role">Externo</div>
+        </div>
+      </div>
+      
+      <a href="login-general.html" class="sidebar-logout" data-tooltip="Cerrar Sesión">
+        <span class="material-icons">logout</span>
+        <span>Cerrar Sesión</span>
+      </a>
+    </aside>
+    
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <div class="app-content">
+      <header class="mobile-header">
+        <div class="mobile-header-inner">
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+            <span class="material-icons">menu</span>
+          </button>
+          <div class="mobile-brand">
+            <img src="sigeven_logo.png" alt="Logo">
+            <h2>SIGEVEN</h2>
+          </div>
+          <div></div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="page-header animate-slideDown">
+          <div class="page-header-content">
+            <h1><span class="material-icons">add_business</span> Solicitar Espacio</h1>
+            <p>Completa el formulario para solicitar un espacio de la EMI</p>
+          </div>
+        </div>
+
+        <form class="request-form animate-fadeIn" id="requestForm">
+          <div class="form-section">
+            <h3><span class="material-icons">info</span> Información del Evento</h3>
+            
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="eventName">
+                  <span class="material-icons">event</span>
+                  Nombre del Evento <span class="required">*</span>
+                </label>
+                <input type="text" id="eventName" name="eventName" required placeholder="Ej: Conferencia de Tecnología">
+              </div>
+              
+              <div class="form-group">
+                <label for="eventType">
+                  <span class="material-icons">category</span>
+                  Tipo de Evento <span class="required">*</span>
+                </label>
+                <select id="eventType" name="eventType" required>
+                  <option value="">Selecciona un tipo</option>
+                  <option value="conferencia">Conferencia</option>
+                  <option value="seminario">Seminario</option>
+                  <option value="taller">Taller</option>
+                  <option value="capacitacion">Capacitación</option>
+                  <option value="reunion">Reunión</option>
+                  <option value="otro">Otro</option>
+                </select>
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="description">
+                  <span class="material-icons">description</span>
+                  Descripción del Evento <span class="required">*</span>
+                </label>
+                <textarea id="description" name="description" rows="4" required placeholder="Describe el propósito y las actividades del evento..."></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="attendees">
+                  <span class="material-icons">groups</span>
+                  Número de Asistentes <span class="required">*</span>
+                </label>
+                <input type="number" id="attendees" name="attendees" required min="1" max="500" placeholder="Ej: 50">
+              </div>
+              
+              <div class="form-group">
+                <label for="organization">
+                  <span class="material-icons">business</span>
+                  Organización <span class="required">*</span>
+                </label>
+                <input type="text" id="organization" name="organization" required placeholder="Nombre de tu organización">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><span class="material-icons">meeting_room</span> Espacio Solicitado</h3>
+            
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="space">
+                  <span class="material-icons">location_on</span>
+                  Espacio <span class="required">*</span>
+                </label>
+                <select id="space" name="space" required>
+                  <option value="">Selecciona un espacio</option>
+                  <option value="auditorio">Auditorio Principal (200 personas)</option>
+                  <option value="sala-conf">Sala de Conferencias (80 personas)</option>
+                  <option value="aula-magna">Aula Magna (150 personas)</option>
+                  <option value="sala-reuniones">Sala de Reuniones (20 personas)</option>
+                  <option value="patio">Patio Central (Eventos al aire libre)</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="date">
+                  <span class="material-icons">calendar_today</span>
+                  Fecha <span class="required">*</span>
+                </label>
+                <input type="date" id="date" name="date" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="startTime">
+                  <span class="material-icons">schedule</span>
+                  Hora de Inicio <span class="required">*</span>
+                </label>
+                <input type="time" id="startTime" name="startTime" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="endTime">
+                  <span class="material-icons">schedule</span>
+                  Hora de Fin <span class="required">*</span>
+                </label>
+                <input type="time" id="endTime" name="endTime" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><span class="material-icons">build</span> Requerimientos Adicionales</h3>
+            
+            <div class="checkbox-grid">
+              <label class="checkbox-item">
+                <input type="checkbox" name="requirements" value="proyector">
+                <span class="checkmark"></span>
+                <span class="material-icons">videocam</span>
+                Proyector
+              </label>
+              
+              <label class="checkbox-item">
+                <input type="checkbox" name="requirements" value="audio">
+                <span class="checkmark"></span>
+                <span class="material-icons">speaker</span>
+                Sistema de Audio
+              </label>
+              
+              <label class="checkbox-item">
+                <input type="checkbox" name="requirements" value="microfono">
+                <span class="checkmark"></span>
+                <span class="material-icons">mic</span>
+                Micrófono
+              </label>
+              
+              <label class="checkbox-item">
+                <input type="checkbox" name="requirements" value="internet">
+                <span class="checkmark"></span>
+                <span class="material-icons">wifi</span>
+                Conexión a Internet
+              </label>
+              
+              <label class="checkbox-item">
+                <input type="checkbox" name="requirements" value="pizarra">
+                <span class="checkmark"></span>
+                <span class="material-icons">edit_note</span>
+                Pizarra
+              </label>
+              
+              <label class="checkbox-item">
+                <input type="checkbox" name="requirements" value="cafe">
+                <span class="checkmark"></span>
+                <span class="material-icons">coffee</span>
+                Servicio de Café
+              </label>
+            </div>
+            
+            <div class="form-group full-width" style="margin-top: 1rem;">
+              <label for="additionalNotes">
+                <span class="material-icons">note_add</span>
+                Notas Adicionales
+              </label>
+              <textarea id="additionalNotes" name="additionalNotes" rows="3" placeholder="Información adicional que desees compartir..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" onclick="window.location.href='perfil-externo.html'">
+              <span class="material-icons">close</span>
+              Cancelar
+            </button>
+            <button type="submit" class="btn-primary">
+              <span class="material-icons">send</span>
+              Enviar Solicitud
+            </button>
+          </div>
+        </form>
+      </main>
+
+      <footer class="page-footer">
+        <p>© 2025 Sistema de Gestión de Eventos - EMI. Todos los derechos reservados.</p>
+      </footer>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // Sidebar functionality
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const appLayout = document.querySelector('.app-layout');
+
+    if (sidebarToggle) {
+      sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        appLayout.classList.toggle('sidebar-collapsed');
+      });
+    }
+
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.add('mobile-open');
+        sidebarOverlay.classList.add('active');
+      });
+    }
+
+    if (sidebarOverlay) {
+      sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('mobile-open');
+        sidebarOverlay.classList.remove('active');
+      });
+    }
+
+    // Form submission
+    document.getElementById('requestForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      showToast('¡Solicitud enviada exitosamente! Recibirás una respuesta en 3-5 días hábiles.', 'success');
+      setTimeout(() => {
+        window.location.href = 'mis-solicitudes-externo.html';
+      }, 2000);
+    });
+
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast show ${type}`;
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Set minimum date to today
+    document.getElementById('date').min = new Date().toISOString().split('T')[0];
+  </script>
+
+  <style>
+    :root {
+      --azul-institucional: #163E8C;
+      --amarillo-institucional: #FED600;
+      --texto-oscuro: #1e293b;
+      --gris-oscuro: #64748b;
+    }
+
+    .main-content {
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--azul-institucional);
+      font-size: 1.75rem;
+    }
+
+    .page-header p {
+      color: var(--gris-oscuro);
+      margin-top: 0.25rem;
+    }
+
+    .request-form {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .form-section {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .form-section:last-of-type {
+      border-bottom: none;
+    }
+
+    .form-section h3 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--azul-institucional);
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      color: var(--texto-oscuro);
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .form-group label .material-icons {
+      font-size: 1.2rem;
+      color: var(--azul-institucional);
+    }
+
+    .required {
+      color: #ef4444;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 0.875rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--azul-institucional);
+      box-shadow: 0 0 0 3px rgba(22, 62, 140, 0.1);
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: #f8fafc;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .checkbox-item:hover {
+      background: #f1f5f9;
+    }
+
+    .checkbox-item input {
+      display: none;
+    }
+
+    .checkbox-item input:checked + .checkmark {
+      background: var(--azul-institucional);
+      border-color: var(--azul-institucional);
+    }
+
+    .checkbox-item input:checked + .checkmark::after {
+      display: block;
+    }
+
+    .checkbox-item input:checked ~ .material-icons {
+      color: var(--azul-institucional);
+    }
+
+    .checkmark {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #cbd5e1;
+      border-radius: 4px;
+      position: relative;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .checkmark::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      display: none;
+    }
+
+    .checkbox-item .material-icons {
+      color: var(--gris-oscuro);
+      transition: color 0.3s ease;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      padding: 1.5rem 2rem;
+      background: #f8fafc;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.875rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background: var(--azul-institucional);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1e4d8c;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--texto-oscuro);
+      border: 2px solid #e2e8f0;
+    }
+
+    .btn-secondary:hover {
+      background: #f1f5f9;
+      border-color: var(--gris-oscuro);
+    }
+
+    .page-footer {
+      padding: 1.5rem 2rem;
+      text-align: center;
+      color: var(--amarillo-institucional);
+      background: var(--azul-institucional);
+      margin-top: auto;
+    }
+
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .checkbox-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</body>
+</html>
