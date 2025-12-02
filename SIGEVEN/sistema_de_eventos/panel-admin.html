@@ -6,6 +6,7 @@
     <title>Panel Administrativo - SIGEVEN</title>
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/global-darkmode.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
@@ -239,6 +240,15 @@
     <div id="toast" class="toast"></div>
 
     <script>
+        // ========== DARK MODE ==========
+        // Apply dark mode on page load
+        (function() {
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+            }
+        })();
+        
         // Sidebar functionality
         const sidebar = document.getElementById('sidebar');
         const sidebarToggle = document.getElementById('sidebarToggle');
