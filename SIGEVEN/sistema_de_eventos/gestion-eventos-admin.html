@@ -472,6 +472,45 @@
     <script>
         let currentEventButton = null;
 
+        // Load saved states on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedEventStates();
+            toggleSection('approved-events');
+        });
+
+        function loadSavedEventStates() {
+            const savedStates = JSON.parse(localStorage.getItem('adminEventStates') || '{}');
+            const eventCards = document.querySelectorAll('.event-card');
+            
+            eventCards.forEach(card => {
+                const title = card.querySelector('.event-title').textContent;
+                if (savedStates[title]) {
+                    const state = savedStates[title];
+                    if (state === 'approved') {
+                        card.classList.remove('pending', 'urgent');
+                        card.classList.add('approved');
+                        const statusBadge = card.querySelector('.event-status-badge');
+                        statusBadge.innerHTML = '<span class="material-icons" style="font-size: 1rem; vertical-align: middle;">check_circle</span> Aprobado';
+                        statusBadge.className = 'event-status-badge approved';
+                        // Disable action buttons
+                        const actionsDiv = card.querySelector('.event-actions');
+                        actionsDiv.innerHTML = `
+                            <span class="approved-label" style="color: #22c55e; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                                <span class="material-icons">verified</span> Evento Aprobado
+                            </span>
+                            <button class="btn btn-outline" onclick="viewDetails(this)">
+                                <span class="material-icons">visibility</span> Ver Detalles
+                            </button>
+                        `;
+                    } else if (state === 'rejected') {
+                        card.remove();
+                    }
+                }
+            });
+            
+            updatePendingCountDisplay();
+        }
+
         function approveEvent(button) {
             const eventCard = button.closest('.event-card');
             eventCard.classList.remove('pending', 'urgent');
@@ -481,11 +520,20 @@
             statusBadge.innerHTML = '<span class="material-icons" style="font-size: 1rem; vertical-align: middle;">check_circle</span> Aprobado';
             statusBadge.className = 'event-status-badge approved';
             
-            // Simular actualización de contador
-            updatePendingCount(-1);
+            // Update action buttons
+            const actionsDiv = eventCard.querySelector('.event-actions');
+            actionsDiv.innerHTML = `
+                <span class="approved-label" style="color: #22c55e; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="material-icons">verified</span> Evento Aprobado
+                </span>
+                <button class="btn btn-outline" onclick="viewDetails(this)">
+                    <span class="material-icons">visibility</span> Ver Detalles
+                </button>
+            `;
             
             // Save state
             saveEventState(eventCard, 'approved');
+            updatePendingCountDisplay();
             
             showNotification('Evento aprobado exitosamente', 'success');
         }
@@ -493,17 +541,16 @@
         function rejectEvent(button) {
             if (confirm('¿Está seguro de que desea rechazar este evento?')) {
                 const eventCard = button.closest('.event-card');
-                eventCard.style.opacity = '0.6';
                 
-                showNotification('Evento rechazado', 'error');
-                updatePendingCount(-1);
-                
-                // Save state
+                // Save state before removing
                 saveEventState(eventCard, 'rejected');
                 
-                // En un sistema real, aquí iría la lógica de rechazo
+                eventCard.style.opacity = '0.6';
+                showNotification('Evento rechazado', 'error');
+                
                 setTimeout(() => {
                     eventCard.remove();
+                    updatePendingCountDisplay();
                 }, 1000);
             }
         }
@@ -554,6 +601,23 @@
                 </div>
             `;
             
+            // Check if event is already approved
+            const isApproved = eventCard.classList.contains('approved');
+            const modalFooter = document.querySelector('.modal-footer');
+            if (isApproved) {
+                modalFooter.innerHTML = `<button class="btn btn-outline" onclick="closeModal()">Cerrar</button>`;
+            } else {
+                modalFooter.innerHTML = `
+                    <button class="btn btn-success" onclick="approveFromModal()">
+                        <span class="material-icons">check</span> Aprobar
+                    </button>
+                    <button class="btn btn-danger" onclick="rejectFromModal()">
+                        <span class="material-icons">close</span> Rechazar
+                    </button>
+                    <button class="btn btn-outline" onclick="closeModal()">Cerrar</button>
+                `;
+            }
+            
             document.getElementById('eventModal').classList.add('active');
         }
 
@@ -586,6 +650,14 @@
             localStorage.setItem('adminEventStates', JSON.stringify(savedStates));
         }
 
+        function updatePendingCountDisplay() {
+            const pendingCards = document.querySelectorAll('.event-card.pending, .event-card.urgent');
+            const badge = document.querySelector('.badge-count');
+            if (badge) {
+                badge.textContent = pendingCards.length;
+            }
+        }
+
         function updatePendingCount(change) {
             const badge = document.querySelector('.badge-count');
             let current = parseInt(badge.textContent);
@@ -602,7 +674,8 @@
 
         function showNotification(message, type) {
             const toast = document.getElementById('toast');
-            toast.textContent = `${type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️'} ${message}`;
+            const icon = type === 'success' ? 'check_circle' : type === 'error' ? 'cancel' : 'warning';
+            toast.innerHTML = `<span class="material-icons">${icon}</span> ${message}`;
             toast.className = `toast show ${type}`;
             
             setTimeout(() => {
@@ -641,12 +714,6 @@
         // Close modal on escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeModal();
-        });
-
-        // Inicialización
-        document.addEventListener('DOMContentLoaded', function() {
-            // Colapsar sección de aprobados por defecto
-            toggleSection('approved-events');
         });
     </script>
 </body>

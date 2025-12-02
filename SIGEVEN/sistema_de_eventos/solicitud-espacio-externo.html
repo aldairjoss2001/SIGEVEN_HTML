@@ -310,6 +310,31 @@
     // Form submission
     document.getElementById('requestForm').addEventListener('submit', function(e) {
       e.preventDefault();
+      
+      // Get form data
+      const formData = {
+        id: 'req-' + Date.now(),
+        eventName: document.getElementById('eventName').value,
+        eventType: document.getElementById('eventType').value,
+        description: document.getElementById('description').value,
+        attendees: document.getElementById('attendees').value,
+        organization: document.getElementById('organization').value,
+        space: document.getElementById('space').value,
+        date: document.getElementById('date').value,
+        startTime: document.getElementById('startTime').value,
+        endTime: document.getElementById('endTime').value,
+        requirements: Array.from(document.querySelectorAll('input[name="requirements"]:checked')).map(cb => cb.value),
+        additionalNotes: document.getElementById('additionalNotes').value,
+        status: 'pending',
+        submittedAt: new Date().toISOString(),
+        submittedBy: 'Juan Pérez'
+      };
+      
+      // Save to localStorage
+      const existingRequests = JSON.parse(localStorage.getItem('externalRequests') || '[]');
+      existingRequests.push(formData);
+      localStorage.setItem('externalRequests', JSON.stringify(existingRequests));
+      
       showToast('¡Solicitud enviada exitosamente! Recibirás una respuesta en 3-5 días hábiles.', 'success');
       setTimeout(() => {
         window.location.href = 'mis-solicitudes-externo.html';

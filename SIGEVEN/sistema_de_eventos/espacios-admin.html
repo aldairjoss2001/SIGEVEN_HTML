@@ -770,6 +770,99 @@
     <div id="toast" class="toast"></div>
 
     <script>
+        // Default spaces data
+        const defaultSpaces = [
+            { id: 'auditorio', name: 'Auditorio Principal', location: 'Bloque A - Planta Baja', capacity: 200, status: 'available', icon: 'stadium', features: ['Proyector', 'Audio', 'A/C', 'WiFi'] },
+            { id: 'lab-comp', name: 'Laboratorio de Computación', location: 'Bloque B - 2do Piso', capacity: 30, status: 'occupied', icon: 'computer', features: ['30 PCs', 'Proyector', 'WiFi'] },
+            { id: 'lab-robotica', name: 'Laboratorio de Robótica', location: 'Bloque C - 1er Piso', capacity: 20, status: 'available', icon: 'science', features: ['Equipos', 'Herramientas', 'WiFi'] },
+            { id: 'sala-conf', name: 'Sala de Conferencias', location: 'Bloque Administrativo - 3er Piso', capacity: 50, status: 'maintenance', icon: 'meeting_room', features: ['Video', 'Videoconf', 'A/C'] },
+            { id: 'cancha', name: 'Cancha Deportiva', location: 'Área Deportiva', capacity: 500, status: 'available', icon: 'sports_soccer', features: ['Aire Libre', 'Iluminación', 'Baños'] },
+            { id: 'salon-honor', name: 'Salón de Honor', location: 'Edificio Principal - Planta Baja', capacity: 100, status: 'occupied', icon: 'school', features: ['Proyector', 'Sonido', 'Mobiliario'] }
+        ];
+
+        let spacesData = [];
+
+        // Load saved spaces on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSpaces();
+            renderSpaces();
+            updateStats();
+        });
+
+        function loadSpaces() {
+            const saved = localStorage.getItem('adminSpaces');
+            if (saved) {
+                spacesData = JSON.parse(saved);
+            } else {
+                spacesData = [...defaultSpaces];
+                saveSpaces();
+            }
+        }
+
+        function saveSpaces() {
+            localStorage.setItem('adminSpaces', JSON.stringify(spacesData));
+        }
+
+        function renderSpaces() {
+            const grid = document.querySelector('.spaces-grid');
+            grid.innerHTML = spacesData.map(space => `
+                <div class="space-card" data-id="${space.id}">
+                    <div class="space-image">
+                        <span class="material-icons">${space.icon}</span>
+                        <span class="space-status ${space.status}">${getStatusText(space.status)}</span>
+                    </div>
+                    <div class="space-content">
+                        <h4 class="space-name">${space.name}</h4>
+                        <div class="space-location">
+                            <span class="material-icons">location_on</span>
+                            ${space.location}
+                        </div>
+                        <div class="space-features">
+                            ${space.features.map(f => `<span class="feature-tag"><span class="material-icons">${getFeatureIcon(f)}</span> ${f}</span>`).join('')}
+                        </div>
+                        <div class="space-capacity">
+                            <span class="material-icons">groups</span>
+                            <span>Capacidad: <strong>${space.capacity} personas</strong></span>
+                        </div>
+                        <div class="space-actions">
+                            <button class="btn-action primary" onclick="editSpace('${space.id}')">
+                                <span class="material-icons">edit</span> Editar
+                            </button>
+                            <button class="btn-action secondary" onclick="deleteSpace('${space.id}')">
+                                <span class="material-icons">delete</span> Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getStatusText(status) {
+            return { available: 'Disponible', occupied: 'Ocupado', maintenance: 'Mantenimiento' }[status] || status;
+        }
+
+        function getFeatureIcon(feature) {
+            const icons = {
+                'Proyector': 'videocam', 'Audio': 'mic', 'A/C': 'ac_unit', 'WiFi': 'wifi',
+                '30 PCs': 'desktop_windows', 'Equipos': 'precision_manufacturing', 'Herramientas': 'build',
+                'Video': 'videocam', 'Videoconf': 'video_call', 'Aire Libre': 'wb_sunny',
+                'Iluminación': 'lightbulb', 'Baños': 'wc', 'Sonido': 'speaker', 'Mobiliario': 'chair'
+            };
+            return icons[feature] || 'check';
+        }
+
+        function updateStats() {
+            const available = spacesData.filter(s => s.status === 'available').length;
+            const occupied = spacesData.filter(s => s.status === 'occupied').length;
+            const maintenance = spacesData.filter(s => s.status === 'maintenance').length;
+            const total = spacesData.length;
+            
+            document.querySelectorAll('.stat-mini-content h4')[0].textContent = available;
+            document.querySelectorAll('.stat-mini-content h4')[1].textContent = occupied;
+            document.querySelectorAll('.stat-mini-content h4')[2].textContent = maintenance;
+            document.querySelectorAll('.stat-mini-content h4')[3].textContent = total;
+        }
+
         // Sidebar functionality
         const sidebar = document.getElementById('sidebar');
         const sidebarToggle = document.getElementById('sidebarToggle');
@@ -798,8 +891,11 @@
             });
         }
 
+        let currentEditId = null;
+
         // Modal functions
         function openAddModal() {
+            currentEditId = null;
             document.getElementById('modalTitle').textContent = 'Agregar Nuevo Espacio';
             document.getElementById('spaceForm').reset();
             document.getElementById('spaceModal').classList.add('active');
@@ -807,29 +903,86 @@
 
         function closeModal() {
             document.getElementById('spaceModal').classList.remove('active');
+            currentEditId = null;
         }
 
         function editSpace(spaceId) {
+            currentEditId = spaceId;
+            const space = spacesData.find(s => s.id === spaceId);
+            if (!space) return;
+            
             document.getElementById('modalTitle').textContent = 'Editar Espacio';
+            document.getElementById('spaceName').value = space.name;
+            document.getElementById('spaceLocation').value = space.location;
+            document.getElementById('spaceCapacity').value = space.capacity;
+            document.getElementById('spaceStatus').value = space.status;
+            document.getElementById('spaceDescription').value = space.features.join(', ');
             document.getElementById('spaceModal').classList.add('active');
-            showToast('Cargando datos del espacio...', 'info');
+        }
+
+        function deleteSpace(spaceId) {
+            if (confirm('¿Está seguro de que desea eliminar este espacio?')) {
+                spacesData = spacesData.filter(s => s.id !== spaceId);
+                saveSpaces();
+                renderSpaces();
+                updateStats();
+                showToast('Espacio eliminado correctamente', 'success');
+            }
         }
 
         function saveSpace() {
             const name = document.getElementById('spaceName').value;
-            if (!name) {
+            const location = document.getElementById('spaceLocation').value;
+            const capacity = parseInt(document.getElementById('spaceCapacity').value);
+            const status = document.getElementById('spaceStatus').value;
+            const description = document.getElementById('spaceDescription').value;
+            
+            if (!name || !location || !capacity) {
                 showToast('Por favor complete los campos requeridos', 'error');
                 return;
             }
-            showToast('Espacio guardado exitosamente', 'success');
+            
+            const features = description ? description.split(',').map(f => f.trim()) : ['General'];
+            
+            if (currentEditId) {
+                // Edit existing space
+                const index = spacesData.findIndex(s => s.id === currentEditId);
+                if (index !== -1) {
+                    spacesData[index] = {
+                        ...spacesData[index],
+                        name, location, capacity, status, features
+                    };
+                }
+                showToast('Espacio actualizado correctamente', 'success');
+            } else {
+                // Add new space
+                const newId = 'space-' + Date.now();
+                spacesData.push({
+                    id: newId,
+                    name,
+                    location,
+                    capacity,
+                    status,
+                    icon: 'meeting_room',
+                    features
+                });
+                showToast('Espacio agregado correctamente', 'success');
+            }
+            
+            saveSpaces();
+            renderSpaces();
+            updateStats();
             closeModal();
         }
 
         function viewSchedule(spaceId) {
+            const space = spacesData.find(s => s.id === spaceId);
+            if (!space) return;
+            
             const scheduleContent = document.getElementById('scheduleContent');
             scheduleContent.innerHTML = `
                 <div style="padding: 1rem;">
-                    <h4 style="margin-bottom: 1rem; color: #163E8C;">Reservas de esta semana</h4>
+                    <h4 style="margin-bottom: 1rem; color: #163E8C;">Reservas de esta semana - ${space.name}</h4>
                     <div style="display: flex; flex-direction: column; gap: 0.75rem;">
                         <div style="padding: 1rem; background: #f1f5f9; border-radius: 8px; border-left: 4px solid #22c55e;">
                             <strong>Lunes 08:00 - 12:00</strong>

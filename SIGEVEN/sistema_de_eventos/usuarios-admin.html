@@ -961,6 +961,142 @@
     <script>
         let currentUserId = null;
 
+        // Default users data
+        const defaultUsers = [
+            { id: 'maria', name: 'María Fernandez', email: 'maria.fernandez@emi.edu.bo', role: 'estudiante', area: 'Ingeniería de Sistemas', events: 12, certificates: 3, status: 'active', lastActivity: '15 Oct 2025' },
+            { id: 'carlos', name: 'Dr. Carlos Mendoza', email: 'carlos.mendoza@emi.edu.bo', role: 'docente', area: 'Departamento de Sistemas', events: 8, certificates: 0, status: 'active', lastActivity: '14 Oct 2025' },
+            { id: 'ana', name: 'Lic. Ana García', email: 'ana.garcia@emi.edu.bo', role: 'docente', area: 'Departamento Ambiental', events: 6, certificates: 0, status: 'active', lastActivity: '12 Oct 2025' },
+            { id: 'juan', name: 'Juan Pérez', email: 'juan.perez@empresa.com', role: 'externo', area: 'Tech Corp S.A.', events: 2, certificates: 1, status: 'pending', lastActivity: '08 Oct 2025' },
+            { id: 'admin', name: 'Admin SIGEVEN', email: 'admin@emi.edu.bo', role: 'admin', area: 'Administración Central', events: '-', certificates: '-', status: 'active', lastActivity: 'Ahora' }
+        ];
+
+        let usersData = [];
+
+        // Load saved users on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUsers();
+            renderUsers();
+            updateStats();
+            setupSearch();
+        });
+
+        function loadUsers() {
+            const saved = localStorage.getItem('adminUsers');
+            if (saved) {
+                usersData = JSON.parse(saved);
+            } else {
+                usersData = [...defaultUsers];
+                saveUsers();
+            }
+        }
+
+        function saveUsers() {
+            localStorage.setItem('adminUsers', JSON.stringify(usersData));
+        }
+
+        function renderUsers() {
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = usersData.map(user => {
+                const initials = user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                const roleClass = user.role === 'estudiante' ? 'estudiante' : 
+                                 user.role === 'docente' ? 'docente' :
+                                 user.role === 'admin' ? 'admin' : 'externo';
+                const roleIcon = user.role === 'estudiante' ? 'school' : 
+                                user.role === 'docente' ? 'person' :
+                                user.role === 'admin' ? 'admin_panel_settings' : 'public';
+                const roleLabel = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+                
+                return `
+                    <tr data-user-id="${user.id}">
+                        <td>
+                            <div class="user-info">
+                                <div class="user-avatar">${initials}</div>
+                                <div class="user-details">
+                                    <h4>${user.name}</h4>
+                                    <p>${user.email}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="role-badge ${roleClass}">
+                                <span class="material-icons">${roleIcon}</span>
+                                ${roleLabel}
+                            </span>
+                        </td>
+                        <td>${user.area}</td>
+                        <td>${user.events}</td>
+                        <td><span class="status-badge ${user.status}">${getStatusLabel(user.status)}</span></td>
+                        <td>
+                            <div class="user-actions">
+                                <button class="btn-icon view" onclick="viewUser('${user.id}')" title="Ver">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="btn-icon edit" onclick="editUser('${user.id}')" title="Editar">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                                <button class="btn-icon delete" onclick="deleteUser('${user.id}')" title="Eliminar" ${user.id === 'admin' ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+                                    <span class="material-icons">delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function getStatusLabel(status) {
+            return { active: 'Activo', inactive: 'Inactivo', pending: 'Pendiente' }[status] || status;
+        }
+
+        function updateStats() {
+            const estudiantes = usersData.filter(u => u.role === 'estudiante').length;
+            const docentes = usersData.filter(u => u.role === 'docente').length;
+            const admins = usersData.filter(u => u.role === 'admin').length;
+            const externos = usersData.filter(u => u.role === 'externo').length;
+            
+            const statCards = document.querySelectorAll('.stat-content h4');
+            if (statCards.length >= 4) {
+                statCards[0].textContent = estudiantes > 1000 ? '1,150' : estudiantes;
+                statCards[1].textContent = docentes;
+                statCards[2].textContent = admins;
+                statCards[3].textContent = externos;
+            }
+            
+            document.querySelector('.table-footer span').textContent = `Mostrando ${usersData.length} usuarios`;
+        }
+
+        function setupSearch() {
+            document.getElementById('searchUsers').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const rows = document.querySelectorAll('#usersTableBody tr');
+                
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+            });
+            
+            document.getElementById('roleFilter').addEventListener('change', filterUsers);
+            document.getElementById('statusFilter').addEventListener('change', filterUsers);
+        }
+
+        function filterUsers() {
+            const roleFilter = document.getElementById('roleFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const rows = document.querySelectorAll('#usersTableBody tr');
+            
+            rows.forEach(row => {
+                const userId = row.getAttribute('data-user-id');
+                const user = usersData.find(u => u.id === userId);
+                if (!user) return;
+                
+                const matchesRole = roleFilter === 'all' || user.role === roleFilter;
+                const matchesStatus = statusFilter === 'all' || user.status === statusFilter;
+                
+                row.style.display = matchesRole && matchesStatus ? '' : 'none';
+            });
+        }
+
         // Sidebar functionality
         const sidebar = document.getElementById('sidebar');
         const sidebarToggle = document.getElementById('sidebarToggle');
@@ -989,56 +1125,8 @@
             });
         }
 
-        // User data
-        const usersData = {
-            maria: {
-                name: 'María Fernandez',
-                email: 'maria.fernandez@emi.edu.bo',
-                role: 'Estudiante',
-                area: 'Ingeniería de Sistemas',
-                events: 12,
-                certificates: 3,
-                lastActivity: '15 Oct 2025'
-            },
-            carlos: {
-                name: 'Dr. Carlos Mendoza',
-                email: 'carlos.mendoza@emi.edu.bo',
-                role: 'Docente',
-                area: 'Departamento de Sistemas',
-                events: 8,
-                certificates: 0,
-                lastActivity: '14 Oct 2025'
-            },
-            ana: {
-                name: 'Lic. Ana García',
-                email: 'ana.garcia@emi.edu.bo',
-                role: 'Docente',
-                area: 'Departamento Ambiental',
-                events: 6,
-                certificates: 0,
-                lastActivity: '12 Oct 2025'
-            },
-            juan: {
-                name: 'Juan Pérez',
-                email: 'juan.perez@empresa.com',
-                role: 'Externo',
-                area: 'Tech Corp S.A.',
-                events: 2,
-                certificates: 1,
-                lastActivity: '08 Oct 2025'
-            },
-            admin: {
-                name: 'Admin SIGEVEN',
-                email: 'admin@emi.edu.bo',
-                role: 'Administrador',
-                area: 'Administración Central',
-                events: '-',
-                certificates: '-',
-                lastActivity: 'Ahora'
-            }
-        };
-
         function openAddUserModal() {
+            currentUserId = null;
             document.getElementById('modalTitle').textContent = 'Agregar Usuario';
             document.getElementById('userForm').reset();
             document.getElementById('userModal').classList.add('active');
@@ -1046,29 +1134,36 @@
 
         function closeModal() {
             document.getElementById('userModal').classList.remove('active');
+            currentUserId = null;
         }
 
         function editUser(userId) {
             currentUserId = userId;
-            const user = usersData[userId];
+            const user = usersData.find(u => u.id === userId);
             if (!user) return;
 
             document.getElementById('modalTitle').textContent = 'Editar Usuario';
             document.getElementById('userName').value = user.name;
             document.getElementById('userEmail').value = user.email;
+            document.getElementById('userRole').value = user.role;
+            document.getElementById('userStatus').value = user.status;
             document.getElementById('userArea').value = user.area;
             document.getElementById('userModal').classList.add('active');
         }
 
         function viewUser(userId) {
             currentUserId = userId;
-            const user = usersData[userId];
+            const user = usersData.find(u => u.id === userId);
             if (!user) return;
 
             const initials = user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-            const roleClass = user.role.toLowerCase() === 'estudiante' ? 'estudiante' : 
-                             user.role.toLowerCase() === 'docente' ? 'docente' :
-                             user.role.toLowerCase() === 'administrador' ? 'admin' : 'externo';
+            const roleClass = user.role === 'estudiante' ? 'estudiante' : 
+                             user.role === 'docente' ? 'docente' :
+                             user.role === 'admin' ? 'admin' : 'externo';
+            const roleIcon = user.role === 'estudiante' ? 'school' : 
+                            user.role === 'docente' ? 'person' :
+                            user.role === 'admin' ? 'admin_panel_settings' : 'public';
+            const roleLabel = user.role.charAt(0).toUpperCase() + user.role.slice(1);
 
             document.getElementById('userProfileContent').innerHTML = `
                 <div class="user-profile-header">
@@ -1076,8 +1171,8 @@
                     <h3 class="user-profile-name">${user.name}</h3>
                     <p class="user-profile-role">
                         <span class="role-badge ${roleClass}">
-                            <span class="material-icons">${roleClass === 'estudiante' ? 'school' : roleClass === 'docente' ? 'person' : roleClass === 'admin' ? 'admin_panel_settings' : 'public'}</span>
-                            ${user.role}
+                            <span class="material-icons">${roleIcon}</span>
+                            ${roleLabel}
                         </span>
                     </p>
                     <p style="color: #64748b; margin-top: 0.5rem;">${user.email}</p>
@@ -1093,9 +1188,11 @@
                         </div>
                         <div class="profile-stat">
                             <div class="profile-stat-value">
-                                <span class="material-icons" style="color: #22c55e;">check_circle</span>
+                                <span class="material-icons" style="color: ${user.status === 'active' ? '#22c55e' : user.status === 'pending' ? '#f59e0b' : '#ef4444'};">
+                                    ${user.status === 'active' ? 'check_circle' : user.status === 'pending' ? 'pending' : 'cancel'}
+                                </span>
                             </div>
-                            <div class="profile-stat-label">Activo</div>
+                            <div class="profile-stat-label">${getStatusLabel(user.status)}</div>
                         </div>
                     </div>
                 </div>
@@ -1127,8 +1224,11 @@
             }
             
             if (confirm('¿Está seguro de que desea eliminar este usuario?')) {
+                usersData = usersData.filter(u => u.id !== userId);
+                saveUsers();
+                renderUsers();
+                updateStats();
                 showToast('Usuario eliminado correctamente', 'success');
-                // In a real app, this would delete from database
             }
         }
 
@@ -1136,26 +1236,46 @@
             const name = document.getElementById('userName').value;
             const email = document.getElementById('userEmail').value;
             const role = document.getElementById('userRole').value;
+            const status = document.getElementById('userStatus').value;
+            const area = document.getElementById('userArea').value;
 
             if (!name || !email || !role) {
                 showToast('Por favor complete los campos requeridos', 'error');
                 return;
             }
 
-            showToast('Usuario guardado exitosamente', 'success');
+            if (currentUserId) {
+                // Edit existing user
+                const index = usersData.findIndex(u => u.id === currentUserId);
+                if (index !== -1) {
+                    usersData[index] = {
+                        ...usersData[index],
+                        name, email, role, status, area
+                    };
+                }
+                showToast('Usuario actualizado correctamente', 'success');
+            } else {
+                // Add new user
+                const newId = 'user-' + Date.now();
+                usersData.push({
+                    id: newId,
+                    name,
+                    email,
+                    role,
+                    area: area || 'Sin especificar',
+                    events: 0,
+                    certificates: 0,
+                    status: status || 'active',
+                    lastActivity: 'Nuevo'
+                });
+                showToast('Usuario agregado correctamente', 'success');
+            }
+
+            saveUsers();
+            renderUsers();
+            updateStats();
             closeModal();
         }
-
-        // Search functionality
-        document.getElementById('searchUsers').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('#usersTableBody tr');
-            
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
-            });
-        });
 
         // Toast notification
         function showToast(message, type = 'info') {

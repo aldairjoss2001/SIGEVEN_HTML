@@ -281,12 +281,137 @@
       });
     }
 
+    const certificatesData = {
+      1: { name: 'Congreso DEEPTECH 2024', date: '08 - 09 Septiembre 2024', hours: '16 horas académicas' },
+      2: { name: 'Campaña de Arborización', date: '15 Octubre 2024', hours: '4 horas de voluntariado' },
+      3: { name: 'VI VERSIÓN CTF EMI 2024', date: '10 - 11 Octubre 2024', hours: '8 horas académicas' },
+      4: { name: 'Seminario de IA', date: '20 Agosto 2024', hours: '4 horas académicas' }
+    };
+    
+    const userName = 'María Fernandez';
+
     function descargarCertificado(id) {
-      showToast('Descargando certificado...', 'success');
+      const cert = certificatesData[id];
+      if (!cert) return;
+      
+      showToast('Generando certificado PDF...', 'info');
+      
+      // Create certificate HTML content
+      const certificateHTML = `
+        <html>
+        <head>
+          <title>Certificado - ${cert.name}</title>
+          <style>
+            @page { size: landscape; margin: 0; }
+            body { 
+              font-family: 'Georgia', serif; 
+              margin: 0; 
+              padding: 0; 
+              display: flex; 
+              justify-content: center; 
+              align-items: center; 
+              min-height: 100vh;
+              background: white;
+            }
+            .certificate {
+              width: 900px;
+              padding: 60px;
+              border: 15px solid #163E8C;
+              border-radius: 10px;
+              background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+              text-align: center;
+              position: relative;
+            }
+            .certificate::before {
+              content: '';
+              position: absolute;
+              top: 15px;
+              left: 15px;
+              right: 15px;
+              bottom: 15px;
+              border: 3px solid #FED600;
+              border-radius: 5px;
+            }
+            .header { color: #163E8C; font-size: 18px; letter-spacing: 3px; margin-bottom: 10px; }
+            .title { font-size: 48px; color: #163E8C; font-weight: bold; margin: 20px 0; }
+            .subtitle { font-size: 20px; color: #64748b; margin: 15px 0; }
+            .name { font-size: 36px; color: #163E8C; font-weight: bold; margin: 30px 0; border-bottom: 3px solid #FED600; display: inline-block; padding-bottom: 10px; }
+            .event { font-size: 24px; color: #1e293b; margin: 20px 0; }
+            .details { font-size: 16px; color: #64748b; margin: 10px 0; }
+            .footer { margin-top: 50px; display: flex; justify-content: space-around; }
+            .signature { text-align: center; }
+            .signature-line { width: 200px; border-top: 2px solid #163E8C; margin: 0 auto 10px; }
+            .signature-name { font-size: 14px; color: #1e293b; }
+            .logo { font-size: 24px; color: #FED600; font-weight: bold; margin-bottom: 20px; }
+          </style>
+        </head>
+        <body>
+          <div class="certificate">
+            <div class="logo">🏛️ EMI - SIGEVEN</div>
+            <div class="header">ESCUELA MILITAR DE INGENIERÍA</div>
+            <div class="title">CERTIFICADO</div>
+            <div class="subtitle">Se otorga el presente certificado a:</div>
+            <div class="name">${userName}</div>
+            <div class="subtitle">Por su participación satisfactoria en:</div>
+            <div class="event">${cert.name}</div>
+            <div class="details">${cert.date} • ${cert.hours}</div>
+            <div class="footer">
+              <div class="signature">
+                <div class="signature-line"></div>
+                <div class="signature-name">Director Académico<br>EMI</div>
+              </div>
+              <div class="signature">
+                <div class="signature-line"></div>
+                <div class="signature-name">Coordinador de Eventos<br>SIGEVEN</div>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>
+      `;
+      
+      // Create a new window and print as PDF
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write(certificateHTML);
+      printWindow.document.close();
+      
+      setTimeout(() => {
+        printWindow.print();
+        showToast('Certificado generado correctamente', 'success');
+      }, 500);
     }
 
     function verCertificado(id) {
-      showToast('Abriendo vista previa del certificado...', 'info');
+      const cert = certificatesData[id];
+      if (!cert) return;
+      
+      // Create modal to view certificate
+      const modal = document.createElement('div');
+      modal.className = 'certificate-modal';
+      modal.innerHTML = `
+        <div class="certificate-modal-content">
+          <button class="close-modal" onclick="this.parentElement.parentElement.remove()">
+            <span class="material-icons">close</span>
+          </button>
+          <div class="certificate-preview">
+            <div class="cert-logo"><span class="material-icons" style="font-size: 3rem; color: #FED600;">workspace_premium</span></div>
+            <h3 style="color: #163E8C; margin: 1rem 0;">CERTIFICADO DE PARTICIPACIÓN</h3>
+            <p style="color: #64748b;">Se certifica que:</p>
+            <h2 style="color: #163E8C; border-bottom: 3px solid #FED600; display: inline-block; padding-bottom: 0.5rem;">${userName}</h2>
+            <p style="color: #64748b; margin-top: 1rem;">Ha participado satisfactoriamente en:</p>
+            <h4 style="color: #1e293b;">${cert.name}</h4>
+            <p style="color: #64748b;">${cert.date}</p>
+            <p style="color: #163E8C; font-weight: 600;">${cert.hours}</p>
+          </div>
+          <div class="modal-actions" style="margin-top: 1.5rem;">
+            <button class="btn-download" onclick="descargarCertificado(${id}); this.closest('.certificate-modal').remove();">
+              <span class="material-icons">download</span>
+              Descargar PDF
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
     }
 
     function showToast(message, type = 'info') {
@@ -529,6 +654,59 @@
       .certificate-actions {
         flex-direction: column;
       }
+    }
+    
+    /* Certificate Modal */
+    .certificate-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .certificate-modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+      text-align: center;
+      animation: slideUp 0.3s ease;
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #64748b;
+    }
+    
+    .certificate-preview {
+      padding: 2rem;
+      border: 3px solid #163E8C;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f8fafc, white);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
   </style>
 </body>

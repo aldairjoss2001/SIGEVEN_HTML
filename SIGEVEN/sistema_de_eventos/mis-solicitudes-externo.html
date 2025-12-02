@@ -300,6 +300,138 @@
       });
     }
 
+    // Load and render requests on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadAndRenderRequests();
+    });
+
+    function loadAndRenderRequests() {
+      const savedRequests = JSON.parse(localStorage.getItem('externalRequests') || '[]');
+      const requestsList = document.querySelector('.requests-list');
+      
+      // Default sample requests
+      const defaultRequests = [
+        { id: 'sample-1', eventName: 'Conferencia de Tecnología 2025', space: 'auditorio', date: '2025-01-15', startTime: '09:00', endTime: '13:00', attendees: 150, status: 'pending', submittedAt: '2024-11-28' },
+        { id: 'sample-2', eventName: 'Seminario de Innovación', space: 'sala-conf', date: '2024-12-10', startTime: '14:00', endTime: '18:00', attendees: 60, status: 'approved', submittedAt: '2024-11-15' },
+        { id: 'sample-3', eventName: 'Taller de Liderazgo', space: 'sala-reuniones', date: '2024-10-20', startTime: '10:00', endTime: '12:00', attendees: 15, status: 'completed', submittedAt: '2024-10-01' }
+      ];
+      
+      // Combine default and saved requests
+      const allRequests = [...defaultRequests, ...savedRequests];
+      
+      // Update status counts
+      const pending = allRequests.filter(r => r.status === 'pending').length;
+      const approved = allRequests.filter(r => r.status === 'approved' || r.status === 'completed').length;
+      const rejected = allRequests.filter(r => r.status === 'rejected').length;
+      
+      document.querySelectorAll('.status-value')[0].textContent = pending;
+      document.querySelectorAll('.status-value')[1].textContent = approved;
+      document.querySelectorAll('.status-value')[2].textContent = rejected;
+      
+      // Render all requests
+      requestsList.innerHTML = allRequests.map((req, index) => {
+        const spaceNames = {
+          'auditorio': 'Auditorio Principal',
+          'sala-conf': 'Sala de Conferencias',
+          'aula-magna': 'Aula Magna',
+          'sala-reuniones': 'Sala de Reuniones',
+          'patio': 'Patio Central'
+        };
+        const spaceName = spaceNames[req.space] || req.space;
+        const formattedDate = formatDate(req.date);
+        const submittedDate = formatDate(req.submittedAt);
+        const statusClass = req.status === 'completed' ? 'approved' : req.status;
+        
+        return `
+          <div class="request-card animate-fadeIn ${statusClass}" style="animation-delay: ${0.1 * (index + 1)}s">
+            <div class="request-status">
+              <span class="status-badge ${statusClass}">
+                <span class="material-icons">${getStatusIcon(req.status)}</span>
+                ${getStatusLabel(req.status)}
+              </span>
+            </div>
+            <div class="request-content">
+              <div class="request-header">
+                <h3>${req.eventName}</h3>
+                <span class="request-date">
+                  <span class="material-icons">calendar_today</span>
+                  Solicitado: ${submittedDate}
+                </span>
+              </div>
+              <div class="request-details">
+                <div class="detail-item">
+                  <span class="material-icons">meeting_room</span>
+                  <span>${spaceName}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="material-icons">event</span>
+                  <span>${formattedDate}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="material-icons">schedule</span>
+                  <span>${req.startTime} - ${req.endTime}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="material-icons">groups</span>
+                  <span>${req.attendees} asistentes</span>
+                </div>
+              </div>
+              ${getStatusContent(req)}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function getStatusIcon(status) {
+      const icons = { pending: 'hourglass_empty', approved: 'check_circle', completed: 'verified', rejected: 'cancel' };
+      return icons[status] || 'hourglass_empty';
+    }
+
+    function getStatusLabel(status) {
+      const labels = { pending: 'Pendiente', approved: 'Aprobada', completed: 'Completada', rejected: 'Rechazada' };
+      return labels[status] || 'Pendiente';
+    }
+
+    function getStatusContent(req) {
+      if (req.status === 'pending') {
+        return `
+          <div class="request-progress">
+            <span class="material-icons">info</span>
+            <p>Tu solicitud está siendo revisada. Recibirás una respuesta en 3-5 días hábiles.</p>
+          </div>
+        `;
+      } else if (req.status === 'approved') {
+        return `
+          <div class="request-actions">
+            <button class="btn-outline" onclick="verDetalles('${req.id}')">
+              <span class="material-icons">visibility</span>
+              Ver Detalles
+            </button>
+            <button class="btn-download" onclick="descargarAutorizacion('${req.id}')">
+              <span class="material-icons">download</span>
+              Descargar Autorización
+            </button>
+          </div>
+        `;
+      } else if (req.status === 'completed') {
+        return `
+          <div class="request-completed">
+            <span class="material-icons">verified</span>
+            <span>Evento completado exitosamente</span>
+          </div>
+        `;
+      }
+      return '';
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return 'N/A';
+      const date = new Date(dateStr);
+      const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+      return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+    }
+
     function verDetalles(id) {
       showToast('Abriendo detalles de la solicitud...', 'info');
     }

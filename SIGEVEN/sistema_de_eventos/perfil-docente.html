@@ -186,29 +186,66 @@
             class="tab"
             role="tab"
             aria-controls="mis-eventos"
-            >📅 Mis Eventos</label
+            ><span class="material-icons">event</span> Mis Eventos</label
           >
           <label
             for="tab-solicitudes"
             class="tab"
             role="tab"
             aria-controls="solicitudes"
-            >📋 Solicitudes</label
+            ><span class="material-icons">pending_actions</span> Solicitudes</label
           >
           <label
             for="tab-espacios"
             class="tab"
             role="tab"
             aria-controls="espacios"
-            >🏢 Espacios</label
+            ><span class="material-icons">meeting_room</span> Espacios</label
           >
           <label
             for="tab-estadisticas"
             class="tab"
             role="tab"
             aria-controls="estadisticas"
-            >📊 Estadísticas</label
+            ><span class="material-icons">analytics</span> Estadísticas</label
           >
+        </div>
+      </section>
+
+      <!-- Notifications Section -->
+      <section class="notifications-section">
+        <div class="notifications-header">
+          <h3><span class="material-icons">notifications</span> Notificaciones Recientes</h3>
+          <button class="btn-text" onclick="marcarTodasLeidas()">Marcar todas como leídas</button>
+        </div>
+        <div class="notifications-list" id="notificationsList">
+          <div class="notification-item unread">
+            <div class="notification-icon event">
+              <span class="material-icons">fact_check</span>
+            </div>
+            <div class="notification-content">
+              <p><strong>Evento aprobado:</strong> Tu evento "VII VERSIÓN CTF EMI 2025" ha sido aprobado</p>
+              <span class="notification-time"><span class="material-icons">schedule</span> Hace 1 hora</span>
+            </div>
+          </div>
+          <div class="notification-item unread">
+            <div class="notification-icon space">
+              <span class="material-icons">meeting_room</span>
+            </div>
+            <div class="notification-content">
+              <p><strong>Espacio asignado:</strong> Laboratorio de Computación asignado para el 10 de Octubre</p>
+              <span class="notification-time"><span class="material-icons">schedule</span> Hace 3 horas</span>
+            </div>
+          </div>
+          <div class="notification-item">
+            <div class="notification-icon attendees">
+              <span class="material-icons">group_add</span>
+            </div>
+            <div class="notification-content">
+              <p><strong>Nuevos inscritos:</strong> 15 estudiantes se inscribieron en la Campaña de Arborización</p>
+              <span class="notification-time"><span class="material-icons">schedule</span> Hace 1 día</span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1143,6 +1180,15 @@
 
       // Update sidebar user name
       document.getElementById('sidebarUserName').textContent = teacherData.name;
+      
+      // Mark notifications as read
+      function marcarTodasLeidas() {
+        const notifications = document.querySelectorAll('.notification-item.unread');
+        notifications.forEach(notif => {
+          notif.classList.remove('unread');
+        });
+        mostrarNotificacion('✅ Todas las notificaciones marcadas como leídas');
+      }
     </script>
 
     <style>
@@ -1251,6 +1297,130 @@
 
       .btn:hover:not(:disabled) {
         transform: translateY(-1px);
+      }
+      
+      /* Notifications Section Styles */
+      .notifications-section {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        padding: 1.5rem;
+        margin: 1.5rem;
+      }
+      
+      .notifications-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e2e8f0;
+      }
+      
+      .notifications-header h3 {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--azul-institucional, #163E8C);
+        font-size: 1.1rem;
+        margin: 0;
+      }
+      
+      .notifications-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      
+      .notification-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem;
+        border-radius: 12px;
+        background: #f8fafc;
+        transition: all 0.3s ease;
+      }
+      
+      .notification-item:hover {
+        background: #f1f5f9;
+      }
+      
+      .notification-item.unread {
+        background: #eff6ff;
+        border-left: 3px solid #163E8C;
+      }
+      
+      .notification-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      
+      .notification-icon.event {
+        background: #dcfce7;
+        color: #22c55e;
+      }
+      
+      .notification-icon.space {
+        background: #dbeafe;
+        color: #2563eb;
+      }
+      
+      .notification-icon.attendees {
+        background: #fef3c7;
+        color: #f59e0b;
+      }
+      
+      .notification-content {
+        flex: 1;
+      }
+      
+      .notification-content p {
+        margin: 0 0 0.25rem 0;
+        font-size: 0.95rem;
+        color: #1e293b;
+      }
+      
+      .notification-time {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        font-size: 0.8rem;
+        color: #64748b;
+      }
+      
+      .notification-time .material-icons {
+        font-size: 0.9rem;
+      }
+      
+      .btn-text {
+        background: none;
+        border: none;
+        color: #163E8C;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 500;
+        padding: 0.5rem;
+      }
+      
+      .btn-text:hover {
+        text-decoration: underline;
+      }
+      
+      /* Tabs with Material Icons */
+      .profile-tabs .tab {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .profile-tabs .tab .material-icons {
+        font-size: 1.2rem;
       }
     </style>
   </body>
