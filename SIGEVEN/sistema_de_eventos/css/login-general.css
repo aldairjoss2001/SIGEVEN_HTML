@@ -658,3 +658,69 @@ body {
     border-color: var(--azul-institucional);
     box-shadow: 0 0 0 4px rgba(22, 62, 140, 0.2);
 }
+
+/* === ROLE INDICATOR === */
+.role-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius-sm);
+    border: 2px solid var(--success);
+    background: rgba(34, 197, 94, 0.08);
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.role-indicator .material-icons {
+    color: var(--azul-institucional);
+    font-size: 1.25rem;
+}
+
+#roleText {
+    font-weight: 600;
+    color: var(--texto-oscuro);
+    font-size: 0.9rem;
+}
+
+/* === EXTERNAL USER BUTTON === */
+.btn-external {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+    border-radius: var(--border-radius-sm);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.btn-external:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+}
+
+.btn-external .material-icons {
+    font-size: 1.25rem;
+}
+
+/* === WARNING TOAST === */
+.toast.warning {
+    background: var(--warning);
+    color: var(--texto-oscuro);
+}

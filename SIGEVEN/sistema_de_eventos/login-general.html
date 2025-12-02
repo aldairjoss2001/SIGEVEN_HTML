@@ -56,45 +56,29 @@
                     <p>Inicia sesión con tus credenciales institucionales</p>
                 </div>
 
-                <!-- Role Selection Tabs -->
-                <div class="role-tabs">
-                    <button type="button" class="role-tab active" data-role="estudiante">
-                        <span class="material-icons">school</span>
-                        <span>Estudiante</span>
-                    </button>
-                    <button type="button" class="role-tab" data-role="docente">
-                        <span class="material-icons">person</span>
-                        <span>Docente</span>
-                    </button>
-                    <button type="button" class="role-tab" data-role="admin">
-                        <span class="material-icons">admin_panel_settings</span>
-                        <span>Admin</span>
-                    </button>
-                    <button type="button" class="role-tab" data-role="externo">
-                        <span class="material-icons">public</span>
-                        <span>Externo</span>
-                    </button>
-                </div>
-
                 <!-- Login Form -->
                 <form id="loginForm" class="login-form">
-                    <input type="hidden" id="selectedRole" name="role" value="estudiante">
+                    <input type="hidden" id="selectedRole" name="role" value="">
                     
-                    <!-- Dynamic Label and Input -->
+                    <!-- Código Institucional Input -->
                     <div class="form-group">
                         <label for="username" class="required">
                             <span class="material-icons">badge</span>
-                            <span id="usernameLabel">Código de Estudiante</span>
+                            <span id="usernameLabel">Código Institucional</span>
                         </label>
                         <input 
                             type="text" 
                             id="username" 
                             name="username" 
                             required
-                            placeholder="Ej: E20250-1"
+                            placeholder="Ej: E20250-1, D20250-1 o ADMIN"
                             autocomplete="username"
                         >
-                        <span class="help-text" id="usernameHelp">Formato: EXXXXX-X (donde X son números)</span>
+                        <span class="help-text" id="usernameHelp">E = Estudiante, D = Docente, ADMIN = Administrador</span>
+                        <div class="role-indicator" id="roleIndicator" style="display: none;">
+                            <span class="material-icons" id="roleIcon">person</span>
+                            <span id="roleText">Rol detectado</span>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -134,11 +118,11 @@
                 </form>
 
                 <!-- External User Registration -->
-                <div class="external-register" id="externalRegister" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0; text-align: center;">
-                    <p style="color: #64748b; margin-bottom: 0.75rem;">¿No tienes cuenta de usuario externo?</p>
-                    <a href="registro-externo.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: #FED600; color: #163E8C; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
-                        <span class="material-icons">person_add</span>
-                        Registrarse como Externo
+                <div class="external-register" id="externalRegister" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0; text-align: center;">
+                    <p style="color: #64748b; margin-bottom: 0.75rem;">¿Eres usuario externo sin credenciales institucionales?</p>
+                    <a href="registro-externo.html" class="btn-external">
+                        <span class="material-icons">public</span>
+                        Acceder como Usuario Externo
                     </a>
                 </div>
 
@@ -177,83 +161,71 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        // Role tabs functionality
-        const roleTabs = document.querySelectorAll('.role-tab');
-        const selectedRoleInput = document.getElementById('selectedRole');
+        // Role detection based on code format
         const usernameInput = document.getElementById('username');
-        const usernameLabel = document.getElementById('usernameLabel');
-        const usernameHelp = document.getElementById('usernameHelp');
+        const selectedRoleInput = document.getElementById('selectedRole');
+        const roleIndicator = document.getElementById('roleIndicator');
+        const roleIcon = document.getElementById('roleIcon');
+        const roleText = document.getElementById('roleText');
 
         const roleConfig = {
             estudiante: {
-                label: 'Código de Estudiante',
-                placeholder: 'Ej: E20250-1',
-                help: 'Formato: EXXXXX-X (donde X son números)',
-                pattern: 'E[0-9]{5}-[0-9]',
-                redirect: 'perfil-estudiante.html'
+                icon: 'school',
+                label: 'Estudiante',
+                redirect: 'perfil-estudiante.html',
+                color: '#22c55e'
             },
             docente: {
-                label: 'Código de Docente',
-                placeholder: 'Ej: D20250-1',
-                help: 'Formato: DXXXXX-X (donde X son números)',
-                pattern: 'D[0-9]{5}-[0-9]',
-                redirect: 'perfil-docente.html'
+                icon: 'person',
+                label: 'Docente',
+                redirect: 'perfil-docente.html',
+                color: '#3b82f6'
             },
             admin: {
-                label: 'Usuario Administrativo',
-                placeholder: 'usuario.admin',
-                help: 'Ingresa tu usuario de administrador',
-                pattern: null,
-                redirect: 'panel-admin.html'
-            },
-            externo: {
-                label: 'Correo Electrónico',
-                placeholder: 'correo@ejemplo.com',
-                help: 'Ingresa tu correo electrónico para verificación',
-                pattern: null,
-                redirect: 'perfil-externo.html'
+                icon: 'admin_panel_settings',
+                label: 'Administrador',
+                redirect: 'panel-admin.html',
+                color: '#8b5cf6'
             }
         };
 
-        roleTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Update active state
-                roleTabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
+        // Detect role from code format
+        function detectRole(code) {
+            const upperCode = code.toUpperCase().trim();
+            
+            // E followed by 5 digits, dash, digit = Estudiante
+            if (/^E\d{5}-\d$/.test(upperCode)) {
+                return 'estudiante';
+            }
+            // D followed by digits = Docente
+            if (/^D\d{4,5}-?\d?$/.test(upperCode) || upperCode.startsWith('D') && upperCode.length > 2) {
+                return 'docente';
+            }
+            // ADMIN or admin-like codes
+            if (upperCode === 'ADMIN' || upperCode.startsWith('ADM') || /^A\d+/.test(upperCode)) {
+                return 'admin';
+            }
+            
+            return null;
+        }
 
-                // Get role
-                const role = tab.dataset.role;
-                selectedRoleInput.value = role;
-
-                // Update form fields
+        // Update role indicator as user types
+        usernameInput.addEventListener('input', function() {
+            const code = this.value;
+            const role = detectRole(code);
+            
+            if (role) {
                 const config = roleConfig[role];
-                usernameLabel.textContent = config.label;
-                usernameInput.placeholder = config.placeholder;
-                usernameHelp.textContent = config.help;
-                
-                if (config.pattern) {
-                    usernameInput.setAttribute('pattern', config.pattern);
-                } else {
-                    usernameInput.removeAttribute('pattern');
-                }
-
-                // Clear input
-                usernameInput.value = '';
-                
-                // Show/hide external registration
-                const externalRegister = document.getElementById('externalRegister');
-                if (role === 'externo') {
-                    externalRegister.style.display = 'block';
-                } else {
-                    externalRegister.style.display = 'none';
-                }
-                
-                // Animation
-                document.querySelector('.login-form').classList.add('form-transition');
-                setTimeout(() => {
-                    document.querySelector('.login-form').classList.remove('form-transition');
-                }, 300);
-            });
+                selectedRoleInput.value = role;
+                roleIndicator.style.display = 'flex';
+                roleIcon.textContent = config.icon;
+                roleText.textContent = `Rol detectado: ${config.label}`;
+                roleIndicator.style.borderColor = config.color;
+                roleIndicator.style.background = `${config.color}15`;
+            } else {
+                selectedRoleInput.value = '';
+                roleIndicator.style.display = 'none';
+            }
         });
 
         // Toggle password visibility
@@ -275,6 +247,12 @@
             e.preventDefault();
             
             const role = selectedRoleInput.value;
+            
+            if (!role) {
+                showToast('⚠️ Código institucional no reconocido. Verifica el formato.', 'warning');
+                return;
+            }
+            
             const config = roleConfig[role];
             
             // Show loading state
@@ -285,7 +263,7 @@
 
             // Simulate login (in real app, this would be server validation)
             setTimeout(() => {
-                showToast(`✅ Bienvenido! Redirigiendo...`, 'success');
+                showToast(`✅ Bienvenido ${config.label}! Redirigiendo...`, 'success');
                 
                 setTimeout(() => {
                     window.location.href = config.redirect;

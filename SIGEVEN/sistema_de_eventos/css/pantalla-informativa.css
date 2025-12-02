@@ -607,6 +607,58 @@ body.informative-page {
     color: var(--success);
 }
 
+/* === BENEFITS SECTION - GENERAL GRID === */
+.benefits-general-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.benefit-general-card {
+    background: var(--gris-claro);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.benefit-general-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--sombra-fuerte);
+    border-color: var(--azul-institucional);
+    background: var(--blanco);
+}
+
+.benefit-general-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--azul-institucional), #2563eb);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.benefit-general-icon .material-icons {
+    font-size: 2rem;
+    color: var(--blanco);
+}
+
+.benefit-general-card h4 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--azul-institucional);
+    margin-bottom: 0.75rem;
+}
+
+.benefit-general-card p {
+    color: var(--gris-oscuro);
+    line-height: 1.6;
+    margin: 0;
+}
+
 /* === CTA SECTION === */
 .cta-section {
     background: linear-gradient(135deg, var(--azul-institucional) 0%, #1e4d8c 50%, #2563eb 100%);
@@ -735,6 +787,7 @@ body.informative-page {
     padding: 0.35rem 0;
     font-size: 0.9rem;
     opacity: 0.9;
+    color: var(--blanco);
 }
 
 .footer-section ul li a {
@@ -761,6 +814,7 @@ body.informative-page {
     margin: 0;
     font-size: 0.9rem;
     opacity: 0.8;
+    color: var(--blanco);
 }
 
 /* === TOAST NOTIFICATIONS === */
