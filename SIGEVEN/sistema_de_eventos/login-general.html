@@ -133,6 +133,15 @@
                     </button>
                 </form>
 
+                <!-- External User Registration -->
+                <div class="external-register" id="externalRegister" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0; text-align: center;">
+                    <p style="color: #64748b; margin-bottom: 0.75rem;">¿No tienes cuenta de usuario externo?</p>
+                    <a href="registro-externo.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: #FED600; color: #163E8C; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+                        <span class="material-icons">person_add</span>
+                        Registrarse como Externo
+                    </a>
+                </div>
+
                 <!-- Security Notice -->
                 <div class="security-notice">
                     <span class="material-icons">verified_user</span>
@@ -230,6 +239,14 @@
 
                 // Clear input
                 usernameInput.value = '';
+                
+                // Show/hide external registration
+                const externalRegister = document.getElementById('externalRegister');
+                if (role === 'externo') {
+                    externalRegister.style.display = 'block';
+                } else {
+                    externalRegister.style.display = 'none';
+                }
                 
                 // Animation
                 document.querySelector('.login-form').classList.add('form-transition');

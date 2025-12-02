@@ -3,30 +3,108 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calendario de Eventos - Sistema de Eventos</title>
+    <title>Calendario de Eventos - SIGEVEN Docente</title>
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/calendario.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
   <body>
-    <!-- Header/Navigation -->
-    <header class="header">
-      <nav class="nav">
-        <div class="nav-brand"><h2>Eventos EMI</h2></div>
-        <div class="nav-search">
-          <input
-            type="text"
-            placeholder="Buscar eventos..."
-            class="search-input"
-          />
+    <div class="app-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <a href="pantalla-informativa.html" class="sidebar-brand">
+            <img src="sigeven_logo.png" alt="C-Heaven Logo" class="sidebar-logo">
+            <div class="sidebar-brand-text">
+              <h2>SIGEVEN</h2>
+              <span>Docente</span>
+            </div>
+          </a>
+          <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú">
+            <span class="material-icons">chevron_left</span>
+          </button>
         </div>
-        <div class="nav-icons">
-          <a href="perfil-docente.html" class="nav-icon">VOLVER</a>
+        
+        <nav class="sidebar-nav">
+          <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+              <a href="perfil-docente.html" class="sidebar-menu-link" data-tooltip="Mi Perfil">
+                <span class="material-icons">person</span>
+                <span>Mi Perfil</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a href="calendario-docentes.html" class="sidebar-menu-link active" data-tooltip="Calendario">
+                <span class="material-icons">calendar_month</span>
+                <span>Calendario</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a href="eventos-docente.html" class="sidebar-menu-link" data-tooltip="Mis Eventos">
+                <span class="material-icons">event</span>
+                <span>Mis Eventos</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a href="certificados-docente.html" class="sidebar-menu-link" data-tooltip="Certificados">
+                <span class="material-icons">workspace_premium</span>
+                <span>Certificados</span>
+              </a>
+            </li>
+          </ul>
+          
+          <div class="sidebar-section">
+            <span class="sidebar-section-title">Configuración</span>
+            <ul class="sidebar-menu">
+              <li class="sidebar-menu-item">
+                <a href="configuracion-docente.html" class="sidebar-menu-link" data-tooltip="Configuración">
+                  <span class="material-icons">settings</span>
+                  <span>Configuración</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        
+        <div class="sidebar-user">
+          <div class="sidebar-user-avatar">
+            <span class="material-icons">person</span>
+          </div>
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name">Dr. Carlos Mendoza</div>
+            <div class="sidebar-user-role">Docente</div>
+          </div>
         </div>
-      </nav>
-    </header>
+        
+        <a href="login-general.html" class="sidebar-logout" data-tooltip="Cerrar Sesión">
+          <span class="material-icons">logout</span>
+          <span>Cerrar Sesión</span>
+        </a>
+      </aside>
+      
+      <!-- Sidebar Overlay for Mobile -->
+      <div class="sidebar-overlay" id="sidebarOverlay"></div>
+      
+      <!-- Main Content -->
+      <div class="app-content">
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+          <div class="mobile-header-inner">
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+              <span class="material-icons">menu</span>
+            </button>
+            <div class="mobile-brand">
+              <img src="sigeven_logo.png" alt="Logo">
+              <h2>SIGEVEN</h2>
+            </div>
+            <div></div>
+          </div>
+        </header>
 
     <!-- Main Content -->
-    <main class="calendar-container">
+    <main class="calendar-container" style="padding: 1.5rem;">
       <!-- Calendar Header -->
       <section class="calendar-header">
         <div class="calendar-controls">
@@ -516,5 +594,48 @@
         reservados.
       </p>
     </footer>
+      </div> <!-- /.app-content -->
+    </div> <!-- /.app-layout -->
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+    
+    <script>
+      // Sidebar functionality
+      const sidebar = document.getElementById('sidebar');
+      const sidebarToggle = document.getElementById('sidebarToggle');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const appLayout = document.querySelector('.app-layout');
+
+      if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('collapsed');
+          appLayout.classList.toggle('sidebar-collapsed');
+        });
+      }
+
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', () => {
+          sidebar.classList.add('mobile-open');
+          sidebarOverlay.classList.add('active');
+        });
+      }
+
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', () => {
+          sidebar.classList.remove('mobile-open');
+          sidebarOverlay.classList.remove('active');
+        });
+      }
+
+      // Toast notification
+      function showToast(message, type = 'info') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast show ${type}`;
+        setTimeout(() => toast.classList.remove('show'), 3000);
+      }
+    </script>
   </body>
 </html>

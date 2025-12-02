@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración - SIGEVEN</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .settings-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+        
+        @media (max-width: 1024px) {
+            .settings-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Settings Navigation */
+        .settings-nav {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 1rem;
+            height: fit-content;
+            position: sticky;
+            top: 1rem;
+        }
+        
+        .settings-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            color: #475569;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 0.25rem;
+        }
+        
+        .settings-nav-item:hover {
+            background: #f1f5f9;
+            color: #163E8C;
+        }
+        
+        .settings-nav-item.active {
+            background: #163E8C;
+            color: white;
+        }
+        
+        .settings-nav-item .material-icons {
+            font-size: 1.25rem;
+        }
+        
+        /* Settings Content */
+        .settings-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .settings-section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 1.5rem;
+        }
+        
+        .settings-section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .settings-section-header .material-icons {
+            color: #163E8C;
+            font-size: 1.5rem;
+        }
+        
+        .settings-section-header h3 {
+            color: #1e293b;
+            margin: 0;
+            font-size: 1.1rem;
+        }
+        
+        .settings-section-header p {
+            color: #64748b;
+            margin: 0.25rem 0 0;
+            font-size: 0.85rem;
+        }
+        
+        /* Form Elements */
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        
+        .setting-info {
+            flex: 1;
+        }
+        
+        .setting-info h4 {
+            color: #1e293b;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+        
+        .setting-info p {
+            color: #64748b;
+            margin: 0.25rem 0 0;
+            font-size: 0.85rem;
+        }
+        
+        .setting-control {
+            min-width: 150px;
+            text-align: right;
+        }
+        
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            display: inline-block;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        
+        .toggle-switch input:checked + .toggle-slider {
+            background-color: #163E8C;
+        }
+        
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+        
+        /* Select & Input */
+        .setting-select,
+        .setting-input {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            min-width: 150px;
+            transition: all 0.3s ease;
+        }
+        
+        .setting-select:focus,
+        .setting-input:focus {
+            border-color: #163E8C;
+            outline: none;
+        }
+        
+        /* Buttons */
+        .btn-save {
+            padding: 0.75rem 2rem;
+            background: #163E8C;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-save:hover {
+            background: #1e50b5;
+            transform: translateY(-2px);
+        }
+        
+        .btn-reset {
+            padding: 0.75rem 2rem;
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-reset:hover {
+            background: #fecaca;
+        }
+        
+        .settings-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 1rem;
+        }
+        
+        /* Color Picker */
+        .color-picker {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .color-preview {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+        }
+        
+        .color-input {
+            width: 80px;
+            padding: 0.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: monospace;
+        }
+        
+        /* System Info */
+        .system-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .info-card {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .info-card .material-icons {
+            font-size: 2rem;
+            color: #163E8C;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-card h4 {
+            color: #1e293b;
+            margin: 0;
+            font-size: 1rem;
+        }
+        
+        .info-card p {
+            color: #64748b;
+            margin: 0.25rem 0 0;
+            font-size: 0.85rem;
+        }
+        
+        /* Backup Section */
+        .backup-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .backup-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+        
+        .backup-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .backup-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: #163E8C;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .backup-details h5 {
+            margin: 0;
+            color: #1e293b;
+        }
+        
+        .backup-details p {
+            margin: 0.25rem 0 0;
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+        
+        .btn-download {
+            padding: 0.5rem 1rem;
+            background: #e0f2fe;
+            color: #0284c7;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-download:hover {
+            background: #bae6fd;
+        }
+    </style>
+</head>
+<body class="admin-dashboard">
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="pantalla-informativa.html" class="sidebar-brand">
+                    <img src="sigeven_logo.png" alt="C-Heaven Logo" class="sidebar-logo">
+                    <div class="sidebar-brand-text">
+                        <h2>SIGEVEN</h2>
+                        <span>Administrador</span>
+                    </div>
+                </a>
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú">
+                    <span class="material-icons">chevron_left</span>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <a href="panel-admin.html" class="sidebar-menu-link" data-tooltip="Dashboard">
+                            <span class="material-icons">dashboard</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="gestion-eventos-admin.html" class="sidebar-menu-link" data-tooltip="Gestión de Eventos">
+                            <span class="material-icons">event_note</span>
+                            <span>Gestión de Eventos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="espacios-admin.html" class="sidebar-menu-link" data-tooltip="Espacios">
+                            <span class="material-icons">meeting_room</span>
+                            <span>Espacios</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="reportes-admin.html" class="sidebar-menu-link" data-tooltip="Reportes">
+                            <span class="material-icons">analytics</span>
+                            <span>Reportes</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="usuarios-admin.html" class="sidebar-menu-link" data-tooltip="Usuarios">
+                            <span class="material-icons">people</span>
+                            <span>Usuarios</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="sidebar-section">
+                    <span class="sidebar-section-title">Sistema</span>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-menu-item">
+                            <a href="configuracion-admin.html" class="sidebar-menu-link active" data-tooltip="Configuración">
+                                <span class="material-icons">settings</span>
+                                <span>Configuración</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">
+                    <span class="material-icons">admin_panel_settings</span>
+                </div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Administrador</div>
+                    <div class="sidebar-user-role">Admin</div>
+                </div>
+            </div>
+            
+            <a href="login-general.html" class="sidebar-logout" data-tooltip="Cerrar Sesión">
+                <span class="material-icons">logout</span>
+                <span>Cerrar Sesión</span>
+            </a>
+        </aside>
+        
+        <!-- Sidebar Overlay for Mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- Main Content -->
+        <div class="app-content">
+            <!-- Mobile Header -->
+            <header class="mobile-header">
+                <div class="mobile-header-inner">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+                        <span class="material-icons">menu</span>
+                    </button>
+                    <div class="mobile-brand">
+                        <img src="sigeven_logo.png" alt="Logo">
+                        <h2>SIGEVEN</h2>
+                    </div>
+                    <div></div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="admin-main">
+                <div class="admin-container">
+                    <!-- Welcome Section -->
+                    <section class="welcome-section">
+                        <h2><span class="material-icons">settings</span> Configuración del Sistema</h2>
+                        <p>Administra la configuración general del sistema de eventos</p>
+                    </section>
+
+                    <div class="settings-container">
+                        <!-- Settings Navigation -->
+                        <nav class="settings-nav">
+                            <div class="settings-nav-item active" onclick="showSection('general')">
+                                <span class="material-icons">tune</span>
+                                <span>General</span>
+                            </div>
+                            <div class="settings-nav-item" onclick="showSection('notifications')">
+                                <span class="material-icons">notifications</span>
+                                <span>Notificaciones</span>
+                            </div>
+                            <div class="settings-nav-item" onclick="showSection('appearance')">
+                                <span class="material-icons">palette</span>
+                                <span>Apariencia</span>
+                            </div>
+                            <div class="settings-nav-item" onclick="showSection('security')">
+                                <span class="material-icons">security</span>
+                                <span>Seguridad</span>
+                            </div>
+                            <div class="settings-nav-item" onclick="showSection('backup')">
+                                <span class="material-icons">backup</span>
+                                <span>Respaldos</span>
+                            </div>
+                            <div class="settings-nav-item" onclick="showSection('system')">
+                                <span class="material-icons">info</span>
+                                <span>Sistema</span>
+                            </div>
+                        </nav>
+
+                        <!-- Settings Content -->
+                        <div class="settings-content">
+                            <!-- General Settings -->
+                            <section class="settings-section" id="section-general">
+                                <div class="settings-section-header">
+                                    <span class="material-icons">tune</span>
+                                    <div>
+                                        <h3>Configuración General</h3>
+                                        <p>Ajustes básicos del sistema</p>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Nombre del Sistema</h4>
+                                        <p>Nombre que se muestra en la interfaz</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" class="setting-input" value="SIGEVEN" id="systemName">
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Institución</h4>
+                                        <p>Nombre de la institución</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" class="setting-input" value="Escuela Militar de Ingeniería" id="institutionName">
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Zona Horaria</h4>
+                                        <p>Zona horaria para eventos y registros</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="setting-select" id="timezone">
+                                            <option value="America/La_Paz" selected>Bolivia (GMT-4)</option>
+                                            <option value="America/Lima">Perú (GMT-5)</option>
+                                            <option value="America/Bogota">Colombia (GMT-5)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Idioma del Sistema</h4>
+                                        <p>Idioma de la interfaz</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="setting-select" id="language">
+                                            <option value="es" selected>Español</option>
+                                            <option value="en">English</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Modo Mantenimiento</h4>
+                                        <p>Deshabilitar acceso al sistema temporalmente</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="maintenanceMode">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="settings-actions">
+                                    <button class="btn-reset" onclick="resetSettings()">
+                                        <span class="material-icons">refresh</span>
+                                        Restablecer
+                                    </button>
+                                    <button class="btn-save" onclick="saveSettings('general')">
+                                        <span class="material-icons">save</span>
+                                        Guardar Cambios
+                                    </button>
+                                </div>
+                            </section>
+
+                            <!-- Notifications Settings -->
+                            <section class="settings-section" id="section-notifications" style="display: none;">
+                                <div class="settings-section-header">
+                                    <span class="material-icons">notifications</span>
+                                    <div>
+                                        <h3>Configuración de Notificaciones</h3>
+                                        <p>Administra las notificaciones del sistema</p>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Notificaciones por Email</h4>
+                                        <p>Enviar notificaciones por correo electrónico</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="emailNotifications" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Notificaciones Push</h4>
+                                        <p>Notificaciones en tiempo real</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="pushNotifications" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Recordatorios de Eventos</h4>
+                                        <p>Tiempo de anticipación para recordatorios</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="setting-select" id="reminderTime">
+                                            <option value="1">1 hora antes</option>
+                                            <option value="24" selected>24 horas antes</option>
+                                            <option value="48">48 horas antes</option>
+                                            <option value="168">1 semana antes</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Notificar Nuevos Eventos</h4>
+                                        <p>Notificar cuando se creen nuevos eventos</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="newEventNotifications" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="settings-actions">
+                                    <button class="btn-save" onclick="saveSettings('notifications')">
+                                        <span class="material-icons">save</span>
+                                        Guardar Cambios
+                                    </button>
+                                </div>
+                            </section>
+
+                            <!-- Appearance Settings -->
+                            <section class="settings-section" id="section-appearance" style="display: none;">
+                                <div class="settings-section-header">
+                                    <span class="material-icons">palette</span>
+                                    <div>
+                                        <h3>Configuración de Apariencia</h3>
+                                        <p>Personaliza la apariencia del sistema</p>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Color Primario</h4>
+                                        <p>Color institucional principal</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <div class="color-picker">
+                                            <input type="color" class="color-preview" value="#163E8C" id="primaryColor">
+                                            <input type="text" class="color-input" value="#163E8C" id="primaryColorText">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Color Secundario</h4>
+                                        <p>Color de acento secundario</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <div class="color-picker">
+                                            <input type="color" class="color-preview" value="#FED600" id="secondaryColor">
+                                            <input type="text" class="color-input" value="#FED600" id="secondaryColorText">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Modo Oscuro</h4>
+                                        <p>Activar tema oscuro</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="darkMode">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Animaciones</h4>
+                                        <p>Activar animaciones en la interfaz</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="animations" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="settings-actions">
+                                    <button class="btn-save" onclick="saveSettings('appearance')">
+                                        <span class="material-icons">save</span>
+                                        Guardar Cambios
+                                    </button>
+                                </div>
+                            </section>
+
+                            <!-- Security Settings -->
+                            <section class="settings-section" id="section-security" style="display: none;">
+                                <div class="settings-section-header">
+                                    <span class="material-icons">security</span>
+                                    <div>
+                                        <h3>Configuración de Seguridad</h3>
+                                        <p>Ajustes de seguridad del sistema</p>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Tiempo de Sesión</h4>
+                                        <p>Tiempo máximo de inactividad</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="setting-select" id="sessionTimeout">
+                                            <option value="15">15 minutos</option>
+                                            <option value="30" selected>30 minutos</option>
+                                            <option value="60">1 hora</option>
+                                            <option value="120">2 horas</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Autenticación de Dos Factores</h4>
+                                        <p>Requerir 2FA para administradores</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="twoFactorAuth">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Intentos de Login</h4>
+                                        <p>Máximo de intentos fallidos</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="setting-select" id="loginAttempts">
+                                            <option value="3">3 intentos</option>
+                                            <option value="5" selected>5 intentos</option>
+                                            <option value="10">10 intentos</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Registro de Actividad</h4>
+                                        <p>Registrar todas las acciones de usuarios</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="activityLog" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="settings-actions">
+                                    <button class="btn-save" onclick="saveSettings('security')">
+                                        <span class="material-icons">save</span>
+                                        Guardar Cambios
+                                    </button>
+                                </div>
+                            </section>
+
+                            <!-- Backup Settings -->
+                            <section class="settings-section" id="section-backup" style="display: none;">
+                                <div class="settings-section-header">
+                                    <span class="material-icons">backup</span>
+                                    <div>
+                                        <h3>Respaldos del Sistema</h3>
+                                        <p>Administra los respaldos de datos</p>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Respaldo Automático</h4>
+                                        <p>Crear respaldos automáticamente</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="autoBackup" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Frecuencia de Respaldo</h4>
+                                        <p>Cada cuánto crear respaldos</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="setting-select" id="backupFrequency">
+                                            <option value="daily" selected>Diario</option>
+                                            <option value="weekly">Semanal</option>
+                                            <option value="monthly">Mensual</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <h4 style="margin: 1.5rem 0 1rem; color: #1e293b;">Respaldos Disponibles</h4>
+                                <div class="backup-list">
+                                    <div class="backup-item">
+                                        <div class="backup-info">
+                                            <div class="backup-icon">
+                                                <span class="material-icons">cloud_done</span>
+                                            </div>
+                                            <div class="backup-details">
+                                                <h5>Respaldo Completo</h5>
+                                                <p>15 Oct 2025 - 03:00 AM • 256 MB</p>
+                                            </div>
+                                        </div>
+                                        <button class="btn-download" onclick="downloadBackup('full')">
+                                            <span class="material-icons">download</span>
+                                            Descargar
+                                        </button>
+                                    </div>
+                                    <div class="backup-item">
+                                        <div class="backup-info">
+                                            <div class="backup-icon">
+                                                <span class="material-icons">cloud_done</span>
+                                            </div>
+                                            <div class="backup-details">
+                                                <h5>Respaldo Incremental</h5>
+                                                <p>14 Oct 2025 - 03:00 AM • 45 MB</p>
+                                            </div>
+                                        </div>
+                                        <button class="btn-download" onclick="downloadBackup('incremental')">
+                                            <span class="material-icons">download</span>
+                                            Descargar
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="settings-actions">
+                                    <button class="btn-save" onclick="createBackup()">
+                                        <span class="material-icons">backup</span>
+                                        Crear Respaldo Ahora
+                                    </button>
+                                </div>
+                            </section>
+
+                            <!-- System Info -->
+                            <section class="settings-section" id="section-system" style="display: none;">
+                                <div class="settings-section-header">
+                                    <span class="material-icons">info</span>
+                                    <div>
+                                        <h3>Información del Sistema</h3>
+                                        <p>Datos técnicos del sistema</p>
+                                    </div>
+                                </div>
+
+                                <div class="system-info">
+                                    <div class="info-card">
+                                        <span class="material-icons">code</span>
+                                        <h4>Versión</h4>
+                                        <p>SIGEVEN v2.0.0</p>
+                                    </div>
+                                    <div class="info-card">
+                                        <span class="material-icons">calendar_today</span>
+                                        <h4>Última Actualización</h4>
+                                        <p>15 Sep 2025</p>
+                                    </div>
+                                    <div class="info-card">
+                                        <span class="material-icons">dns</span>
+                                        <h4>Servidor</h4>
+                                        <p>EMI Cloud Server</p>
+                                    </div>
+                                    <div class="info-card">
+                                        <span class="material-icons">storage</span>
+                                        <h4>Base de Datos</h4>
+                                        <p>MySQL 8.0</p>
+                                    </div>
+                                    <div class="info-card">
+                                        <span class="material-icons">memory</span>
+                                        <h4>Uso de Memoria</h4>
+                                        <p>2.4 GB / 8 GB</p>
+                                    </div>
+                                    <div class="info-card">
+                                        <span class="material-icons">save</span>
+                                        <h4>Almacenamiento</h4>
+                                        <p>45 GB / 100 GB</p>
+                                    </div>
+                                </div>
+
+                                <div style="margin-top: 1.5rem; padding: 1rem; background: #f8fafc; border-radius: 8px;">
+                                    <p style="margin: 0; color: #64748b; font-size: 0.9rem;">
+                                        <span class="material-icons" style="font-size: 1rem; vertical-align: middle;">copyright</span>
+                                        2025 © Escuela Militar de Ingeniería - Sistema de Gestión de Eventos Universitarios
+                                    </p>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div> <!-- /.app-content -->
+    </div> <!-- /.app-layout -->
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Sidebar functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const appLayout = document.querySelector('.app-layout');
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                appLayout.classList.toggle('sidebar-collapsed');
+            });
+        }
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                sidebar.classList.add('mobile-open');
+                sidebarOverlay.classList.add('active');
+            });
+        }
+
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', () => {
+                sidebar.classList.remove('mobile-open');
+                sidebarOverlay.classList.remove('active');
+            });
+        }
+
+        // Settings navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.settings-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Remove active from all nav items
+            document.querySelectorAll('.settings-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById('section-' + sectionId).style.display = 'block';
+            
+            // Add active to clicked nav item
+            event.currentTarget.classList.add('active');
+        }
+
+        // Save settings
+        function saveSettings(section) {
+            showToast(`Configuración de ${section} guardada exitosamente`, 'success');
+        }
+
+        // Reset settings
+        function resetSettings() {
+            if (confirm('¿Está seguro de restablecer la configuración a valores predeterminados?')) {
+                showToast('Configuración restablecida', 'info');
+            }
+        }
+
+        // Create backup
+        function createBackup() {
+            showToast('Creando respaldo... Esto puede tardar unos minutos', 'info');
+            setTimeout(() => {
+                showToast('Respaldo creado exitosamente', 'success');
+            }, 2000);
+        }
+
+        // Download backup
+        function downloadBackup(type) {
+            showToast(`Descargando respaldo ${type}...`, 'info');
+            
+            // Simulate download
+            const content = `SIGEVEN Backup - ${type}\nFecha: ${new Date().toISOString()}\n\nEste es un archivo de respaldo simulado.`;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `sigeven_backup_${type}_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            setTimeout(() => {
+                showToast('Respaldo descargado exitosamente', 'success');
+            }, 1000);
+        }
+
+        // Color picker sync
+        document.getElementById('primaryColor').addEventListener('input', function(e) {
+            document.getElementById('primaryColorText').value = e.target.value;
+        });
+        
+        document.getElementById('secondaryColor').addEventListener('input', function(e) {
+            document.getElementById('secondaryColorText').value = e.target.value;
+        });
+
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const icon = type === 'success' ? 'check_circle' : type === 'error' ? 'error' : 'info';
+            toast.innerHTML = `<span class="material-icons">${icon}</span> ${message}`;
+            toast.className = `toast show ${type}`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

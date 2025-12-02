@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes - SIGEVEN</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .report-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border-left: 5px solid #163E8C;
+        }
+        
+        .report-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .report-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .report-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #163E8C, #2563eb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .report-title {
+            flex: 1;
+        }
+        
+        .report-title h4 {
+            color: #163E8C;
+            margin: 0;
+            font-size: 1.1rem;
+        }
+        
+        .report-title p {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin: 0.25rem 0 0;
+        }
+        
+        .report-body {
+            margin-bottom: 1.5rem;
+        }
+        
+        .report-stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .report-stat {
+            flex: 1;
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .report-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #163E8C;
+        }
+        
+        .report-stat-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+        
+        .report-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn-report {
+            flex: 1;
+            min-width: 120px;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-report.pdf {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+        }
+        
+        .btn-report.excel {
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            color: white;
+        }
+        
+        .btn-report.view {
+            background: #163E8C;
+            color: white;
+        }
+        
+        .btn-report:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .date-filter {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+        
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .filter-group label {
+            display: block;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-group input:focus,
+        .filter-group select:focus {
+            border-color: #163E8C;
+            outline: none;
+        }
+        
+        .btn-filter {
+            padding: 0.75rem 1.5rem;
+            background: #163E8C;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-filter:hover {
+            background: #1e50b5;
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+        }
+        
+        .modal-header h3 {
+            color: #163E8C;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #64748b;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            background: #f1f5f9;
+            color: #163E8C;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            position: sticky;
+            bottom: 0;
+            background: white;
+        }
+        
+        /* Table styles */
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .report-table th,
+        .report-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .report-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #334155;
+        }
+        
+        .report-table tr:hover {
+            background: #f8fafc;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-badge.completed { background: #dcfce7; color: #16a34a; }
+        .status-badge.pending { background: #fef3c7; color: #ca8a04; }
+        .status-badge.cancelled { background: #fee2e2; color: #dc2626; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Download animation */
+        .downloading {
+            animation: pulse 1s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="admin-dashboard">
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="pantalla-informativa.html" class="sidebar-brand">
+                    <img src="sigeven_logo.png" alt="C-Heaven Logo" class="sidebar-logo">
+                    <div class="sidebar-brand-text">
+                        <h2>SIGEVEN</h2>
+                        <span>Administrador</span>
+                    </div>
+                </a>
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú">
+                    <span class="material-icons">chevron_left</span>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <a href="panel-admin.html" class="sidebar-menu-link" data-tooltip="Dashboard">
+                            <span class="material-icons">dashboard</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="gestion-eventos-admin.html" class="sidebar-menu-link" data-tooltip="Gestión de Eventos">
+                            <span class="material-icons">event_note</span>
+                            <span>Gestión de Eventos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="espacios-admin.html" class="sidebar-menu-link" data-tooltip="Espacios">
+                            <span class="material-icons">meeting_room</span>
+                            <span>Espacios</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="reportes-admin.html" class="sidebar-menu-link active" data-tooltip="Reportes">
+                            <span class="material-icons">analytics</span>
+                            <span>Reportes</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="usuarios-admin.html" class="sidebar-menu-link" data-tooltip="Usuarios">
+                            <span class="material-icons">people</span>
+                            <span>Usuarios</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="sidebar-section">
+                    <span class="sidebar-section-title">Sistema</span>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-menu-item">
+                            <a href="configuracion-admin.html" class="sidebar-menu-link" data-tooltip="Configuración">
+                                <span class="material-icons">settings</span>
+                                <span>Configuración</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">
+                    <span class="material-icons">admin_panel_settings</span>
+                </div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Administrador</div>
+                    <div class="sidebar-user-role">Admin</div>
+                </div>
+            </div>
+            
+            <a href="login-general.html" class="sidebar-logout" data-tooltip="Cerrar Sesión">
+                <span class="material-icons">logout</span>
+                <span>Cerrar Sesión</span>
+            </a>
+        </aside>
+        
+        <!-- Sidebar Overlay for Mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- Main Content -->
+        <div class="app-content">
+            <!-- Mobile Header -->
+            <header class="mobile-header">
+                <div class="mobile-header-inner">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+                        <span class="material-icons">menu</span>
+                    </button>
+                    <div class="mobile-brand">
+                        <img src="sigeven_logo.png" alt="Logo">
+                        <h2>SIGEVEN</h2>
+                    </div>
+                    <div></div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="admin-main">
+                <div class="admin-container">
+                    <!-- Welcome Section -->
+                    <section class="welcome-section">
+                        <h2><span class="material-icons">analytics</span> Reportes del Sistema</h2>
+                        <p>Genera y descarga reportes de eventos, espacios y usuarios</p>
+                    </section>
+
+                    <!-- Date Filter -->
+                    <div class="date-filter">
+                        <div class="filter-row">
+                            <div class="filter-group">
+                                <label><span class="material-icons" style="font-size: 1rem; vertical-align: middle;">date_range</span> Fecha Inicio</label>
+                                <input type="date" id="startDate" value="2025-01-01">
+                            </div>
+                            <div class="filter-group">
+                                <label><span class="material-icons" style="font-size: 1rem; vertical-align: middle;">date_range</span> Fecha Fin</label>
+                                <input type="date" id="endDate" value="2025-12-31">
+                            </div>
+                            <div class="filter-group">
+                                <label><span class="material-icons" style="font-size: 1rem; vertical-align: middle;">filter_list</span> Tipo de Reporte</label>
+                                <select id="reportType">
+                                    <option value="all">Todos los reportes</option>
+                                    <option value="events">Solo Eventos</option>
+                                    <option value="spaces">Solo Espacios</option>
+                                    <option value="users">Solo Usuarios</option>
+                                </select>
+                            </div>
+                            <button class="btn-filter" onclick="applyFilters()">
+                                <span class="material-icons">search</span> Filtrar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Reports Grid -->
+                    <div class="reports-grid">
+                        <!-- Reporte de Eventos -->
+                        <div class="report-card">
+                            <div class="report-header">
+                                <div class="report-icon">
+                                    <span class="material-icons">event</span>
+                                </div>
+                                <div class="report-title">
+                                    <h4>Reporte de Eventos</h4>
+                                    <p>Estadísticas completas de eventos</p>
+                                </div>
+                            </div>
+                            <div class="report-body">
+                                <div class="report-stats">
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">156</div>
+                                        <div class="report-stat-label">Total Eventos</div>
+                                    </div>
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">142</div>
+                                        <div class="report-stat-label">Realizados</div>
+                                    </div>
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">14</div>
+                                        <div class="report-stat-label">Pendientes</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="report-actions">
+                                <button class="btn-report pdf" onclick="downloadPDF('eventos')">
+                                    <span class="material-icons">picture_as_pdf</span> PDF
+                                </button>
+                                <button class="btn-report excel" onclick="downloadExcel('eventos')">
+                                    <span class="material-icons">table_chart</span> Excel
+                                </button>
+                                <button class="btn-report view" onclick="viewReport('eventos')">
+                                    <span class="material-icons">visibility</span> Ver
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Reporte de Asistencia -->
+                        <div class="report-card">
+                            <div class="report-header">
+                                <div class="report-icon">
+                                    <span class="material-icons">how_to_reg</span>
+                                </div>
+                                <div class="report-title">
+                                    <h4>Reporte de Asistencia</h4>
+                                    <p>Control de participación en eventos</p>
+                                </div>
+                            </div>
+                            <div class="report-body">
+                                <div class="report-stats">
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">3,847</div>
+                                        <div class="report-stat-label">Asistencias</div>
+                                    </div>
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">89%</div>
+                                        <div class="report-stat-label">Tasa Asistencia</div>
+                                    </div>
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">247</div>
+                                        <div class="report-stat-label">Certificados</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="report-actions">
+                                <button class="btn-report pdf" onclick="downloadPDF('asistencia')">
+                                    <span class="material-icons">picture_as_pdf</span> PDF
+                                </button>
+                                <button class="btn-report excel" onclick="downloadExcel('asistencia')">
+                                    <span class="material-icons">table_chart</span> Excel
+                                </button>
+                                <button class="btn-report view" onclick="viewReport('asistencia')">
+                                    <span class="material-icons">visibility</span> Ver
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Reporte de Espacios -->
+                        <div class="report-card">
+                            <div class="report-header">
+                                <div class="report-icon">
+                                    <span class="material-icons">meeting_room</span>
+                                </div>
+                                <div class="report-title">
+                                    <h4>Reporte de Espacios</h4>
+                                    <p>Uso y disponibilidad de espacios</p>
+                                </div>
+                            </div>
+                            <div class="report-body">
+                                <div class="report-stats">
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">25</div>
+                                        <div class="report-stat-label">Total Espacios</div>
+                                    </div>
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">78%</div>
+                                        <div class="report-stat-label">Ocupación</div>
+                                    </div>
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">432</div>
+                                        <div class="report-stat-label">Reservas</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="report-actions">
+                                <button class="btn-report pdf" onclick="downloadPDF('espacios')">
+                                    <span class="material-icons">picture_as_pdf</span> PDF
+                                </button>
+                                <button class="btn-report excel" onclick="downloadExcel('espacios')">
+                                    <span class="material-icons">table_chart</span> Excel
+                                </button>
+                                <button class="btn-report view" onclick="viewReport('espacios')">
+                                    <span class="material-icons">visibility</span> Ver
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Reporte de Usuarios -->
+                        <div class="report-card">
+                            <div class="report-header">
+                                <div class="report-icon">
+                                    <span class="material-icons">people</span>
+                                </div>
+                                <div class="report-title">
+                                    <h4>Reporte de Usuarios</h4>
+                                    <p>Estadísticas de usuarios del sistema</p>
+                                </div>
+                            </div>
+                            <div class="report-body">
+                                <div class="report-stats">
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">1,245</div>
+                                        <div class="report-stat-label">Usuarios</div>
+                                    </div>
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">347</div>
+                                        <div class="report-stat-label">Activos</div>
+                                    </div>
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">52</div>
+                                        <div class="report-stat-label">Docentes</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="report-actions">
+                                <button class="btn-report pdf" onclick="downloadPDF('usuarios')">
+                                    <span class="material-icons">picture_as_pdf</span> PDF
+                                </button>
+                                <button class="btn-report excel" onclick="downloadExcel('usuarios')">
+                                    <span class="material-icons">table_chart</span> Excel
+                                </button>
+                                <button class="btn-report view" onclick="viewReport('usuarios')">
+                                    <span class="material-icons">visibility</span> Ver
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Reporte de Solicitudes Externas -->
+                        <div class="report-card">
+                            <div class="report-header">
+                                <div class="report-icon">
+                                    <span class="material-icons">public</span>
+                                </div>
+                                <div class="report-title">
+                                    <h4>Solicitudes Externas</h4>
+                                    <p>Solicitudes de usuarios externos</p>
+                                </div>
+                            </div>
+                            <div class="report-body">
+                                <div class="report-stats">
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">28</div>
+                                        <div class="report-stat-label">Solicitudes</div>
+                                    </div>
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">18</div>
+                                        <div class="report-stat-label">Aprobadas</div>
+                                    </div>
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">5</div>
+                                        <div class="report-stat-label">Pendientes</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="report-actions">
+                                <button class="btn-report pdf" onclick="downloadPDF('externos')">
+                                    <span class="material-icons">picture_as_pdf</span> PDF
+                                </button>
+                                <button class="btn-report excel" onclick="downloadExcel('externos')">
+                                    <span class="material-icons">table_chart</span> Excel
+                                </button>
+                                <button class="btn-report view" onclick="viewReport('externos')">
+                                    <span class="material-icons">visibility</span> Ver
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Reporte General -->
+                        <div class="report-card">
+                            <div class="report-header">
+                                <div class="report-icon">
+                                    <span class="material-icons">summarize</span>
+                                </div>
+                                <div class="report-title">
+                                    <h4>Reporte General</h4>
+                                    <p>Resumen ejecutivo del sistema</p>
+                                </div>
+                            </div>
+                            <div class="report-body">
+                                <div class="report-stats">
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">A+</div>
+                                        <div class="report-stat-label">Calificación</div>
+                                    </div>
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">98%</div>
+                                        <div class="report-stat-label">Disponibilidad</div>
+                                    </div>
+                                    <div class="report-stat">
+                                        <div class="report-stat-value">4.8</div>
+                                        <div class="report-stat-label">Satisfacción</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="report-actions">
+                                <button class="btn-report pdf" onclick="downloadPDF('general')">
+                                    <span class="material-icons">picture_as_pdf</span> PDF
+                                </button>
+                                <button class="btn-report excel" onclick="downloadExcel('general')">
+                                    <span class="material-icons">table_chart</span> Excel
+                                </button>
+                                <button class="btn-report view" onclick="viewReport('general')">
+                                    <span class="material-icons">visibility</span> Ver
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div> <!-- /.app-content -->
+    </div> <!-- /.app-layout -->
+
+    <!-- View Report Modal -->
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><span class="material-icons">assessment</span> <span id="modalTitle">Reporte</span></h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalContent">
+                <!-- Report content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-report pdf" onclick="downloadPDF(currentReportType)">
+                    <span class="material-icons">picture_as_pdf</span> Descargar PDF
+                </button>
+                <button class="btn-report excel" onclick="downloadExcel(currentReportType)">
+                    <span class="material-icons">table_chart</span> Descargar Excel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        let currentReportType = '';
+
+        // Sidebar functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const appLayout = document.querySelector('.app-layout');
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                appLayout.classList.toggle('sidebar-collapsed');
+            });
+        }
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                sidebar.classList.add('mobile-open');
+                sidebarOverlay.classList.add('active');
+            });
+        }
+
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', () => {
+                sidebar.classList.remove('mobile-open');
+                sidebarOverlay.classList.remove('active');
+            });
+        }
+
+        // Report data
+        const reportData = {
+            eventos: {
+                title: 'Reporte de Eventos',
+                headers: ['ID', 'Evento', 'Fecha', 'Ubicación', 'Organizador', 'Estado'],
+                rows: [
+                    ['E001', 'VII CTF EMI 2025', '10 Oct 2025', 'Lab. Computación', 'Dr. Carlos Mendoza', 'completed'],
+                    ['E002', 'Campaña de Arborización', '15 Nov 2025', 'Playón Irpavi', 'Lic. Ana García', 'pending'],
+                    ['E003', 'Taller de Robótica', '05 Nov 2025', 'Lab. Robótica', 'Ing. Roberto Silva', 'pending'],
+                    ['E004', 'Seminario de IA', '20 Oct 2025', 'Auditorio Principal', 'Dr. Mendoza', 'completed'],
+                    ['E005', 'Festival Cultural', '25 Nov 2025', 'Patio Central', 'Dept. Cultural', 'pending']
+                ]
+            },
+            asistencia: {
+                title: 'Reporte de Asistencia',
+                headers: ['Evento', 'Fecha', 'Inscritos', 'Asistieron', '% Asistencia', 'Certificados'],
+                rows: [
+                    ['VII CTF EMI 2025', '10 Oct 2025', '80', '75', '94%', '75'],
+                    ['Congreso DEEPTECH', '08 Sep 2025', '150', '142', '95%', '142'],
+                    ['Taller Arduino', '15 Sep 2025', '25', '22', '88%', '22'],
+                    ['Seminario Python', '20 Sep 2025', '60', '48', '80%', '48'],
+                    ['Hackathon EMI', '01 Oct 2025', '45', '43', '96%', '43']
+                ]
+            },
+            espacios: {
+                title: 'Reporte de Espacios',
+                headers: ['Espacio', 'Ubicación', 'Capacidad', 'Reservas', 'Ocupación', 'Estado'],
+                rows: [
+                    ['Auditorio Principal', 'Bloque A', '200', '45', '85%', 'completed'],
+                    ['Lab. Computación', 'Bloque B', '30', '120', '92%', 'completed'],
+                    ['Sala de Conferencias', 'Bloque Admin', '50', '28', '65%', 'pending'],
+                    ['Cancha Deportiva', 'Área Deportiva', '500', '15', '40%', 'completed'],
+                    ['Salón de Honor', 'Edificio Principal', '100', '22', '78%', 'completed']
+                ]
+            },
+            usuarios: {
+                title: 'Reporte de Usuarios',
+                headers: ['Usuario', 'Tipo', 'Carrera/Área', 'Eventos Asistidos', 'Última Actividad', 'Estado'],
+                rows: [
+                    ['María Fernandez', 'Estudiante', 'Ing. Sistemas', '12', '15 Oct 2025', 'completed'],
+                    ['Dr. Carlos Mendoza', 'Docente', 'Dpto. Sistemas', '8', '14 Oct 2025', 'completed'],
+                    ['Juan Pérez', 'Estudiante', 'Ing. Civil', '5', '10 Oct 2025', 'completed'],
+                    ['Lic. Ana García', 'Docente', 'Dpto. Ambiental', '6', '12 Oct 2025', 'completed'],
+                    ['Pedro López', 'Externo', 'Empresa ABC', '2', '08 Oct 2025', 'pending']
+                ]
+            },
+            externos: {
+                title: 'Solicitudes de Usuarios Externos',
+                headers: ['Solicitante', 'Empresa', 'Evento', 'Fecha Solicitud', 'Espacio', 'Estado'],
+                rows: [
+                    ['Juan Rodríguez', 'Tech Corp', 'Conferencia IA', '01 Oct 2025', 'Auditorio', 'completed'],
+                    ['María Luna', 'StartupXYZ', 'Demo Day', '05 Oct 2025', 'Sala Conf.', 'pending'],
+                    ['Carlos Quispe', 'YPFB', 'Capacitación', '08 Oct 2025', 'Lab. Comp', 'completed'],
+                    ['Ana Mamani', 'BancoNacional', 'Seminario', '10 Oct 2025', 'Auditorio', 'pending'],
+                    ['Luis Flores', 'MinEducación', 'Taller', '12 Oct 2025', 'Sala Conf.', 'cancelled']
+                ]
+            },
+            general: {
+                title: 'Reporte General del Sistema',
+                headers: ['Métrica', 'Valor Actual', 'Meta', 'Cumplimiento', 'Tendencia', 'Estado'],
+                rows: [
+                    ['Eventos Realizados', '142', '150', '95%', '↑ +12%', 'completed'],
+                    ['Satisfacción Usuario', '4.8/5', '4.5/5', '107%', '↑ +5%', 'completed'],
+                    ['Ocupación Espacios', '78%', '80%', '98%', '↑ +8%', 'pending'],
+                    ['Tiempo Respuesta', '2.1s', '3s', '143%', '↓ -15%', 'completed'],
+                    ['Usuarios Activos', '347', '300', '116%', '↑ +22%', 'completed']
+                ]
+            }
+        };
+
+        function applyFilters() {
+            showToast('Filtros aplicados correctamente', 'success');
+        }
+
+        function viewReport(type) {
+            currentReportType = type;
+            const data = reportData[type];
+            if (!data) return;
+
+            document.getElementById('modalTitle').textContent = data.title;
+            
+            let tableHTML = `
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            ${data.headers.map(h => `<th>${h}</th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.rows.map(row => `
+                            <tr>
+                                ${row.map((cell, i) => {
+                                    if (i === row.length - 1) {
+                                        const statusClass = cell === 'completed' ? 'completed' : cell === 'pending' ? 'pending' : 'cancelled';
+                                        const statusText = cell === 'completed' ? 'Completado' : cell === 'pending' ? 'Pendiente' : 'Cancelado';
+                                        return `<td><span class="status-badge ${statusClass}">${statusText}</span></td>`;
+                                    }
+                                    return `<td>${cell}</td>`;
+                                }).join('')}
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('modalContent').innerHTML = tableHTML;
+            document.getElementById('reportModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('reportModal').classList.remove('active');
+        }
+
+        function downloadPDF(type) {
+            const btn = event.target.closest('button');
+            btn.classList.add('downloading');
+            
+            showToast('Generando PDF...', 'info');
+            
+            setTimeout(() => {
+                btn.classList.remove('downloading');
+                
+                // Create a simple PDF download simulation
+                const data = reportData[type];
+                const content = `SIGEVEN - ${data ? data.title : 'Reporte'}\n\nGenerado: ${new Date().toLocaleString()}\n\n` +
+                    `Este es un reporte simulado del sistema SIGEVEN.\n` +
+                    `Para un sistema en producción, aquí se generaría el PDF completo con todos los datos.`;
+                
+                const blob = new Blob([content], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `reporte_${type}_${new Date().toISOString().split('T')[0]}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                showToast('PDF descargado exitosamente', 'success');
+            }, 1500);
+        }
+
+        function downloadExcel(type) {
+            const btn = event.target.closest('button');
+            btn.classList.add('downloading');
+            
+            showToast('Generando Excel...', 'info');
+            
+            setTimeout(() => {
+                btn.classList.remove('downloading');
+                
+                // Create CSV content (Excel compatible)
+                const data = reportData[type];
+                if (!data) return;
+                
+                let csvContent = data.headers.join(',') + '\n';
+                data.rows.forEach(row => {
+                    csvContent += row.map(cell => {
+                        if (cell === 'completed') return 'Completado';
+                        if (cell === 'pending') return 'Pendiente';
+                        if (cell === 'cancelled') return 'Cancelado';
+                        return `"${cell}"`;
+                    }).join(',') + '\n';
+                });
+                
+                const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `reporte_${type}_${new Date().toISOString().split('T')[0]}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                showToast('Excel descargado exitosamente', 'success');
+            }, 1500);
+        }
+
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const icon = type === 'success' ? 'check_circle' : type === 'error' ? 'error' : 'info';
+            toast.innerHTML = `<span class="material-icons">${icon}</span> ${message}`;
+            toast.className = `toast show ${type}`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

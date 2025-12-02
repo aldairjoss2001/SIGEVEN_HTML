@@ -123,7 +123,7 @@
             </div>
             <div class="card-content">
               <div class="event-list">
-                <div class="event-item">
+                <div class="event-item" data-event-id="1">
                   <div class="event-date">
                     <span class="day">15</span>
                     <span class="month">DIC</span>
@@ -139,7 +139,7 @@
                   </div>
                 </div>
                 
-                <div class="event-item">
+                <div class="event-item" data-event-id="2">
                   <div class="event-date">
                     <span class="day">20</span>
                     <span class="month">DIC</span>
@@ -149,13 +149,19 @@
                     <p><span class="material-icons">schedule</span> 09:00 - 13:00</p>
                     <p><span class="material-icons">location_on</span> Auditorio Principal</p>
                   </div>
-                  <div class="event-status pending">
-                    <span class="material-icons">hourglass_empty</span>
-                    Pendiente
+                  <div class="event-status">
+                    <button class="btn-confirm" onclick="confirmarAsistencia(2)">
+                      <span class="material-icons">check_circle</span>
+                      Confirmar
+                    </button>
+                    <button class="btn-reject" onclick="rechazarAsistencia(2)">
+                      <span class="material-icons">cancel</span>
+                      Rechazar
+                    </button>
                   </div>
                 </div>
                 
-                <div class="event-item">
+                <div class="event-item" data-event-id="3">
                   <div class="event-date">
                     <span class="day">28</span>
                     <span class="month">DIC</span>
@@ -167,8 +173,12 @@
                   </div>
                   <div class="event-status">
                     <button class="btn-confirm" onclick="confirmarAsistencia(3)">
-                      <span class="material-icons">add_task</span>
+                      <span class="material-icons">check_circle</span>
                       Confirmar
+                    </button>
+                    <button class="btn-reject" onclick="rechazarAsistencia(3)">
+                      <span class="material-icons">cancel</span>
+                      Rechazar
                     </button>
                   </div>
                 </div>
@@ -258,8 +268,59 @@
       });
     }
 
+    // Load saved event states from localStorage
+    function loadEventStates() {
+      const savedStates = localStorage.getItem('eventStates');
+      if (savedStates) {
+        const states = JSON.parse(savedStates);
+        Object.keys(states).forEach(eventId => {
+          updateEventUI(eventId, states[eventId]);
+        });
+      }
+    }
+
+    // Save event state to localStorage
+    function saveEventState(eventId, state) {
+      const savedStates = JSON.parse(localStorage.getItem('eventStates') || '{}');
+      savedStates[eventId] = state;
+      localStorage.setItem('eventStates', JSON.stringify(savedStates));
+    }
+
+    // Update UI based on state
+    function updateEventUI(eventId, state) {
+      const eventItem = document.querySelector(`[data-event-id="${eventId}"]`);
+      if (!eventItem) return;
+      
+      const statusContainer = eventItem.querySelector('.event-status');
+      if (!statusContainer) return;
+      
+      if (state === 'confirmed') {
+        statusContainer.classList.add('confirmed');
+        statusContainer.classList.remove('rejected');
+        statusContainer.innerHTML = `
+          <span class="material-icons">check_circle</span>
+          Confirmado
+        `;
+      } else if (state === 'rejected') {
+        statusContainer.classList.add('rejected');
+        statusContainer.classList.remove('confirmed');
+        statusContainer.innerHTML = `
+          <span class="material-icons">cancel</span>
+          Rechazado
+        `;
+      }
+    }
+
     function confirmarAsistencia(eventId) {
+      saveEventState(eventId, 'confirmed');
+      updateEventUI(eventId, 'confirmed');
       showToast('¡Asistencia confirmada exitosamente!', 'success');
+    }
+
+    function rechazarAsistencia(eventId) {
+      saveEventState(eventId, 'rejected');
+      updateEventUI(eventId, 'rejected');
+      showToast('Asistencia rechazada', 'warning');
     }
 
     function buscarEventos() {
@@ -272,6 +333,9 @@
       toast.className = `toast show ${type}`;
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
+
+    // Load saved states on page load
+    document.addEventListener('DOMContentLoaded', loadEventStates);
   </script>
 
   <style>
@@ -465,7 +529,7 @@
       display: flex;
       align-items: center;
       gap: 0.25rem;
-      background: var(--azul-institucional);
+      background: #22c55e;
       color: white;
       border: none;
       padding: 0.5rem 1rem;
@@ -477,8 +541,33 @@
     }
 
     .btn-confirm:hover {
-      background: #1e4d8c;
+      background: #16a34a;
       transform: scale(1.05);
+    }
+
+    .btn-reject {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-reject:hover {
+      background: #dc2626;
+      transform: scale(1.05);
+    }
+
+    .event-status.rejected {
+      background: #fee2e2;
+      color: #991b1b;
     }
 
     .page-footer {

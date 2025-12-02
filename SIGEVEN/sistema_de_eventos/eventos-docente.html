@@ -281,10 +281,40 @@
 
     function generarReporte() {
       showToast('Generando reporte de asistencia...', 'info');
+      
+      // Create PDF content
+      setTimeout(() => {
+        const content = `SIGEVEN - Reporte de Asistencia\n\nGenerado: ${new Date().toLocaleString()}\n\nEste es un reporte simulado del sistema SIGEVEN.`;
+        const blob = new Blob([content], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `reporte_asistencia_${new Date().toISOString().split('T')[0]}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('Reporte PDF descargado exitosamente', 'success');
+      }, 1000);
     }
 
     function exportarExcel() {
-      showToast('Exportando a Excel...', 'success');
+      showToast('Exportando a Excel...', 'info');
+      
+      // Create CSV content
+      setTimeout(() => {
+        const csvContent = `Evento,Fecha,Asistentes,Capacidad,% Asistencia\n"CTF EMI 2025","15/12/2025","45","80","56%"\n"Seminario IA","20/12/2025","60","100","60%"\n"Taller Robótica","28/12/2025","25","30","83%"`;
+        const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `reporte_eventos_${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('Excel descargado exitosamente', 'success');
+      }, 1000);
     }
 
     function showToast(message, type = 'info') {

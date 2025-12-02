@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Usuario Externo - SIGEVEN</title>
+    <link rel="stylesheet" href="css/login-general.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .register-card {
+            max-width: 600px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        
+        .step.active .step-number {
+            background: #163E8C;
+            color: white;
+        }
+        
+        .step.completed .step-number {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        
+        .step.active .step-label {
+            color: #163E8C;
+            font-weight: 600;
+        }
+        
+        .step-divider {
+            width: 40px;
+            height: 2px;
+            background: #e2e8f0;
+        }
+        
+        .form-step {
+            display: none;
+        }
+        
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 0.125rem;
+        }
+        
+        .checkbox-item label {
+            font-size: 0.9rem;
+            color: #475569;
+            cursor: pointer;
+        }
+        
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .btn-prev,
+        .btn-next {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-prev {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        
+        .btn-prev:hover {
+            background: #cbd5e1;
+        }
+        
+        .btn-next {
+            background: #163E8C;
+            color: white;
+            margin-left: auto;
+        }
+        
+        .btn-next:hover {
+            background: #1e50b5;
+        }
+        
+        .success-message {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #dcfce7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .success-icon .material-icons {
+            font-size: 3rem;
+            color: #22c55e;
+        }
+        
+        .success-message h3 {
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .success-message p {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+        
+        .file-upload {
+            border: 2px dashed #e2e8f0;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload:hover {
+            border-color: #163E8C;
+            background: #f8fafc;
+        }
+        
+        .file-upload .material-icons {
+            font-size: 2.5rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .file-upload p {
+            color: #64748b;
+            margin: 0.5rem 0 0;
+            font-size: 0.85rem;
+        }
+        
+        .file-upload input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-page">
+        <!-- Left Side - Branding -->
+        <div class="login-branding">
+            <div class="branding-content">
+                <a href="pantalla-informativa.html" class="back-link">
+                    <span class="material-icons">arrow_back</span>
+                    Volver al Inicio
+                </a>
+                
+                <div class="branding-main">
+                    <img src="sigeven_logo.png" alt="C-Heaven Logo SIGEVEN" class="branding-logo">
+                    <h1>SIGEVEN</h1>
+                    <p class="branding-tagline">Registro de Usuario Externo</p>
+                    <p class="branding-description">
+                        Regístrate como usuario externo para solicitar espacios 
+                        y participar en eventos de la EMI.
+                    </p>
+                </div>
+                
+                <div class="branding-features">
+                    <div class="feature-item">
+                        <span class="material-icons">meeting_room</span>
+                        <span>Solicitar Espacios</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="material-icons">event</span>
+                        <span>Organizar Eventos</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="material-icons">verified</span>
+                        <span>Verificación Segura</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Register Form -->
+        <div class="login-form-container">
+            <div class="login-card register-card">
+                <div class="login-header">
+                    <div class="logo-mobile">
+                        <img src="sigeven_logo.png" alt="C-Heaven Logo" class="mobile-logo">
+                    </div>
+                    <h2>Registro de Usuario Externo</h2>
+                    <p>Completa el formulario para crear tu cuenta</p>
+                </div>
+
+                <!-- Step Indicator -->
+                <div class="step-indicator">
+                    <div class="step active" id="step-1-indicator">
+                        <span class="step-number">1</span>
+                        <span class="step-label">Datos</span>
+                    </div>
+                    <div class="step-divider"></div>
+                    <div class="step" id="step-2-indicator">
+                        <span class="step-number">2</span>
+                        <span class="step-label">Verificación</span>
+                    </div>
+                    <div class="step-divider"></div>
+                    <div class="step" id="step-3-indicator">
+                        <span class="step-number">3</span>
+                        <span class="step-label">Confirmar</span>
+                    </div>
+                </div>
+
+                <!-- Registration Form -->
+                <form id="registerForm">
+                    <!-- Step 1: Personal Data -->
+                    <div class="form-step active" id="step-1">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName" class="required">
+                                    <span class="material-icons">person</span>
+                                    <span>Nombres</span>
+                                </label>
+                                <input type="text" id="firstName" name="firstName" required placeholder="Tus nombres">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName" class="required">
+                                    <span class="material-icons">person</span>
+                                    <span>Apellidos</span>
+                                </label>
+                                <input type="text" id="lastName" name="lastName" required placeholder="Tus apellidos">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="required">
+                                <span class="material-icons">email</span>
+                                <span>Correo Electrónico</span>
+                            </label>
+                            <input type="email" id="email" name="email" required placeholder="correo@ejemplo.com">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone" class="required">
+                                    <span class="material-icons">phone</span>
+                                    <span>Teléfono</span>
+                                </label>
+                                <input type="tel" id="phone" name="phone" required placeholder="+591 70000000">
+                            </div>
+                            <div class="form-group">
+                                <label for="idNumber" class="required">
+                                    <span class="material-icons">badge</span>
+                                    <span>Carnet de Identidad</span>
+                                </label>
+                                <input type="text" id="idNumber" name="idNumber" required placeholder="12345678">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="organization" class="required">
+                                <span class="material-icons">business</span>
+                                <span>Empresa/Organización</span>
+                            </label>
+                            <input type="text" id="organization" name="organization" required placeholder="Nombre de la empresa u organización">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="position">
+                                <span class="material-icons">work</span>
+                                <span>Cargo</span>
+                            </label>
+                            <input type="text" id="position" name="position" placeholder="Tu cargo en la organización">
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Verification -->
+                    <div class="form-step" id="step-2">
+                        <div class="form-group">
+                            <label>
+                                <span class="material-icons">upload_file</span>
+                                <span>Documento de Identidad (Carnet)</span>
+                            </label>
+                            <div class="file-upload" onclick="document.getElementById('idDocument').click()">
+                                <span class="material-icons">cloud_upload</span>
+                                <p>Haz clic para subir o arrastra el archivo</p>
+                                <p>PDF, JPG o PNG (Máx. 5MB)</p>
+                                <input type="file" id="idDocument" accept=".pdf,.jpg,.jpeg,.png">
+                            </div>
+                            <span class="help-text" id="idDocumentName"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <span class="material-icons">description</span>
+                                <span>Carta de Solicitud (Opcional)</span>
+                            </label>
+                            <div class="file-upload" onclick="document.getElementById('requestLetter').click()">
+                                <span class="material-icons">cloud_upload</span>
+                                <p>Carta firmada por autoridad de la organización</p>
+                                <p>PDF (Máx. 5MB)</p>
+                                <input type="file" id="requestLetter" accept=".pdf">
+                            </div>
+                            <span class="help-text" id="requestLetterName"></span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="password" class="required">
+                                    <span class="material-icons">lock</span>
+                                    <span>Contraseña</span>
+                                </label>
+                                <input type="password" id="password" name="password" required minlength="8" placeholder="Mínimo 8 caracteres">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword" class="required">
+                                    <span class="material-icons">lock</span>
+                                    <span>Confirmar Contraseña</span>
+                                </label>
+                                <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Repite la contraseña">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Confirmation -->
+                    <div class="form-step" id="step-3">
+                        <div class="form-group">
+                            <label>
+                                <span class="material-icons">fact_check</span>
+                                <span>Términos y Condiciones</span>
+                            </label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="terms" required>
+                                    <label for="terms">Acepto los <a href="#" style="color: #163E8C;">Términos y Condiciones</a> de uso del sistema SIGEVEN</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="privacy" required>
+                                    <label for="privacy">Acepto la <a href="#" style="color: #163E8C;">Política de Privacidad</a> y el tratamiento de mis datos personales</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="notifications">
+                                    <label for="notifications">Deseo recibir notificaciones sobre eventos y actividades de la EMI</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                            <h4 style="color: #163E8C; margin: 0 0 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span class="material-icons">info</span> Información Importante
+                            </h4>
+                            <ul style="color: #64748b; font-size: 0.9rem; margin: 0; padding-left: 1.5rem;">
+                                <li>Tu solicitud será revisada por el administrador del sistema</li>
+                                <li>Recibirás un correo de confirmación una vez aprobada</li>
+                                <li>El proceso de verificación puede tomar hasta 48 horas hábiles</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Success Message -->
+                    <div class="form-step" id="step-success">
+                        <div class="success-message">
+                            <div class="success-icon">
+                                <span class="material-icons">check</span>
+                            </div>
+                            <h3>¡Registro Exitoso!</h3>
+                            <p>Tu solicitud ha sido enviada correctamente. Recibirás un correo de confirmación cuando tu cuenta sea verificada.</p>
+                            <a href="login-general.html" class="btn-login" style="display: inline-flex; text-decoration: none;">
+                                <span class="material-icons">login</span>
+                                <span>Ir a Iniciar Sesión</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Form Navigation -->
+                    <div class="form-navigation" id="formNavigation">
+                        <button type="button" class="btn-prev" id="btnPrev" onclick="prevStep()" style="display: none;">
+                            <span class="material-icons">arrow_back</span>
+                            Anterior
+                        </button>
+                        <button type="button" class="btn-next" id="btnNext" onclick="nextStep()">
+                            Siguiente
+                            <span class="material-icons">arrow_forward</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Already have account -->
+                <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0;">
+                    <p style="color: #64748b; margin: 0;">
+                        ¿Ya tienes cuenta? 
+                        <a href="login-general.html" style="color: #163E8C; font-weight: 600; text-decoration: none;">Iniciar Sesión</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="login-footer">
+                <div class="footer-info">
+                    <div class="footer-section">
+                        <h5>EMI Central</h5>
+                        <p><span class="material-icons">location_on</span> Av. Arce No. 2642, Zona San Jorge, La Paz Bolivia</p>
+                    </div>
+                    <div class="footer-section">
+                        <h5>Unidades Académicas</h5>
+                        <p>La Paz • Santa Cruz • Cochabamba • Riberalta • Trópico</p>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>2025 © Escuela Militar de Ingeniería | Última actualización: 15/09/2025</p>
+                    <div class="footer-links">
+                        <a href="#">Ministerio de Defensa</a>
+                        <a href="#">Ejército de Bolivia</a>
+                        <a href="#">CEUB</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 3;
+
+        function updateStepIndicator() {
+            for (let i = 1; i <= totalSteps; i++) {
+                const indicator = document.getElementById(`step-${i}-indicator`);
+                indicator.classList.remove('active', 'completed');
+                
+                if (i < currentStep) {
+                    indicator.classList.add('completed');
+                    indicator.querySelector('.step-number').innerHTML = '<span class="material-icons" style="font-size: 1rem;">check</span>';
+                } else if (i === currentStep) {
+                    indicator.classList.add('active');
+                    indicator.querySelector('.step-number').textContent = i;
+                } else {
+                    indicator.querySelector('.step-number').textContent = i;
+                }
+            }
+        }
+
+        function showStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+            
+            // Show current step
+            document.getElementById(`step-${step}`).classList.add('active');
+            
+            // Update buttons
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+            const formNav = document.getElementById('formNavigation');
+            
+            if (step === 'success') {
+                formNav.style.display = 'none';
+            } else {
+                formNav.style.display = 'flex';
+                btnPrev.style.display = step > 1 ? 'flex' : 'none';
+                
+                if (step === totalSteps) {
+                    btnNext.innerHTML = '<span class="material-icons">check</span> Registrarse';
+                } else {
+                    btnNext.innerHTML = 'Siguiente <span class="material-icons">arrow_forward</span>';
+                }
+            }
+            
+            updateStepIndicator();
+        }
+
+        function validateStep(step) {
+            if (step === 1) {
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const idNumber = document.getElementById('idNumber').value;
+                const organization = document.getElementById('organization').value;
+
+                if (!firstName || !lastName || !email || !phone || !idNumber || !organization) {
+                    showToast('Por favor completa todos los campos obligatorios', 'error');
+                    return false;
+                }
+
+                if (!email.includes('@')) {
+                    showToast('Por favor ingresa un correo electrónico válido', 'error');
+                    return false;
+                }
+            }
+
+            if (step === 2) {
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+
+                if (password.length < 8) {
+                    showToast('La contraseña debe tener al menos 8 caracteres', 'error');
+                    return false;
+                }
+
+                if (password !== confirmPassword) {
+                    showToast('Las contraseñas no coinciden', 'error');
+                    return false;
+                }
+            }
+
+            if (step === 3) {
+                const terms = document.getElementById('terms').checked;
+                const privacy = document.getElementById('privacy').checked;
+
+                if (!terms || !privacy) {
+                    showToast('Debes aceptar los términos y la política de privacidad', 'error');
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        function nextStep() {
+            if (!validateStep(currentStep)) return;
+
+            if (currentStep < totalSteps) {
+                currentStep++;
+                showStep(currentStep);
+            } else {
+                // Submit form
+                submitRegistration();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        function submitRegistration() {
+            const btnNext = document.getElementById('btnNext');
+            btnNext.innerHTML = '<span class="material-icons spinning">sync</span> Enviando...';
+            btnNext.disabled = true;
+
+            // Simulate registration
+            setTimeout(() => {
+                showStep('success');
+                showToast('¡Registro completado exitosamente!', 'success');
+            }, 2000);
+        }
+
+        // File upload handlers
+        document.getElementById('idDocument').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || '';
+            document.getElementById('idDocumentName').textContent = fileName ? `Archivo: ${fileName}` : '';
+        });
+
+        document.getElementById('requestLetter').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || '';
+            document.getElementById('requestLetterName').textContent = fileName ? `Archivo: ${fileName}` : '';
+        });
+
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast show ${type}`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize
+        showStep(1);
+    </script>
+</body>
+</html>
