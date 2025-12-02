@@ -6,6 +6,7 @@
     <title>Configuración - SIGEVEN</title>
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/global-darkmode.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
@@ -362,6 +363,7 @@
     </style>
 </head>
 <body class="admin-dashboard">
+  <script>(function(){if(localStorage.getItem("darkMode")==="true")document.body.classList.add("dark-mode");})();</script>
     <div class="app-layout">
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">

@@ -197,12 +197,12 @@
             if (/^E\d{5}-\d$/.test(upperCode)) {
                 return 'estudiante';
             }
-            // D followed by digits = Docente
-            if (/^D\d{4,5}-?\d?$/.test(upperCode) || upperCode.startsWith('D') && upperCode.length > 2) {
+            // D followed by 5 digits, dash, digit = Docente
+            if (/^D\d{5}-\d$/.test(upperCode)) {
                 return 'docente';
             }
-            // ADMIN or admin-like codes
-            if (upperCode === 'ADMIN' || upperCode.startsWith('ADM') || /^A\d+/.test(upperCode)) {
+            // ADMIN exactly = Administrador
+            if (upperCode === 'ADMIN') {
                 return 'admin';
             }
             

@@ -603,12 +603,12 @@
     <script>
       // ========== DARK MODE ==========
       // Apply dark mode on page load
-      document.addEventListener('DOMContentLoaded', function() {
+      (function() {
         const darkMode = localStorage.getItem('darkMode') === 'true';
         if (darkMode) {
           document.body.classList.add('dark-mode');
         }
-      });
+      })();
       
       // Sidebar functionality
       const sidebar = document.getElementById('sidebar');
