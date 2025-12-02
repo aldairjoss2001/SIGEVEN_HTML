@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrativo - SIGEVEN</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="admin-dashboard">
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="pantalla-informativa.html" class="sidebar-brand">
+                    <img src="sigeven_logo.png" alt="C-Heaven Logo" class="sidebar-logo">
+                    <div class="sidebar-brand-text">
+                        <h2>SIGEVEN</h2>
+                        <span>Administrador</span>
+                    </div>
+                </a>
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú">
+                    <span class="material-icons">chevron_left</span>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <a href="panel-admin.html" class="sidebar-menu-link active" data-tooltip="Dashboard">
+                            <span class="material-icons">dashboard</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="gestion-eventos-admin.html" class="sidebar-menu-link" data-tooltip="Gestión de Eventos">
+                            <span class="material-icons">event_note</span>
+                            <span>Gestión de Eventos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="#" class="sidebar-menu-link" data-tooltip="Espacios">
+                            <span class="material-icons">meeting_room</span>
+                            <span>Espacios</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="#" class="sidebar-menu-link" data-tooltip="Reportes">
+                            <span class="material-icons">analytics</span>
+                            <span>Reportes</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="#" class="sidebar-menu-link" data-tooltip="Usuarios">
+                            <span class="material-icons">people</span>
+                            <span>Usuarios</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="sidebar-section">
+                    <span class="sidebar-section-title">Sistema</span>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-menu-item">
+                            <a href="#" class="sidebar-menu-link" data-tooltip="Configuración">
+                                <span class="material-icons">settings</span>
+                                <span>Configuración</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">
+                    <span class="material-icons">admin_panel_settings</span>
+                </div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Administrador</div>
+                    <div class="sidebar-user-role">Admin</div>
+                </div>
+            </div>
+            
+            <a href="login-general.html" class="sidebar-logout" data-tooltip="Cerrar Sesión">
+                <span class="material-icons">logout</span>
+                <span>Cerrar Sesión</span>
+            </a>
+        </aside>
+        
+        <!-- Sidebar Overlay for Mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- Main Content -->
+        <div class="app-content">
+            <!-- Mobile Header -->
+            <header class="mobile-header">
+                <div class="mobile-header-inner">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+                        <span class="material-icons">menu</span>
+                    </button>
+                    <div class="mobile-brand">
+                        <img src="sigeven_logo.png" alt="Logo">
+                        <h2>SIGEVEN</h2>
+                    </div>
+                    <div></div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="admin-main">
+                <div class="admin-container">
+                    <!-- Welcome Section -->
+                    <section class="welcome-section">
+                        <h2>Bienvenido, Administrador</h2>
+                        <p>Resumen general del sistema de eventos universitarios</p>
+                    </section>
+
+                    <!-- Stats Grid -->
+                    <section class="stats-section">
+                        <h3 class="section-title">Métricas del Sistema</h3>
+                        <div class="stats-grid">
+                            <!-- Eventos Pendientes -->
+                            <div class="stat-card urgent">
+                                <div class="stat-icon"><span class="material-icons">pending_actions</span></div>
+                                <div class="stat-content">
+                                    <span class="stat-number">8</span>
+                                    <span class="stat-label">Eventos Pendientes</span>
+                                </div>
+                                <div class="stat-badge">Revisión Requerida</div>
+                            </div>
+
+                            <!-- Eventos Esta Semana -->
+                            <div class="stat-card">
+                                <div class="stat-icon"><span class="material-icons">date_range</span></div>
+                                <div class="stat-content">
+                                    <span class="stat-number">12</span>
+                                    <span class="stat-label">Eventos Esta Semana</span>
+                                </div>
+                            </div>
+
+                            <!-- Espacios Ocupados -->
+                            <div class="stat-card">
+                                <div class="stat-icon"><span class="material-icons">business</span></div>
+                                <div class="stat-content">
+                                    <span class="stat-number">15/25</span>
+                                    <span class="stat-label">Espacios Ocupados</span>
+                                </div>
+                            </div>
+
+                            <!-- Total Usuarios -->
+                            <div class="stat-card">
+                                <div class="stat-icon"><span class="material-icons">groups</span></div>
+                                <div class="stat-content">
+                                    <span class="stat-number">347</span>
+                                    <span class="stat-label">Usuarios Activos</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Quick Actions -->
+                    <section class="actions-section">
+                        <h3 class="section-title">Acciones Rápidas</h3>
+                        <div class="actions-grid">
+                            <a href="gestion-eventos-admin.html" class="action-card">
+                                <div class="action-icon"><span class="material-icons">fact_check</span></div>
+                                <div class="action-content">
+                                    <h4>Revisar Eventos</h4>
+                                    <p>Gestionar solicitudes pendientes</p>
+                                </div>
+                                <div class="action-badge">8 nuevos</div>
+                            </a>
+
+                            <a href="#" class="action-card">
+                                <div class="action-icon"><span class="material-icons">location_city</span></div>
+                                <div class="action-content">
+                                    <h4>Espacios</h4>
+                                    <p>Gestionar ubicaciones</p>
+                                </div>
+                            </a>
+
+                            <a href="#" class="action-card">
+                                <div class="action-icon"><span class="material-icons">assessment</span></div>
+                                <div class="action-content">
+                                    <h4>Reportes</h4>
+                                    <p>Ver estadísticas del sistema</p>
+                                </div>
+                            </a>
+
+                            <a href="#" class="action-card">
+                                <div class="action-icon"><span class="material-icons">tune</span></div>
+                                <div class="action-content">
+                                    <h4>Configuración</h4>
+                                    <p>Ajustes del sistema</p>
+                                </div>
+                            </a>
+                        </div>
+                    </section>
+
+                    <!-- Recent Activity -->
+                    <section class="activity-section">
+                        <h3 class="section-title">Actividad Reciente</h3>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon"><span class="material-icons">edit_note</span></div>
+                                <div class="activity-content">
+                                    <p><strong>Dr. Carlos Mendoza</strong> creó nuevo evento</p>
+                                    <span class="activity-time">Hace 15 minutos</span>
+                                </div>
+                                <span class="activity-status pending">Pendiente</span>
+                            </div>
+
+                            <div class="activity-item">
+                                <div class="activity-icon"><span class="material-icons">check_circle</span></div>
+                                <div class="activity-content">
+                                    <p><strong>Lic. Ana García</strong> - Evento aprobado</p>
+                                    <span class="activity-time">Hace 2 horas</span>
+                                </div>
+                                <span class="activity-status approved">Aprobado</span>
+                            </div>
+
+                            <div class="activity-item">
+                                <div class="activity-icon"><span class="material-icons">group_add</span></div>
+                                <div class="activity-content">
+                                    <p><strong>25 estudiantes</strong> se inscribieron en CTF</p>
+                                    <span class="activity-time">Hace 4 horas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div> <!-- /.app-content -->
+    </div> <!-- /.app-layout -->
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Sidebar functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const appLayout = document.querySelector('.app-layout');
+
+        // Toggle sidebar on desktop
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                appLayout.classList.toggle('sidebar-collapsed');
+            });
+        }
+
+        // Toggle sidebar on mobile
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                sidebar.classList.add('mobile-open');
+                sidebarOverlay.classList.add('active');
+            });
+        }
+
+        // Close sidebar on overlay click
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', () => {
+                sidebar.classList.remove('mobile-open');
+                sidebarOverlay.classList.remove('active');
+            });
+        }
+
+        // Toast notification function
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast show ${type}`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

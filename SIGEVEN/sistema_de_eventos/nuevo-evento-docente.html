@@ -3,20 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Crear Nuevo Evento - Sistema de Eventos</title>
+  <title>Crear Nuevo Evento - SIGEVEN</title>
   <link rel="stylesheet" href="css/styles.css" />
-  <link rel="stylesheet" href="css/NuevoEvento.css" />
+  <link rel="stylesheet" href="css/nuevo-evento-docente.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
   <!-- Header/Navigation -->
   <header class="header">
     <nav class="nav">
-      <div class="nav-brand"><h2>Eventos EMI</h2></div>
+      <div class="nav-brand">
+        <a href="pantalla-informativa.html" style="display:flex; align-items:center; gap:0.5rem; text-decoration:none;">
+          <img src="sigeven_logo.png" alt="Logo" style="height:40px;">
+          <h2 style="color: var(--azul-institucional);">SIGEVEN</h2>
+        </a>
+      </div>
       <div class="nav-search">
         <input type="text" placeholder="Buscar eventos..." class="search-input">
       </div>
       <div class="nav-icons">
-        <a href="PerfilDocente.html" class="nav-icon">VOLVER AL PERFIL</a>
+        <a href="perfil-docente.html" class="nav-icon"><span class="material-icons" style="vertical-align: middle;">arrow_back</span> VOLVER AL PERFIL</a>
       </div>
     </nav>
   </header>
@@ -48,7 +55,7 @@
       </div>
     </div>
 
-    <form class="event-form" id="eventForm" action="EventoCreado.html" method="GET">
+    <form class="event-form" id="eventForm" action="evento-creado-docente.html" method="GET">
       <!-- Step 1: Basic Information -->
       <div class="form-step active" id="step1">
         <div class="form-section">
@@ -97,7 +104,7 @@
         </div>
 
         <div class="form-actions">
-          <button type="button" class="btn btn-outline" onclick="window.location.href='PerfilDocente.html'">Cancelar</button>
+          <button type="button" class="btn btn-outline" onclick="window.location.href='perfil-docente.html'">Cancelar</button>
           <button type="button" class="btn btn-primary" onclick="showStep(2)">Siguiente</button>
         </div>
       </div>
@@ -467,7 +474,7 @@
         alert('Debe aceptar los términos y condiciones para enviar la solicitud.');
         termsCheckbox.focus();
       }
-      // Si el checkbox está marcado, el formulario se envía normalmente a EventoCreado.html
+      // Si el checkbox está marcado, el formulario se envía normalmente a evento-creado-docente.html
     });
 </script>
 </body>

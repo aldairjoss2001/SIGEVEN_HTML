@@ -3,51 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Eventos - Panel Administrativo</title>
+    <title>Gestión de Eventos - SIGEVEN</title>
     <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body class="admin-dashboard">
-    <!-- Header -->
-    <header class="admin-header">
-        <div class="admin-header-inner">
-            <div class="admin-brand">
-                <span class="admin-logo-icon">⚙️</span>
-                <h1>Panel Administrativo</h1>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="pantalla-informativa.html" class="sidebar-brand">
+                    <img src="sigeven_logo.png" alt="C-Heaven Logo" class="sidebar-logo">
+                    <div class="sidebar-brand-text">
+                        <h2>SIGEVEN</h2>
+                        <span>Administrador</span>
+                    </div>
+                </a>
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú">
+                    <span class="material-icons">chevron_left</span>
+                </button>
             </div>
             
-            <nav class="admin-nav">
-                <a href="index.html" class="nav-link">📊 Dashboard</a>
-                <a href="gestion-eventos.html" class="nav-link active">📋 Gestión de Eventos</a>
-                <a href="../index.html" class="nav-link logout">🚪 Salir</a>
+            <nav class="sidebar-nav">
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <a href="panel-admin.html" class="sidebar-menu-link" data-tooltip="Dashboard">
+                            <span class="material-icons">dashboard</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="gestion-eventos-admin.html" class="sidebar-menu-link active" data-tooltip="Gestión de Eventos">
+                            <span class="material-icons">event_note</span>
+                            <span>Gestión de Eventos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="#" class="sidebar-menu-link" data-tooltip="Espacios">
+                            <span class="material-icons">meeting_room</span>
+                            <span>Espacios</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="#" class="sidebar-menu-link" data-tooltip="Reportes">
+                            <span class="material-icons">analytics</span>
+                            <span>Reportes</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="#" class="sidebar-menu-link" data-tooltip="Usuarios">
+                            <span class="material-icons">people</span>
+                            <span>Usuarios</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="sidebar-section">
+                    <span class="sidebar-section-title">Sistema</span>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-menu-item">
+                            <a href="#" class="sidebar-menu-link" data-tooltip="Configuración">
+                                <span class="material-icons">settings</span>
+                                <span>Configuración</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </nav>
-
-            <div class="admin-user">
-                <span class="user-avatar">👨‍💼</span>
-                <span class="user-name">Admin</span>
+            
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">
+                    <span class="material-icons">admin_panel_settings</span>
+                </div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Administrador</div>
+                    <div class="sidebar-user-role">Admin</div>
+                </div>
             </div>
-        </div>
-    </header>
+            
+            <a href="login-general.html" class="sidebar-logout" data-tooltip="Cerrar Sesión">
+                <span class="material-icons">logout</span>
+                <span>Cerrar Sesión</span>
+            </a>
+        </aside>
+        
+        <!-- Sidebar Overlay for Mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- Main Content -->
+        <div class="app-content">
+            <!-- Mobile Header -->
+            <header class="mobile-header">
+                <div class="mobile-header-inner">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+                        <span class="material-icons">menu</span>
+                    </button>
+                    <div class="mobile-brand">
+                        <img src="sigeven_logo.png" alt="Logo">
+                        <h2>SIGEVEN</h2>
+                    </div>
+                    <div></div>
+                </div>
+            </header>
 
-    <!-- Main Content -->
-    <main class="admin-main">
-        <div class="admin-container">
-            <!-- Header Section -->
-            <section class="welcome-section">
-                <h2>Gestión de Eventos</h2>
-                <p>Revisar y administrar las solicitudes de eventos universitarios</p>
-            </section>
+            <!-- Main Content -->
+            <main class="admin-main">
+                <div class="admin-container">
+                    <!-- Header Section -->
+                    <section class="welcome-section">
+                        <h2>Gestión de Eventos</h2>
+                        <p>Revisar y administrar las solicitudes de eventos universitarios</p>
+                    </section>
 
-            <!-- Filtros y Búsqueda -->
-            <section class="filters-section">
-                <div class="filters-header">
-                    <h3 class="section-title">Eventos Pendientes <span class="badge-count">8</span></h3>
-                    <div class="filters-actions">
-                        <div class="search-box">
-                            <input type="text" placeholder="Buscar eventos..." class="search-input">
-                            <span class="search-icon">🔍</span>
-                        </div>
-                        <select class="filter-select">
-                            <option value="all">Todos los estados</option>
+                    <!-- Filtros y Búsqueda -->
+                    <section class="filters-section">
+                        <div class="filters-header">
+                            <h3 class="section-title">Eventos Pendientes <span class="badge-count">8</span></h3>
+                            <div class="filters-actions">
+                                <div class="search-box">
+                                    <input type="text" placeholder="Buscar eventos..." class="search-input">
+                                    <span class="search-icon"><span class="material-icons">search</span></span>
+                                </div>
+                                <select class="filter-select">
+                                    <option value="all">Todos los estados</option>
                             <option value="pending" selected>Pendientes</option>
                             <option value="approved">Aprobados</option>
                             <option value="rejected">Rechazados</option>
@@ -213,25 +293,30 @@
                 </div>
             </section>
 
-            <!-- Eventos Aprobados (Sección colapsable) -->
-            <section class="approved-events-section">
-                <div class="section-header-collapsible" onclick="toggleSection('approved-events')">
-                    <h3 class="section-title">
-                        Eventos Aprobados 
-                        <span class="badge-count">12</span>
-                        <span class="toggle-icon">▼</span>
-                    </h3>
-                </div>
-                
-                <div id="approved-events" class="events-list-collapsible">
-                    <!-- Eventos aprobados aparecerían aquí -->
-                    <div class="empty-state">
-                        <p>No hay eventos aprobados recientemente</p>
+                <!-- Eventos Aprobados (Sección colapsable) -->
+                <section class="approved-events-section">
+                    <div class="section-header-collapsible" onclick="toggleSection('approved-events')">
+                        <h3 class="section-title">
+                            Eventos Aprobados 
+                            <span class="badge-count">12</span>
+                            <span class="toggle-icon">▼</span>
+                        </h3>
                     </div>
-                </div>
-            </section>
-        </div>
-    </main>
+                    
+                    <div id="approved-events" class="events-list-collapsible">
+                        <!-- Eventos aprobados aparecerían aquí -->
+                        <div class="empty-state">
+                            <p>No hay eventos aprobados recientemente</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+        </div> <!-- /.app-content -->
+    </div> <!-- /.app-layout -->
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
 
     <script>
         function approveEvent(button) {
@@ -290,8 +375,41 @@
         }
 
         function showNotification(message, type) {
-            // Simulación simple de notificación
-            alert(`${type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️'} ${message}`);
+            const toast = document.getElementById('toast');
+            toast.textContent = `${type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️'} ${message}`;
+            toast.className = `toast show ${type}`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Sidebar functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const appLayout = document.querySelector('.app-layout');
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                appLayout.classList.toggle('sidebar-collapsed');
+            });
+        }
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                sidebar.classList.add('mobile-open');
+                sidebarOverlay.classList.add('active');
+            });
+        }
+
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', () => {
+                sidebar.classList.remove('mobile-open');
+                sidebarOverlay.classList.remove('active');
+            });
         }
 
         // Inicialización

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - SIGEVEN</title>
+    <link rel="stylesheet" href="css/login-general.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="login-page">
+        <!-- Left Side - Branding -->
+        <div class="login-branding">
+            <div class="branding-content">
+                <a href="pantalla-informativa.html" class="back-link">
+                    <span class="material-icons">arrow_back</span>
+                    Volver al Inicio
+                </a>
+                
+                <div class="branding-main">
+                    <img src="sigeven_logo.png" alt="C-Heaven Logo SIGEVEN" class="branding-logo">
+                    <h1>SIGEVEN</h1>
+                    <p class="branding-tagline">Sistema de Gestión de Eventos Universitarios</p>
+                    <p class="branding-description">
+                        Accede a tu cuenta para gestionar y participar en los eventos 
+                        académicos, culturales y deportivos de la EMI.
+                    </p>
+                </div>
+                
+                <div class="branding-features">
+                    <div class="feature-item">
+                        <span class="material-icons">calendar_month</span>
+                        <span>Calendario Integrado</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="material-icons">event_available</span>
+                        <span>Gestión de Eventos</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="material-icons">workspace_premium</span>
+                        <span>Certificados Digitales</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Login Form -->
+        <div class="login-form-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="logo-mobile">
+                        <img src="sigeven_logo.png" alt="C-Heaven Logo" class="mobile-logo">
+                    </div>
+                    <h2>Bienvenido</h2>
+                    <p>Inicia sesión con tus credenciales institucionales</p>
+                </div>
+
+                <!-- Role Selection Tabs -->
+                <div class="role-tabs">
+                    <button type="button" class="role-tab active" data-role="estudiante">
+                        <span class="material-icons">school</span>
+                        <span>Estudiante</span>
+                    </button>
+                    <button type="button" class="role-tab" data-role="docente">
+                        <span class="material-icons">person</span>
+                        <span>Docente</span>
+                    </button>
+                    <button type="button" class="role-tab" data-role="admin">
+                        <span class="material-icons">admin_panel_settings</span>
+                        <span>Admin</span>
+                    </button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="login-form">
+                    <input type="hidden" id="selectedRole" name="role" value="estudiante">
+                    
+                    <!-- Dynamic Label and Input -->
+                    <div class="form-group">
+                        <label for="username" class="required">
+                            <span class="material-icons">badge</span>
+                            <span id="usernameLabel">Código de Estudiante</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            required
+                            placeholder="Ej: E20250-1"
+                            autocomplete="username"
+                        >
+                        <span class="help-text" id="usernameHelp">Formato: EXXXXX-X (donde X son números)</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="required">
+                            <span class="material-icons">lock</span>
+                            <span>Contraseña</span>
+                        </label>
+                        <div class="password-input-wrapper">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                required 
+                                minlength="6"
+                                placeholder="Ingresa tu contraseña"
+                                autocomplete="current-password"
+                            >
+                            <button type="button" class="toggle-password" aria-label="Mostrar contraseña">
+                                <span class="material-icons">visibility</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="remember">
+                            <span class="checkmark"></span>
+                            <span>Mantener sesión iniciada</span>
+                        </label>
+                        <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
+                    </div>
+
+                    <button type="submit" class="btn-login">
+                        <span class="material-icons">login</span>
+                        <span>Iniciar Sesión</span>
+                    </button>
+                </form>
+
+                <!-- Security Notice -->
+                <div class="security-notice">
+                    <span class="material-icons">verified_user</span>
+                    <p>Conexión segura. Tus datos están protegidos.</p>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="login-footer">
+                <div class="footer-info">
+                    <div class="footer-section">
+                        <h5>EMI Central</h5>
+                        <p><span class="material-icons">location_on</span> Av. Arce No. 2642, Zona San Jorge, La Paz Bolivia</p>
+                    </div>
+                    <div class="footer-section">
+                        <h5>Unidades Académicas</h5>
+                        <p>La Paz • Santa Cruz • Cochabamba • Riberalta • Trópico</p>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>2025 © Escuela Militar de Ingeniería | Última actualización: 15/09/2025</p>
+                    <div class="footer-links">
+                        <a href="#">Ministerio de Defensa</a>
+                        <a href="#">Ejército de Bolivia</a>
+                        <a href="#">CEUB</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Role tabs functionality
+        const roleTabs = document.querySelectorAll('.role-tab');
+        const selectedRoleInput = document.getElementById('selectedRole');
+        const usernameInput = document.getElementById('username');
+        const usernameLabel = document.getElementById('usernameLabel');
+        const usernameHelp = document.getElementById('usernameHelp');
+
+        const roleConfig = {
+            estudiante: {
+                label: 'Código de Estudiante',
+                placeholder: 'Ej: E20250-1',
+                help: 'Formato: EXXXXX-X (donde X son números)',
+                pattern: 'E[0-9]{5}-[0-9]',
+                redirect: 'perfil-estudiante.html'
+            },
+            docente: {
+                label: 'Código de Docente',
+                placeholder: 'Ej: A20250-1',
+                help: 'Formato: AXXXXX-X (donde X son números)',
+                pattern: 'A[0-9]{5}-[0-9]',
+                redirect: 'perfil-docente.html'
+            },
+            admin: {
+                label: 'Usuario Administrativo',
+                placeholder: 'usuario.admin',
+                help: 'Ingresa tu usuario de administrador',
+                pattern: null,
+                redirect: 'panel-admin.html'
+            }
+        };
+
+        roleTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update active state
+                roleTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Get role
+                const role = tab.dataset.role;
+                selectedRoleInput.value = role;
+
+                // Update form fields
+                const config = roleConfig[role];
+                usernameLabel.textContent = config.label;
+                usernameInput.placeholder = config.placeholder;
+                usernameHelp.textContent = config.help;
+                
+                if (config.pattern) {
+                    usernameInput.setAttribute('pattern', config.pattern);
+                } else {
+                    usernameInput.removeAttribute('pattern');
+                }
+
+                // Clear input
+                usernameInput.value = '';
+                
+                // Animation
+                document.querySelector('.login-form').classList.add('form-transition');
+                setTimeout(() => {
+                    document.querySelector('.login-form').classList.remove('form-transition');
+                }, 300);
+            });
+        });
+
+        // Toggle password visibility
+        const togglePasswordBtn = document.querySelector('.toggle-password');
+        const passwordInput = document.getElementById('password');
+
+        togglePasswordBtn.addEventListener('click', () => {
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+            
+            const icon = togglePasswordBtn.querySelector('.material-icons');
+            icon.textContent = type === 'password' ? 'visibility' : 'visibility_off';
+        });
+
+        // Form submission
+        const loginForm = document.getElementById('loginForm');
+        
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const role = selectedRoleInput.value;
+            const config = roleConfig[role];
+            
+            // Show loading state
+            const submitBtn = loginForm.querySelector('.btn-login');
+            const originalContent = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="material-icons spinning">sync</span><span>Iniciando sesión...</span>';
+            submitBtn.disabled = true;
+
+            // Simulate login (in real app, this would be server validation)
+            setTimeout(() => {
+                showToast(`✅ Bienvenido! Redirigiendo...`, 'success');
+                
+                setTimeout(() => {
+                    window.location.href = config.redirect;
+                }, 1000);
+            }, 1500);
+        });
+
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast show ${type}`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Forgot password
+        document.querySelector('.forgot-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            showToast('📧 Contacta a soporte técnico para recuperar tu contraseña', 'info');
+        });
+    </script>
+</body>
+</html>

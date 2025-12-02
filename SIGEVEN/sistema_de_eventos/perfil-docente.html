@@ -3,51 +3,145 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Perfil Docente - Sistema de Eventos</title>
+    <title>Perfil Docente - SIGEVEN</title>
     <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/PerfilDocente.css" />
+    <link rel="stylesheet" href="css/perfil-docente.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
   <body>
-    <!-- Header/Navigation -->
-    <header class="header">
-      <nav class="nav">
-        <div class="nav-brand"><h2>Eventos EMI</h2></div>
-        <div class="nav-search">
+    <div class="app-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <a href="pantalla-informativa.html" class="sidebar-brand">
+            <img src="sigeven_logo.png" alt="C-Heaven Logo" class="sidebar-logo">
+            <div class="sidebar-brand-text">
+              <h2>SIGEVEN</h2>
+              <span>Docente</span>
+            </div>
+          </a>
+          <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú">
+            <span class="material-icons">chevron_left</span>
+          </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+          <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+              <a href="perfil-docente.html" class="sidebar-menu-link active" data-tooltip="Mi Perfil">
+                <span class="material-icons">person</span>
+                <span>Mi Perfil</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a href="calendario-docentes.html" class="sidebar-menu-link" data-tooltip="Calendario">
+                <span class="material-icons">calendar_month</span>
+                <span>Calendario</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a href="#mis-eventos" class="sidebar-menu-link" data-tooltip="Mis Eventos">
+                <span class="material-icons">event</span>
+                <span>Mis Eventos</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a href="nuevo-evento-docente.html" class="sidebar-menu-link" data-tooltip="Nuevo Evento">
+                <span class="material-icons">add_circle</span>
+                <span>Nuevo Evento</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a href="#solicitudes" class="sidebar-menu-link" data-tooltip="Solicitudes">
+                <span class="material-icons">assignment</span>
+                <span>Solicitudes</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a href="#espacios" class="sidebar-menu-link" data-tooltip="Espacios">
+                <span class="material-icons">meeting_room</span>
+                <span>Espacios</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a href="#estadisticas" class="sidebar-menu-link" data-tooltip="Estadísticas">
+                <span class="material-icons">analytics</span>
+                <span>Estadísticas</span>
+              </a>
+            </li>
+          </ul>
+          
+          <div class="sidebar-section">
+            <span class="sidebar-section-title">Configuración</span>
+            <ul class="sidebar-menu">
+              <li class="sidebar-menu-item">
+                <a href="#" class="sidebar-menu-link" data-tooltip="Configuración">
+                  <span class="material-icons">settings</span>
+                  <span>Configuración</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        
+        <div class="sidebar-user">
+          <div class="sidebar-user-avatar">
+            <span class="material-icons">school</span>
+          </div>
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name" id="sidebarUserName">Dr. Carlos Mendoza</div>
+            <div class="sidebar-user-role">Docente</div>
+          </div>
+        </div>
+        
+        <a href="login-general.html" class="sidebar-logout" data-tooltip="Cerrar Sesión">
+          <span class="material-icons">logout</span>
+          <span>Cerrar Sesión</span>
+        </a>
+      </aside>
+      
+      <!-- Sidebar Overlay for Mobile -->
+      <div class="sidebar-overlay" id="sidebarOverlay"></div>
+      
+      <!-- Main Content -->
+      <div class="app-content">
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+          <div class="mobile-header-inner">
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+              <span class="material-icons">menu</span>
+            </button>
+            <div class="mobile-brand">
+              <img src="sigeven_logo.png" alt="Logo">
+              <h2>SIGEVEN</h2>
+            </div>
+            <div></div>
+          </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="profile-container">
+          <!-- Inputs para tabs (CSS-only) -->
           <input
-            type="text"
-            placeholder="Buscar eventos..."
-            class="search-input"
-            id="searchInput"
+            type="radio"
+            name="profile-tab"
+            id="tab-mis-eventos"
+            checked
+            hidden
           />
-        </div>
-        <div class="nav-icons">
-          <a href="calendarioDocentes.html" class="nav-icon">CALENDARIO</a>
-          <a href="loginDocente.html" class="nav-icon">SALIR</a>
-        </div>
-      </nav>
-    </header>
+          <input type="radio" name="profile-tab" id="tab-solicitudes" hidden />
+          <input type="radio" name="profile-tab" id="tab-espacios" hidden />
+          <input type="radio" name="profile-tab" id="tab-estadisticas" hidden />
 
-    <!-- Main Content -->
-    <main class="profile-container">
-      <!-- Inputs para tabs (CSS-only) -->
-      <input
-        type="radio"
-        name="profile-tab"
-        id="tab-mis-eventos"
-        checked
-        hidden
-      />
-      <input type="radio" name="profile-tab" id="tab-solicitudes" hidden />
-      <input type="radio" name="profile-tab" id="tab-espacios" hidden />
-      <input type="radio" name="profile-tab" id="tab-estadisticas" hidden />
-
-      <!-- Profile Header -->
-      <section class="profile-header">
-        <div class="cover-photo">
-          <img
-            src="assets/uploads/portada-docente.jpeg"
-            alt="Cover photo"
-            class="cover-img"
+          <!-- Profile Header -->
+          <section class="profile-header">
+            <div class="cover-photo">
+              <img
+                src="assets/uploads/portada-docente.jpeg"
+                alt="Cover photo"
+                class="cover-img"
           />
           <button class="edit-cover-btn" onclick="simularEdicion('portada')">
             ✏️
@@ -358,6 +452,8 @@
         reservados.
       </p>
     </footer>
+    </div> <!-- /.app-content -->
+    </div> <!-- /.app-layout -->
 
     <!-- Modal para acciones -->
     <div id="actionModal" class="modal">
@@ -1031,6 +1127,40 @@
           cerrarModal();
         }
       };
+
+      // ========== SIDEBAR FUNCTIONALITY ==========
+      const sidebar = document.getElementById('sidebar');
+      const sidebarToggle = document.getElementById('sidebarToggle');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const appLayout = document.querySelector('.app-layout');
+
+      // Toggle sidebar on desktop
+      if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('collapsed');
+          appLayout.classList.toggle('sidebar-collapsed');
+        });
+      }
+
+      // Toggle sidebar on mobile
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', () => {
+          sidebar.classList.add('mobile-open');
+          sidebarOverlay.classList.add('active');
+        });
+      }
+
+      // Close sidebar on overlay click
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', () => {
+          sidebar.classList.remove('mobile-open');
+          sidebarOverlay.classList.remove('active');
+        });
+      }
+
+      // Update sidebar user name
+      document.getElementById('sidebarUserName').textContent = teacherData.name;
     </script>
 
     <style>
