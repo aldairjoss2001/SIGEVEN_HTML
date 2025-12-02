@@ -311,6 +311,9 @@
     document.getElementById('requestForm').addEventListener('submit', function(e) {
       e.preventDefault();
       
+      // Get user name from sidebar (in a real app, this would come from session)
+      const userName = document.querySelector('.sidebar-user-name')?.textContent || 'Usuario Externo';
+      
       // Get form data
       const formData = {
         id: 'req-' + Date.now(),
@@ -327,7 +330,7 @@
         additionalNotes: document.getElementById('additionalNotes').value,
         status: 'pending',
         submittedAt: new Date().toISOString(),
-        submittedBy: 'Juan Pérez'
+        submittedBy: userName
       };
       
       // Save to localStorage

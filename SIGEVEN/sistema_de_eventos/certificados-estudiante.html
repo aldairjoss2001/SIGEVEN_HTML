@@ -288,7 +288,8 @@
       4: { name: 'Seminario de IA', date: '20 Agosto 2024', hours: '4 horas académicas' }
     };
     
-    const userName = 'María Fernandez';
+    // Get user name from sidebar (in a real app this would come from session)
+    const userName = document.querySelector('.sidebar-user-name')?.textContent || 'Usuario';
 
     function descargarCertificado(id) {
       const cert = certificatesData[id];

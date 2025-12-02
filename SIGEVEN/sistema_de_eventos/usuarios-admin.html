@@ -963,10 +963,10 @@
 
         // Default users data
         const defaultUsers = [
-            { id: 'maria', name: 'María Fernandez', email: 'maria.fernandez@emi.edu.bo', role: 'estudiante', area: 'Ingeniería de Sistemas', events: 12, certificates: 3, status: 'active', lastActivity: '15 Oct 2025' },
-            { id: 'carlos', name: 'Dr. Carlos Mendoza', email: 'carlos.mendoza@emi.edu.bo', role: 'docente', area: 'Departamento de Sistemas', events: 8, certificates: 0, status: 'active', lastActivity: '14 Oct 2025' },
-            { id: 'ana', name: 'Lic. Ana García', email: 'ana.garcia@emi.edu.bo', role: 'docente', area: 'Departamento Ambiental', events: 6, certificates: 0, status: 'active', lastActivity: '12 Oct 2025' },
-            { id: 'juan', name: 'Juan Pérez', email: 'juan.perez@empresa.com', role: 'externo', area: 'Tech Corp S.A.', events: 2, certificates: 1, status: 'pending', lastActivity: '08 Oct 2025' },
+            { id: 'maria', name: 'María Fernandez', email: 'maria.fernandez@emi.edu.bo', role: 'estudiante', area: 'Ingeniería de Sistemas', events: 12, certificates: 3, status: 'active', lastActivity: '15 Nov 2024' },
+            { id: 'carlos', name: 'Dr. Carlos Mendoza', email: 'carlos.mendoza@emi.edu.bo', role: 'docente', area: 'Departamento de Sistemas', events: 8, certificates: 0, status: 'active', lastActivity: '14 Nov 2024' },
+            { id: 'ana', name: 'Lic. Ana García', email: 'ana.garcia@emi.edu.bo', role: 'docente', area: 'Departamento Ambiental', events: 6, certificates: 0, status: 'active', lastActivity: '12 Nov 2024' },
+            { id: 'juan', name: 'Juan Pérez', email: 'juan.perez@empresa.com', role: 'externo', area: 'Tech Corp S.A.', events: 2, certificates: 1, status: 'pending', lastActivity: '08 Nov 2024' },
             { id: 'admin', name: 'Admin SIGEVEN', email: 'admin@emi.edu.bo', role: 'admin', area: 'Administración Central', events: '-', certificates: '-', status: 'active', lastActivity: 'Ahora' }
         ];
 
@@ -1056,10 +1056,11 @@
             
             const statCards = document.querySelectorAll('.stat-content h4');
             if (statCards.length >= 4) {
-                statCards[0].textContent = estudiantes > 1000 ? '1,150' : estudiantes;
-                statCards[1].textContent = docentes;
+                // Display formatted counts with base numbers for demo purposes
+                statCards[0].textContent = (estudiantes > 0 ? '1,' + String(150 + estudiantes).padStart(3, '0') : '0');
+                statCards[1].textContent = 50 + docentes;
                 statCards[2].textContent = admins;
-                statCards[3].textContent = externos;
+                statCards[3].textContent = 35 + externos;
             }
             
             document.querySelector('.table-footer span').textContent = `Mostrando ${usersData.length} usuarios`;

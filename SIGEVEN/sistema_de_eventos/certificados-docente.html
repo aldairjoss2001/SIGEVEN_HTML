@@ -257,7 +257,8 @@
       4: { name: 'Workshop de Innovación', date: '10 Julio 2024', hours: '6 horas académicas', type: 'Organizador' }
     };
     
-    const userName = 'Dr. Carlos Mendoza';
+    // Get user name from sidebar (in a real app this would come from session)
+    const userName = document.querySelector('.sidebar-user-name')?.textContent || 'Usuario';
 
     function descargarCertificado(id) {
       const cert = certificatesData[id];
