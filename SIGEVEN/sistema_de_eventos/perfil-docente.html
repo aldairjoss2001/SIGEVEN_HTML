@@ -456,9 +456,9 @@
     // ========== NOTIFICATIONS ==========
     let notificationsOpen = false;
     let notifications = JSON.parse(localStorage.getItem('teacherNotifications')) || [
-      { id: 1, type: 'event', title: 'Evento aprobado', message: 'VII VERSIÓN CTF EMI 2025 ha sido aprobado', time: 'Hace 1 hora', read: false },
-      { id: 2, type: 'space', title: 'Espacio asignado', message: 'Lab. de Computación asignado para 10 Oct', time: 'Hace 3 horas', read: false },
-      { id: 3, type: 'attendees', title: 'Nuevos inscritos', message: '15 estudiantes en Campaña de Arborización', time: 'Hace 1 día', read: false }
+      { id: 1, type: 'event', title: 'Evento aprobado', message: 'VII VERSIÓN CTF EMI 2025 ha sido aprobado', time: 'Hace 1 hora', read: false, link: 'eventos-docente.html' },
+      { id: 2, type: 'space', title: 'Espacio asignado', message: 'Lab. de Computación asignado para 10 Oct', time: 'Hace 3 horas', read: false, link: 'eventos-docente.html' },
+      { id: 3, type: 'attendees', title: 'Nuevos inscritos', message: '15 estudiantes en Campaña de Arborización', time: 'Hace 1 día', read: false, link: 'eventos-docente.html' }
     ];
 
     function toggleNotifications() {
@@ -467,8 +467,53 @@
       
       if (notificationsOpen) {
         panel.classList.add('show');
+        renderNotifications();
       } else {
         panel.classList.remove('show');
+      }
+    }
+
+    function renderNotifications() {
+      const list = document.getElementById('notificationsPanelList');
+      if (notifications.length === 0) {
+        list.innerHTML = '<div style="padding: 2rem; text-align: center; color: #64748b;">No hay notificaciones</div>';
+        return;
+      }
+
+      list.innerHTML = notifications.map(notif => `
+        <div class="notification-item ${notif.read ? '' : 'unread'}" data-notif-id="${notif.id}" onclick="handleNotificationClick(${notif.id}, '${notif.link || '#'}')">
+          <div class="notification-icon ${notif.type}">
+            <span class="material-icons">${getNotificationIcon(notif.type)}</span>
+          </div>
+          <div class="notification-content">
+            <p><strong>${notif.title}:</strong> ${notif.message}</p>
+            <span class="notification-time"><span class="material-icons">schedule</span> ${notif.time}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getNotificationIcon(type) {
+      const icons = {
+        'event': 'fact_check',
+        'space': 'meeting_room',
+        'attendees': 'group_add'
+      };
+      return icons[type] || 'notifications';
+    }
+
+    function handleNotificationClick(notifId, link) {
+      // Mark notification as read
+      const notif = notifications.find(n => n.id === notifId);
+      if (notif) {
+        notif.read = true;
+        localStorage.setItem('teacherNotifications', JSON.stringify(notifications));
+        updateNotificationBadge();
+      }
+      
+      // Navigate to the link
+      if (link && link !== '#' && link !== 'undefined' && link !== 'null') {
+        window.location.href = link;
       }
     }
 
@@ -839,6 +884,7 @@
       padding: 1rem;
       border-bottom: 1px solid #f1f5f9;
       transition: all 0.3s ease;
+      cursor: pointer;
     }
     
     .notification-item:hover {
