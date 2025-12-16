@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificaciones - SIGEVEN</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/global-darkmode.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .notifications-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .notifications-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .notifications-header h1 {
+            color: var(--azul-institucional, #163E8C);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .notifications-header .material-icons {
+            font-size: 2rem;
+        }
+
+        .notifications-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--azul-institucional, #163E8C);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1e50b5;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .notifications-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: #64748b;
+            font-weight: 600;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .tab.active {
+            color: var(--azul-institucional, #163E8C);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--azul-institucional, #163E8C);
+        }
+
+        .tab .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            border-radius: 10px;
+            background: #ef4444;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-left: 0.5rem;
+        }
+
+        .notifications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .notification-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            padding: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .notification-card:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+            transform: translateX(4px);
+        }
+
+        .notification-card.unread {
+            background: #eff6ff;
+            border-left-color: var(--azul-institucional, #163E8C);
+        }
+
+        .notification-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .notification-icon-wrapper.event {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .notification-icon-wrapper.registration {
+            background: #dcfce7;
+            color: #22c55e;
+        }
+
+        .notification-icon-wrapper.approval {
+            background: #fef3c7;
+            color: #f59e0b;
+        }
+
+        .notification-icon-wrapper.info {
+            background: #e0e7ff;
+            color: #6366f1;
+        }
+
+        .notification-icon-wrapper .material-icons {
+            font-size: 1.5rem;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        .notification-message {
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+        }
+
+        .notification-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        .notification-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .notification-meta-item .material-icons {
+            font-size: 1rem;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-icon.delete {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .btn-icon.delete:hover {
+            background: #fecaca;
+        }
+
+        .btn-icon.mark-read {
+            background: #e0e7ff;
+            color: #6366f1;
+        }
+
+        .btn-icon.mark-read:hover {
+            background: #c7d2fe;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #94a3b8;
+        }
+
+        .empty-state .material-icons {
+            font-size: 4rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Dark mode support */
+        body.dark-mode .notification-card {
+            background: #1e293b;
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .notification-card.unread {
+            background: #1e3a5f;
+        }
+
+        body.dark-mode .notification-title {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .btn-secondary {
+            background: #334155;
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .btn-secondary:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="admin-dashboard">
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="pantalla-informativa.html" class="sidebar-brand">
+                    <img src="sigeven_logo.png" alt="C-Heaven Logo" class="sidebar-logo">
+                    <div class="sidebar-brand-text">
+                        <h2>SIGEVEN</h2>
+                        <span>Estudiante</span>
+                    </div>
+                </a>
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú">
+                    <span class="material-icons">chevron_left</span>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <a href="perfil-estudiante.html" class="sidebar-menu-link" data-tooltip="Mi Perfil">
+                            <span class="material-icons">person</span>
+                            <span>Mi Perfil</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="calendario-estudiantes.html" class="sidebar-menu-link" data-tooltip="Calendario">
+                            <span class="material-icons">calendar_month</span>
+                            <span>Calendario</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="eventos-estudiante.html" class="sidebar-menu-link" data-tooltip="Mis Eventos">
+                            <span class="material-icons">event</span>
+                            <span>Mis Eventos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="certificados-estudiante.html" class="sidebar-menu-link" data-tooltip="Certificados">
+                            <span class="material-icons">workspace_premium</span>
+                            <span>Certificados</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="sidebar-section">
+                    <span class="sidebar-section-title">Configuración</span>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-menu-item">
+                            <a href="configuracion-estudiante.html" class="sidebar-menu-link" data-tooltip="Configuración">
+                                <span class="material-icons">settings</span>
+                                <span>Configuración</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">
+                    <span class="material-icons">school</span>
+                </div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="sidebarUserName">Estudiante</div>
+                    <div class="sidebar-user-role">Estudiante</div>
+                </div>
+            </div>
+            
+            <a href="login-general.html" class="sidebar-logout" data-tooltip="Cerrar Sesión">
+                <span class="material-icons">logout</span>
+                <span>Cerrar Sesión</span>
+            </a>
+        </aside>
+        
+        <!-- Sidebar Overlay for Mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- Main Content -->
+        <div class="app-content">
+            <!-- Mobile Header -->
+            <header class="mobile-header">
+                <div class="mobile-header-inner">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+                        <span class="material-icons">menu</span>
+                    </button>
+                    <div class="mobile-brand">
+                        <img src="sigeven_logo.png" alt="Logo">
+                        <h2>SIGEVEN</h2>
+                    </div>
+                    <div></div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="admin-main">
+                <div class="notifications-container">
+                    <!-- Header -->
+                    <div class="notifications-header">
+                        <h1>
+                            <span class="material-icons">notifications</span>
+                            Notificaciones
+                        </h1>
+                        <div class="notifications-actions">
+                            <button class="btn btn-secondary" onclick="marcarTodasLeidas()">
+                                <span class="material-icons">done_all</span>
+                                Marcar todas como leídas
+                            </button>
+                            <button class="btn btn-secondary" onclick="eliminarLeidas()">
+                                <span class="material-icons">delete_sweep</span>
+                                Eliminar leídas
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="notifications-tabs">
+                        <button class="tab active" data-filter="all" onclick="filterNotifications('all')">
+                            Todas <span class="badge" id="badgeAll">0</span>
+                        </button>
+                        <button class="tab" data-filter="unread" onclick="filterNotifications('unread')">
+                            No leídas <span class="badge" id="badgeUnread">0</span>
+                        </button>
+                        <button class="tab" data-filter="event" onclick="filterNotifications('event')">
+                            Eventos
+                        </button>
+                        <button class="tab" data-filter="registration" onclick="filterNotifications('registration')">
+                            Registros
+                        </button>
+                    </div>
+
+                    <!-- Notifications List -->
+                    <div class="notifications-list" id="notificationsList">
+                        <!-- Notifications will be loaded dynamically -->
+                    </div>
+
+                    <!-- Empty State -->
+                    <div class="empty-state" id="emptyState" style="display: none;">
+                        <span class="material-icons">notifications_none</span>
+                        <h3>No hay notificaciones</h3>
+                        <p>Todas tus notificaciones aparecerán aquí</p>
+                    </div>
+                </div>
+            </main>
+        </div> <!-- /.app-content -->
+    </div> <!-- /.app-layout -->
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // ========== DARK MODE ==========
+        (function() {
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+            }
+        })();
+        
+        // Sidebar functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const appLayout = document.querySelector('.app-layout');
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                appLayout.classList.toggle('sidebar-collapsed');
+            });
+        }
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                sidebar.classList.add('mobile-open');
+                sidebarOverlay.classList.add('active');
+            });
+        }
+
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', () => {
+                sidebar.classList.remove('mobile-open');
+                sidebarOverlay.classList.remove('active');
+            });
+        }
+
+        // Toast notification function
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast show ${type}`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ========== NOTIFICATIONS MANAGEMENT ==========
+        let adminNotifications = JSON.parse(localStorage.getItem('studentNotifications')) || [];
+        let currentFilter = 'all';
+
+        function getNotificationIcon(type) {
+            const icons = {
+                'event': 'event_note',
+                'registration': 'person_add',
+                'approval': 'check_circle',
+                'info': 'info'
+            };
+            return icons[type] || 'notifications';
+        }
+
+        function renderNotifications() {
+            const list = document.getElementById('notificationsList');
+            const emptyState = document.getElementById('emptyState');
+            
+            // Filter notifications
+            let filtered = adminNotifications;
+            if (currentFilter === 'unread') {
+                filtered = adminNotifications.filter(n => !n.read);
+            } else if (currentFilter !== 'all') {
+                filtered = adminNotifications.filter(n => n.type === currentFilter);
+            }
+
+            // Update badges
+            document.getElementById('badgeAll').textContent = adminNotifications.length;
+            document.getElementById('badgeUnread').textContent = adminNotifications.filter(n => !n.read).length;
+
+            if (filtered.length === 0) {
+                list.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            list.style.display = 'flex';
+            emptyState.style.display = 'none';
+
+            list.innerHTML = filtered.map(notif => `
+                <div class="notification-card ${notif.read ? '' : 'unread'}" onclick="handleNotificationClick('${notif.id}')">
+                    <div class="notification-icon-wrapper ${notif.type}">
+                        <span class="material-icons">${getNotificationIcon(notif.type)}</span>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">${notif.title || 'Notificación'}</div>
+                        <div class="notification-message">${notif.message}</div>
+                        <div class="notification-meta">
+                            <div class="notification-meta-item">
+                                <span class="material-icons">schedule</span>
+                                <span>${notif.time}</span>
+                            </div>
+                            ${notif.category ? `<div class="notification-meta-item">
+                                <span class="material-icons">label</span>
+                                <span>${notif.category}</span>
+                            </div>` : ''}
+                        </div>
+                    </div>
+                    <div class="notification-actions" onclick="event.stopPropagation()">
+                        ${!notif.read ? `<button class="btn-icon mark-read" onclick="markAsRead('${notif.id}')" title="Marcar como leída">
+                            <span class="material-icons">done</span>
+                        </button>` : ''}
+                        <button class="btn-icon delete" onclick="deleteNotification('${notif.id}')" title="Eliminar">
+                            <span class="material-icons">delete</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function handleNotificationClick(notifId) {
+            const notif = adminNotifications.find(n => n.id === notifId);
+            if (!notif) return;
+
+            // Mark as read
+            notif.read = true;
+            localStorage.setItem('adminNotifications', JSON.stringify(adminNotifications));
+            
+            // Navigate if link exists
+            if (notif.link && notif.link !== 'undefined' && notif.link !== 'null' && notif.link !== '#') {
+                window.location.href = notif.link;
+            }
+            
+            renderNotifications();
+        }
+
+        function markAsRead(notifId) {
+            const notif = adminNotifications.find(n => n.id === notifId);
+            if (notif) {
+                notif.read = true;
+                localStorage.setItem('studentNotifications', JSON.stringify(adminNotifications));
+                renderNotifications();
+                showToast('Notificación marcada como leída');
+            }
+        }
+
+        function deleteNotification(notifId) {
+            adminNotifications = adminNotifications.filter(n => n.id !== notifId);
+            localStorage.setItem('studentNotifications', JSON.stringify(adminNotifications));
+            renderNotifications();
+            showToast('Notificación eliminada');
+        }
+
+        function marcarTodasLeidas() {
+            adminNotifications.forEach(n => n.read = true);
+            localStorage.setItem('studentNotifications', JSON.stringify(adminNotifications));
+            renderNotifications();
+            showToast('Todas las notificaciones marcadas como leídas');
+        }
+
+        function eliminarLeidas() {
+            const countBefore = adminNotifications.length;
+            adminNotifications = adminNotifications.filter(n => !n.read);
+            localStorage.setItem('studentNotifications', JSON.stringify(adminNotifications));
+            renderNotifications();
+            showToast(`${countBefore - adminNotifications.length} notificaciones eliminadas`);
+        }
+
+        function filterNotifications(filter) {
+            currentFilter = filter;
+            
+            // Update active tab
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
+            
+            renderNotifications();
+        }
+
+        // ========== INITIALIZATION ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            renderNotifications();
+        });
+    </script>
+</body>
+</html>

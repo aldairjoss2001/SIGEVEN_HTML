@@ -209,22 +209,18 @@
             return null;
         }
 
-        // Update role indicator as user types
+        // Update role indicator as user types (hidden for security)
         usernameInput.addEventListener('input', function() {
             const code = this.value;
             const role = detectRole(code);
             
             if (role) {
-                const config = roleConfig[role];
                 selectedRoleInput.value = role;
-                roleIndicator.style.display = 'flex';
-                roleIcon.textContent = config.icon;
-                roleText.textContent = `Rol detectado: ${config.label}`;
-                roleIndicator.style.borderColor = config.color;
-                roleIndicator.style.background = `${config.color}15`;
+                // Role indicator is hidden for security reasons
+                // roleIndicator.style.display = 'flex';
             } else {
                 selectedRoleInput.value = '';
-                roleIndicator.style.display = 'none';
+                // roleIndicator.style.display = 'none';
             }
         });
 

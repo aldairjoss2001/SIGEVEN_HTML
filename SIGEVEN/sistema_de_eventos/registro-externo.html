@@ -613,6 +613,39 @@
             btnNext.innerHTML = '<span class="material-icons spinning">sync</span> Enviando...';
             btnNext.disabled = true;
 
+            // Get form data
+            const userData = {
+                id: Date.now().toString(),
+                name: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                organization: document.getElementById('organization').value,
+                position: document.getElementById('position').value,
+                type: 'Externo',
+                time: 'Hace unos momentos',
+                timestamp: Date.now(),
+                status: 'pending'
+            };
+
+            // Save to localStorage for admin review
+            let newRegistrations = JSON.parse(localStorage.getItem('newUserRegistrations')) || [];
+            newRegistrations.unshift(userData); // Add to beginning
+            localStorage.setItem('newUserRegistrations', JSON.stringify(newRegistrations));
+
+            // Create notification for admin
+            let adminNotifications = JSON.parse(localStorage.getItem('adminNotifications')) || [];
+            adminNotifications.unshift({
+                id: 'notif-' + Date.now(),
+                type: 'registration',
+                title: 'Nuevo registro de usuario',
+                message: `${userData.name} se ha registrado como usuario externo`,
+                time: 'Hace unos momentos',
+                read: false,
+                link: 'usuarios-admin.html',
+                timestamp: Date.now()
+            });
+            localStorage.setItem('adminNotifications', JSON.stringify(adminNotifications));
+
             // Simulate registration
             setTimeout(() => {
                 showStep('success');

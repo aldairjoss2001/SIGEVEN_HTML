@@ -468,13 +468,54 @@
 
     // Validación solo del checkbox de términos antes de enviar
     document.getElementById('eventForm').addEventListener('submit', function(e) {
+      e.preventDefault(); // Prevent default form submission
+      
       const termsCheckbox = document.getElementById('terms');
       if (!termsCheckbox.checked) {
-        e.preventDefault();
         alert('Debe aceptar los términos y condiciones para enviar la solicitud.');
         termsCheckbox.focus();
+        return;
       }
-      // Si el checkbox está marcado, el formulario se envía normalmente a evento-creado-docente.html
+      
+      // Get form data
+      const eventData = {
+        id: Date.now().toString(),
+        title: document.getElementById('event-title').value,
+        type: document.getElementById('event-type').value,
+        category: document.getElementById('event-category').value,
+        description: document.getElementById('event-description').value,
+        date: document.getElementById('event-date').value,
+        startTime: document.getElementById('start-time').value,
+        endTime: document.getElementById('end-time').value,
+        location: document.getElementById('event-location').value,
+        createdBy: 'Dr. Carlos Mendoza', // Get from session/localStorage
+        createdByRole: 'Docente',
+        time: 'Hace unos momentos',
+        timestamp: Date.now(),
+        status: 'pending'
+      };
+      
+      // Save to localStorage for admin
+      let pendingEvents = JSON.parse(localStorage.getItem('pendingEventRequests')) || [];
+      pendingEvents.unshift(eventData); // Add to beginning
+      localStorage.setItem('pendingEventRequests', JSON.stringify(pendingEvents));
+      
+      // Create notification for admin
+      let adminNotifications = JSON.parse(localStorage.getItem('adminNotifications')) || [];
+      adminNotifications.unshift({
+        id: 'notif-' + Date.now(),
+        type: 'event',
+        title: 'Nueva solicitud de evento',
+        message: `${eventData.createdBy} ha solicitado crear el evento "${eventData.title}"`,
+        time: 'Hace unos momentos',
+        read: false,
+        link: 'gestion-eventos-admin.html',
+        timestamp: Date.now()
+      });
+      localStorage.setItem('adminNotifications', JSON.stringify(adminNotifications));
+      
+      // Redirect to success page
+      window.location.href = 'evento-creado-docente.html?title=' + encodeURIComponent(eventData.title);
     });
 </script>
 </body>

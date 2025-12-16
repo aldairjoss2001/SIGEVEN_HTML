@@ -60,18 +60,6 @@
                         </a>
                     </li>
                 </ul>
-                
-                <div class="sidebar-section">
-                    <span class="sidebar-section-title">Sistema</span>
-                    <ul class="sidebar-menu">
-                        <li class="sidebar-menu-item">
-                            <a href="configuracion-admin.html" class="sidebar-menu-link" data-tooltip="Configuración">
-                                <span class="material-icons">settings</span>
-                                <span>Configuración</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
             </nav>
             
             <div class="sidebar-user">
@@ -105,7 +93,25 @@
                         <img src="sigeven_logo.png" alt="Logo">
                         <h2>SIGEVEN</h2>
                     </div>
-                    <div></div>
+                    <!-- Notifications -->
+                    <div class="notifications-dropdown">
+                        <button class="top-bar-btn notification-btn" id="notificationBtn" aria-label="Notificaciones" onclick="toggleNotifications()">
+                            <span class="material-icons">notifications</span>
+                            <span class="notification-badge" id="notificationBadge">0</span>
+                        </button>
+                        <div class="notifications-panel" id="notificationsPanel">
+                            <div class="notifications-panel-header">
+                                <h4><span class="material-icons">notifications</span> Notificaciones</h4>
+                                <button class="btn-text-small" onclick="marcarTodasLeidas()">Marcar todas como leídas</button>
+                            </div>
+                            <div class="notifications-panel-list" id="notificationsPanelList">
+                                <!-- Notifications will be loaded dynamically -->
+                            </div>
+                            <div class="notifications-panel-footer">
+                                <a href="notificaciones-admin.html" class="btn-text-small">Ver todas las notificaciones</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </header>
 
@@ -126,18 +132,18 @@
                             <div class="stat-card urgent">
                                 <div class="stat-icon"><span class="material-icons">pending_actions</span></div>
                                 <div class="stat-content">
-                                    <span class="stat-number">8</span>
+                                    <span class="stat-number" id="pendingEventsCount">0</span>
                                     <span class="stat-label">Eventos Pendientes</span>
                                 </div>
                                 <div class="stat-badge">Revisión Requerida</div>
                             </div>
 
-                            <!-- Eventos Esta Semana -->
+                            <!-- Nuevos Registros -->
                             <div class="stat-card">
-                                <div class="stat-icon"><span class="material-icons">date_range</span></div>
+                                <div class="stat-icon"><span class="material-icons">person_add</span></div>
                                 <div class="stat-content">
-                                    <span class="stat-number">12</span>
-                                    <span class="stat-label">Eventos Esta Semana</span>
+                                    <span class="stat-number" id="newRegistrationsCount">0</span>
+                                    <span class="stat-label">Nuevos Registros</span>
                                 </div>
                             </div>
 
@@ -171,10 +177,19 @@
                                     <h4>Revisar Eventos</h4>
                                     <p>Gestionar solicitudes pendientes</p>
                                 </div>
-                                <div class="action-badge">8 nuevos</div>
+                                <div class="action-badge" id="actionBadgeEvents">0 nuevos</div>
                             </a>
 
-                            <a href="#" class="action-card">
+                            <a href="usuarios-admin.html" class="action-card">
+                                <div class="action-icon"><span class="material-icons">person_add</span></div>
+                                <div class="action-content">
+                                    <h4>Nuevos Registros</h4>
+                                    <p>Revisar usuarios nuevos</p>
+                                </div>
+                                <div class="action-badge" id="actionBadgeUsers">0 nuevos</div>
+                            </a>
+
+                            <a href="espacios-admin.html" class="action-card">
                                 <div class="action-icon"><span class="material-icons">location_city</span></div>
                                 <div class="action-content">
                                     <h4>Espacios</h4>
@@ -182,19 +197,11 @@
                                 </div>
                             </a>
 
-                            <a href="#" class="action-card">
+                            <a href="reportes-admin.html" class="action-card">
                                 <div class="action-icon"><span class="material-icons">assessment</span></div>
                                 <div class="action-content">
                                     <h4>Reportes</h4>
                                     <p>Ver estadísticas del sistema</p>
-                                </div>
-                            </a>
-
-                            <a href="#" class="action-card">
-                                <div class="action-icon"><span class="material-icons">tune</span></div>
-                                <div class="action-content">
-                                    <h4>Configuración</h4>
-                                    <p>Ajustes del sistema</p>
                                 </div>
                             </a>
                         </div>
@@ -203,32 +210,8 @@
                     <!-- Recent Activity -->
                     <section class="activity-section">
                         <h3 class="section-title">Actividad Reciente</h3>
-                        <div class="activity-list">
-                            <div class="activity-item">
-                                <div class="activity-icon"><span class="material-icons">edit_note</span></div>
-                                <div class="activity-content">
-                                    <p><strong>Dr. Carlos Mendoza</strong> creó nuevo evento</p>
-                                    <span class="activity-time">Hace 15 minutos</span>
-                                </div>
-                                <span class="activity-status pending">Pendiente</span>
-                            </div>
-
-                            <div class="activity-item">
-                                <div class="activity-icon"><span class="material-icons">check_circle</span></div>
-                                <div class="activity-content">
-                                    <p><strong>Lic. Ana García</strong> - Evento aprobado</p>
-                                    <span class="activity-time">Hace 2 horas</span>
-                                </div>
-                                <span class="activity-status approved">Aprobado</span>
-                            </div>
-
-                            <div class="activity-item">
-                                <div class="activity-icon"><span class="material-icons">group_add</span></div>
-                                <div class="activity-content">
-                                    <p><strong>25 estudiantes</strong> se inscribieron en CTF</p>
-                                    <span class="activity-time">Hace 4 horas</span>
-                                </div>
-                            </div>
+                        <div class="activity-list" id="activityList">
+                            <!-- Activity items will be loaded dynamically -->
                         </div>
                     </section>
                 </div>
@@ -290,6 +273,359 @@
                 toast.classList.remove('show');
             }, 3000);
         }
+
+        // ========== NOTIFICATIONS SYSTEM ==========
+        let notificationsOpen = false;
+        let adminNotifications = JSON.parse(localStorage.getItem('adminNotifications')) || [];
+
+        function toggleNotifications() {
+            const panel = document.getElementById('notificationsPanel');
+            notificationsOpen = !notificationsOpen;
+            
+            if (notificationsOpen) {
+                panel.classList.add('show');
+                renderNotifications();
+            } else {
+                panel.classList.remove('show');
+            }
+        }
+
+        function renderNotifications() {
+            const list = document.getElementById('notificationsPanelList');
+            if (adminNotifications.length === 0) {
+                list.innerHTML = '<div style="padding: 2rem; text-align: center; color: #64748b;">No hay notificaciones</div>';
+                return;
+            }
+
+            list.innerHTML = adminNotifications.map(notif => `
+                <div class="notification-item ${notif.read ? '' : 'unread'}" data-notif-id="${notif.id}" onclick="handleNotificationClick('${notif.id}', '${notif.link}')">
+                    <div class="notification-icon ${notif.type}">
+                        <span class="material-icons">${getNotificationIcon(notif.type)}</span>
+                    </div>
+                    <div class="notification-content">
+                        <p><strong>${notif.title}:</strong> ${notif.message}</p>
+                        <span class="notification-time"><span class="material-icons">schedule</span> ${notif.time}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getNotificationIcon(type) {
+            const icons = {
+                'event': 'event_note',
+                'registration': 'person_add',
+                'approval': 'check_circle',
+                'info': 'info'
+            };
+            return icons[type] || 'notifications';
+        }
+
+        function handleNotificationClick(notifId, link) {
+            // Mark notification as read
+            const notif = adminNotifications.find(n => n.id === notifId);
+            if (notif) {
+                notif.read = true;
+                localStorage.setItem('adminNotifications', JSON.stringify(adminNotifications));
+                updateNotificationBadge();
+            }
+            
+            // Navigate to the link
+            if (link && link !== '#') {
+                window.location.href = link;
+            }
+        }
+
+        function updateNotificationBadge() {
+            const unreadCount = adminNotifications.filter(n => !n.read).length;
+            const badge = document.getElementById('notificationBadge');
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function marcarTodasLeidas() {
+            adminNotifications.forEach(n => n.read = true);
+            localStorage.setItem('adminNotifications', JSON.stringify(adminNotifications));
+            
+            document.querySelectorAll('.notification-item').forEach(item => {
+                item.classList.remove('unread');
+            });
+            
+            updateNotificationBadge();
+            showToast('Todas las notificaciones marcadas como leídas');
+        }
+
+        // Close notifications when clicking outside
+        document.addEventListener('click', function(e) {
+            const panel = document.getElementById('notificationsPanel');
+            const btn = document.getElementById('notificationBtn');
+            if (notificationsOpen && panel && btn && !panel.contains(e.target) && !btn.contains(e.target)) {
+                panel.classList.remove('show');
+                notificationsOpen = false;
+            }
+        });
+
+        // ========== LOAD PENDING REQUESTS ==========
+        function loadPendingRequests() {
+            const pendingEvents = JSON.parse(localStorage.getItem('pendingEventRequests')) || [];
+            const newRegistrations = JSON.parse(localStorage.getItem('newUserRegistrations')) || [];
+
+            // Update stats
+            document.getElementById('pendingEventsCount').textContent = pendingEvents.length;
+            document.getElementById('newRegistrationsCount').textContent = newRegistrations.length;
+            document.getElementById('actionBadgeEvents').textContent = `${pendingEvents.length} nuevos`;
+            document.getElementById('actionBadgeUsers').textContent = `${newRegistrations.length} nuevos`;
+
+            // Render activity list
+            const activityList = document.getElementById('activityList');
+            const allActivity = [];
+
+            // Add pending events to activity
+            pendingEvents.forEach(event => {
+                allActivity.push({
+                    type: 'event',
+                    icon: 'edit_note',
+                    message: `<strong>${event.createdBy}</strong> creó nuevo evento: ${event.title}`,
+                    time: event.time || 'Reciente',
+                    status: 'pending',
+                    statusLabel: 'Pendiente'
+                });
+            });
+
+            // Add new registrations to activity
+            newRegistrations.forEach(user => {
+                allActivity.push({
+                    type: 'registration',
+                    icon: 'person_add',
+                    message: `<strong>${user.name}</strong> se registró como ${user.type}`,
+                    time: user.time || 'Reciente',
+                    status: 'new',
+                    statusLabel: 'Nuevo'
+                });
+            });
+
+            // Sort by most recent (if we have timestamps, otherwise keep order)
+            if (allActivity.length === 0) {
+                activityList.innerHTML = '<div style="padding: 2rem; text-align: center; color: #64748b;">No hay actividad reciente</div>';
+            } else {
+                activityList.innerHTML = allActivity.map(activity => `
+                    <div class="activity-item">
+                        <div class="activity-icon"><span class="material-icons">${activity.icon}</span></div>
+                        <div class="activity-content">
+                            <p>${activity.message}</p>
+                            <span class="activity-time">${activity.time}</span>
+                        </div>
+                        <span class="activity-status ${activity.status}">${activity.statusLabel}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // ========== INITIALIZATION ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNotificationBadge();
+            loadPendingRequests();
+        });
     </script>
+    <style>
+        /* Notification styles for admin panel */
+        .notifications-dropdown {
+            position: relative;
+        }
+        
+        .top-bar-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: #f1f5f9;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .top-bar-btn:hover {
+            background: #e2e8f0;
+        }
+        
+        .top-bar-btn .material-icons {
+            font-size: 1.4rem;
+            color: #475569;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #ef4444;
+            color: white;
+            font-size: 0.7rem;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 9px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .notifications-panel {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 380px;
+            max-height: 500px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            display: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        
+        .notifications-panel.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .notifications-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            background: #f8fafc;
+        }
+        
+        .notifications-panel-header h4 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #163E8C;
+            font-size: 1rem;
+        }
+        
+        .notifications-panel-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+        
+        .notifications-panel-footer {
+            padding: 0.75rem;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            background: #f8fafc;
+        }
+        
+        .btn-text-small {
+            background: none;
+            border: none;
+            color: #163E8C;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
+        .btn-text-small:hover {
+            text-decoration: underline;
+        }
+        
+        .notification-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .notification-item:hover {
+            background: #f8fafc;
+        }
+        
+        .notification-item.unread {
+            background: #eff6ff;
+            border-left: 3px solid #163E8C;
+        }
+        
+        .notification-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .notification-icon.event {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .notification-icon.registration {
+            background: #dcfce7;
+            color: #22c55e;
+        }
+        
+        .notification-icon.approval {
+            background: #fef3c7;
+            color: #f59e0b;
+        }
+        
+        .notification-icon .material-icons {
+            font-size: 1.1rem;
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-content p {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.9rem;
+            color: #1e293b;
+            line-height: 1.4;
+        }
+        
+        .notification-time {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        
+        .notification-time .material-icons {
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .notifications-panel {
+                width: calc(100vw - 2rem);
+                right: -1rem;
+            }
+        }
+    </style>
 </body>
 </html>
