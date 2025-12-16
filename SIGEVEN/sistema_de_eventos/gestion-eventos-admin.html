@@ -61,18 +61,6 @@
                         </a>
                     </li>
                 </ul>
-                
-                <div class="sidebar-section">
-                    <span class="sidebar-section-title">Sistema</span>
-                    <ul class="sidebar-menu">
-                        <li class="sidebar-menu-item">
-                            <a href="configuracion-admin.html" class="sidebar-menu-link" data-tooltip="Configuración">
-                                <span class="material-icons">settings</span>
-                                <span>Configuración</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
             </nav>
             
             <div class="sidebar-user">
@@ -139,7 +127,7 @@
             </section>
 
             <!-- Lista de Eventos Pendientes -->
-            <section class="events-list-section">
+            <section class="events-list-section" id="eventsListSection">
                 <!-- Evento 1 -->
                 <div class="event-card pending">
                     <div class="event-header">
@@ -476,41 +464,151 @@
 
         // Load saved states on page load
         document.addEventListener('DOMContentLoaded', function() {
-            loadSavedEventStates();
+            loadPendingEventsFromStorage();
             toggleSection('approved-events');
         });
 
-        function loadSavedEventStates() {
+        function loadPendingEventsFromStorage() {
+            const eventsContainer = document.getElementById('eventsListSection');
+            const pendingEvents = JSON.parse(localStorage.getItem('pendingEventRequests')) || [];
             const savedStates = JSON.parse(localStorage.getItem('adminEventStates') || '{}');
-            const eventCards = document.querySelectorAll('.event-card');
             
-            eventCards.forEach(card => {
-                const title = card.querySelector('.event-title').textContent;
-                if (savedStates[title]) {
-                    const state = savedStates[title];
-                    if (state === 'approved') {
-                        card.classList.remove('pending', 'urgent');
-                        card.classList.add('approved');
-                        const statusBadge = card.querySelector('.event-status-badge');
-                        statusBadge.innerHTML = '<span class="material-icons" style="font-size: 1rem; vertical-align: middle;">check_circle</span> Aprobado';
-                        statusBadge.className = 'event-status-badge approved';
-                        // Disable action buttons
-                        const actionsDiv = card.querySelector('.event-actions');
-                        actionsDiv.innerHTML = `
-                            <span class="approved-label" style="color: #22c55e; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
-                                <span class="material-icons">verified</span> Evento Aprobado
-                            </span>
-                            <button class="btn btn-outline" onclick="viewDetails(this)">
-                                <span class="material-icons">visibility</span> Ver Detalles
-                            </button>
-                        `;
-                    } else if (state === 'rejected') {
-                        card.remove();
-                    }
-                }
+            // Clear container
+            eventsContainer.innerHTML = '';
+            
+            // If no events, show empty state
+            if (pendingEvents.length === 0) {
+                eventsContainer.innerHTML = `
+                    <div style="text-align: center; padding: 4rem 2rem; color: #64748b;">
+                        <span class="material-icons" style="font-size: 4rem; color: #cbd5e1;">event_note</span>
+                        <h3 style="color: #64748b; margin: 1rem 0;">No hay solicitudes pendientes</h3>
+                        <p>Las nuevas solicitudes de eventos aparecerán aquí</p>
+                    </div>
+                `;
+                updateBadgeCount(0);
+                return;
+            }
+            
+            // Render each event
+            let pendingCount = 0;
+            pendingEvents.forEach(event => {
+                // Check if event has been approved or rejected
+                const state = savedStates[event.id];
+                if (state === 'rejected') return; // Skip rejected events
+                
+                const isPending = !state || state === 'pending';
+                if (isPending) pendingCount++;
+                
+                const eventCard = createEventCard(event, state);
+                eventsContainer.innerHTML += eventCard;
             });
             
-            updatePendingCountDisplay();
+            updateBadgeCount(pendingCount);
+        }
+
+        function createEventCard(event, state) {
+            const isApproved = state === 'approved';
+            const statusClass = isApproved ? 'approved' : 'pending';
+            const statusText = isApproved ? 'Aprobado' : 'Pendiente';
+            const statusIcon = isApproved ? 'check_circle' : 'hourglass_empty';
+            
+            const actionsHTML = isApproved ? `
+                <span class="approved-label" style="color: #22c55e; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="material-icons">verified</span> Evento Aprobado
+                </span>
+                <button class="btn btn-outline" onclick="viewDetailsById('${event.id}')">
+                    <span class="material-icons">visibility</span> Ver Detalles
+                </button>
+            ` : `
+                <button class="btn btn-success" onclick="approveEventById('${event.id}')">
+                    <span class="material-icons">check_circle</span> Aprobar Evento
+                </button>
+                <button class="btn btn-danger" onclick="rejectEventById('${event.id}')">
+                    <span class="material-icons">cancel</span> Rechazar
+                </button>
+                <button class="btn btn-outline" onclick="viewDetailsById('${event.id}')">
+                    <span class="material-icons">visibility</span> Ver Detalles
+                </button>
+            `;
+            
+            return `
+                <div class="event-card ${statusClass}" data-event-id="${event.id}">
+                    <div class="event-header">
+                        <div class="event-basic-info">
+                            <h4 class="event-title">${event.title}</h4>
+                            <div class="event-meta">
+                                <span class="event-creator">
+                                    <span class="material-icons" style="font-size: 1rem; vertical-align: middle;">person</span> 
+                                    ${event.createdBy}
+                                </span>
+                                <span class="event-date">
+                                    <span class="material-icons" style="font-size: 1rem; vertical-align: middle;">event</span> 
+                                    ${event.date} - ${event.startTime}
+                                </span>
+                                <span class="event-location">
+                                    <span class="material-icons" style="font-size: 1rem; vertical-align: middle;">location_on</span> 
+                                    ${event.location}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="event-status-badge ${statusClass}">
+                            <span class="material-icons" style="font-size: 1rem; vertical-align: middle;">${statusIcon}</span> 
+                            ${statusText}
+                        </div>
+                    </div>
+
+                    <div class="event-details">
+                        <p class="event-description">${event.description}</p>
+                        
+                        <div class="event-requirements">
+                            <h5>Tipo de Evento:</h5>
+                            <p>${event.type} - ${event.category}</p>
+                        </div>
+                    </div>
+
+                    <div class="event-actions">
+                        ${actionsHTML}
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateBadgeCount(count) {
+            const badge = document.querySelector('.badge-count');
+            if (badge) {
+                badge.textContent = count;
+            }
+        }
+
+        function approveEventById(eventId) {
+            const savedStates = JSON.parse(localStorage.getItem('adminEventStates') || '{}');
+            savedStates[eventId] = 'approved';
+            localStorage.setItem('adminEventStates', JSON.stringify(savedStates));
+            
+            // Reload the list
+            loadPendingEventsFromStorage();
+            showNotification('Evento aprobado exitosamente', 'success');
+        }
+
+        function rejectEventById(eventId) {
+            if (confirm('¿Está seguro de que desea rechazar este evento?')) {
+                const savedStates = JSON.parse(localStorage.getItem('adminEventStates') || '{}');
+                savedStates[eventId] = 'rejected';
+                localStorage.setItem('adminEventStates', JSON.stringify(savedStates));
+                
+                // Reload the list
+                loadPendingEventsFromStorage();
+                showNotification('Evento rechazado', 'error');
+            }
+        }
+
+        function viewDetailsById(eventId) {
+            const pendingEvents = JSON.parse(localStorage.getItem('pendingEventRequests')) || [];
+            const event = pendingEvents.find(e => e.id === eventId);
+            
+            if (event) {
+                alert(`Detalles del Evento:\n\nTítulo: ${event.title}\nCreado por: ${event.createdBy}\nFecha: ${event.date}\nHora: ${event.startTime} - ${event.endTime}\nLugar: ${event.location}\n\nDescripción: ${event.description}`);
+            }
         }
 
         function approveEvent(button) {
