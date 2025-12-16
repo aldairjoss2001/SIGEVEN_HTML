@@ -978,6 +978,34 @@
                 usersData = [...defaultUsers];
                 saveUsers();
             }
+            
+            // Load new registrations and add them as pending users
+            const newRegistrations = JSON.parse(localStorage.getItem('newUserRegistrations')) || [];
+            const approvedUsers = JSON.parse(localStorage.getItem('approvedUsers')) || {};
+            
+            newRegistrations.forEach(reg => {
+                // Check if this registration has been approved or rejected
+                const status = approvedUsers[reg.id];
+                if (status === 'rejected') return; // Skip rejected
+                
+                // Check if user already exists in usersData
+                const exists = usersData.find(u => u.id === reg.id);
+                if (!exists) {
+                    // Add as new user with pending/active status
+                    usersData.push({
+                        id: reg.id,
+                        name: reg.name,
+                        email: reg.email,
+                        role: reg.type || 'externo',
+                        area: reg.organization || reg.area || 'Sin especificar',
+                        events: 0,
+                        certificates: 0,
+                        status: status === 'approved' ? 'active' : 'pending',
+                        lastActivity: reg.time || 'Reciente',
+                        isNewRegistration: true
+                    });
+                }
+            });
         }
 
         function saveUsers() {
@@ -1018,15 +1046,24 @@
                         <td><span class="status-badge ${user.status}">${getStatusLabel(user.status)}</span></td>
                         <td>
                             <div class="user-actions">
-                                <button class="btn-icon view" onclick="viewUser('${user.id}')" title="Ver">
-                                    <span class="material-icons">visibility</span>
-                                </button>
-                                <button class="btn-icon edit" onclick="editUser('${user.id}')" title="Editar">
-                                    <span class="material-icons">edit</span>
-                                </button>
-                                <button class="btn-icon delete" onclick="deleteUser('${user.id}')" title="Eliminar" ${user.id === 'admin' ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
-                                    <span class="material-icons">delete</span>
-                                </button>
+                                ${user.status === 'pending' && user.isNewRegistration ? `
+                                    <button class="btn-icon" style="background: #dcfce7; color: #22c55e;" onclick="approveUser('${user.id}')" title="Aprobar">
+                                        <span class="material-icons">check_circle</span>
+                                    </button>
+                                    <button class="btn-icon" style="background: #fee2e2; color: #dc2626;" onclick="rejectUser('${user.id}')" title="Rechazar">
+                                        <span class="material-icons">cancel</span>
+                                    </button>
+                                ` : `
+                                    <button class="btn-icon view" onclick="viewUser('${user.id}')" title="Ver">
+                                        <span class="material-icons">visibility</span>
+                                    </button>
+                                    <button class="btn-icon edit" onclick="editUser('${user.id}')" title="Editar">
+                                        <span class="material-icons">edit</span>
+                                    </button>
+                                    <button class="btn-icon delete" onclick="deleteUser('${user.id}')" title="Eliminar" ${user.id === 'admin' ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+                                        <span class="material-icons">delete</span>
+                                    </button>
+                                `}
                             </div>
                         </td>
                     </tr>
@@ -1220,6 +1257,42 @@
                 renderUsers();
                 updateStats();
                 showToast('Usuario eliminado correctamente', 'success');
+            }
+        }
+
+        function approveUser(userId) {
+            const user = usersData.find(u => u.id === userId);
+            if (user) {
+                user.status = 'active';
+                user.isNewRegistration = false;
+                
+                // Save approval status
+                let approvedUsers = JSON.parse(localStorage.getItem('approvedUsers') || '{}');
+                approvedUsers[userId] = 'approved';
+                localStorage.setItem('approvedUsers', JSON.stringify(approvedUsers));
+                
+                saveUsers();
+                renderUsers();
+                updateStats();
+                showToast(`Usuario ${user.name} aprobado exitosamente`, 'success');
+            }
+        }
+
+        function rejectUser(userId) {
+            if (confirm('¿Está seguro de que desea rechazar este registro?')) {
+                const user = usersData.find(u => u.id === userId);
+                
+                // Save rejection status
+                let approvedUsers = JSON.parse(localStorage.getItem('approvedUsers') || '{}');
+                approvedUsers[userId] = 'rejected';
+                localStorage.setItem('approvedUsers', JSON.stringify(approvedUsers));
+                
+                // Remove from display
+                usersData = usersData.filter(u => u.id !== userId);
+                saveUsers();
+                renderUsers();
+                updateStats();
+                showToast(user ? `Registro de ${user.name} rechazado` : 'Registro rechazado', 'error');
             }
         }
 
